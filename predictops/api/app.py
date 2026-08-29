@@ -133,6 +133,32 @@ def telemetry(machine_id: str, hours: int = Query(24, ge=1, le=168),
     })
 
 
+@app.get("/api/fleet/overview")
+def fleet_overview(at: str | None = None, hours: int = Query(6, ge=1, le=48)):
+    """Everything the command centre renders, computed from the scored fleet."""
+    from ..fleet import overview
+    e = engine()
+    if e.service is None:
+        raise HTTPException(503, "no model bundle; run run_experiments.py")
+    return _clean(overview(e, at=at, window_hours=hours))
+
+
+@app.get("/api/fleet/agents")
+def fleet_agents():
+    """What the agents have actually done, from the trajectory registry."""
+    from ..fleet import agent_activity
+    return _clean({"agents": agent_activity(engine())})
+
+
+@app.get("/api/system")
+def system():
+    from ..fleet import system_status
+    e = engine()
+    if e.bundle is None:
+        raise HTTPException(503, "no model bundle")
+    return _clean(system_status(e))
+
+
 @app.get("/api/workflow")
 def workflow_spec():
     """Node contracts and the default wiring the canvas starts from."""

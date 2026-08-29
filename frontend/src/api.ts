@@ -148,6 +148,13 @@ export const api = {
     if (!r.ok) throw new Error(await r.text());
     return r.json();
   },
+  fleetOverview: (at?: string, hours = 6) =>
+    get<any>(
+      `/api/fleet/overview?hours=${hours}` +
+        (at ? `&at=${encodeURIComponent(at)}` : ""),
+    ),
+  fleetAgents: () => get<{ agents: any[] }>("/api/fleet/agents"),
+  system: () => get<any>("/api/system"),
   workflowSpec: () => get<any>("/api/workflow"),
   workflowValidate: async (nodes: string[], edges: [string, string][]) => {
     const r = await fetch("/api/workflow/validate", {
