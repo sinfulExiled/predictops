@@ -148,6 +148,7 @@ export const api = {
     if (!r.ok) throw new Error(await r.text());
     return r.json();
   },
+  assistantSources: () => get<any>("/api/assistant/sources"),
   fleetOverview: (at?: string, hours = 6) =>
     get<any>(
       `/api/fleet/overview?hours=${hours}` +

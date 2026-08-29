@@ -258,3 +258,55 @@ pre { background: var(--panel-2); border: 1px solid var(--line); border-radius: 
    the scan down the risk column. */
 td.mono, th.num, td.num { white-space: nowrap; }
 .machines-table td:first-child { white-space: nowrap; }
+
+/* --- assistant ----------------------------------------------------------- */
+button.suggest {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 12.5px; font-weight: 500; padding: 10px 14px;
+  background: var(--panel-2); border: 1px solid var(--line);
+}
+button.suggest:hover { border-color: #3a4653; filter: none; }
+button.suggest svg { width: 15px; height: 15px; }
+
+.claim {
+  display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px;
+  border: 1px solid rgba(74,158,255,.28); border-radius: 9px;
+  background: linear-gradient(120deg, rgba(74,158,255,.10), var(--panel) 58%);
+  margin-bottom: 18px;
+}
+.claim-icon {
+  width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%;
+  border: 1px solid rgba(74,158,255,.45); color: var(--accent);
+  display: grid; place-items: center;
+}
+.claim-title { font-size: 14px; font-weight: 600; color: var(--accent); }
+
+.source-card {
+  display: block; padding: 15px 16px; border: 1px solid var(--line);
+  border-radius: 9px; background: var(--panel); text-decoration: none;
+  color: inherit; transition: border-color .12s ease, transform .12s ease;
+}
+.source-card:hover { border-color: #3a4653; transform: translateY(-1px); }
+.source-head { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.source-icon {
+  width: 30px; height: 30px; flex: 0 0 30px; border-radius: 8px;
+  display: grid; place-items: center;
+}
+.source-icon svg { width: 16px; height: 16px; }
+.source-label { font-size: 13.5px; font-weight: 600; }
+.source-foot { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; }
+.source-value { font-size: 26px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.source-foot svg { width: 14px; height: 14px; }
+
+.ask-bubble {
+  padding: 13px 16px; border-radius: 9px; margin-bottom: 8px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+}
+
+.grounding-foot {
+  display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  padding: 14px 16px; margin-top: 6px; border-top: 1px solid var(--line);
+  font-size: 12.5px; color: var(--text);
+}
+.grounding-foot svg { width: 14px; height: 14px; }

@@ -133,6 +133,69 @@ def telemetry(machine_id: str, hours: int = Query(24, ge=1, le=168),
     })
 
 
+@app.get("/api/assistant/sources")
+def assistant_sources():
+    """What the assistant can actually draw on, with real counts."""
+    import json as _json
+    import sqlite3
+    from ..config import DATA_DIR, EXPERIMENT_DIR
+    from ..simulation.interventions import CATALOGUE
+
+    e = engine()
+    con = sqlite3.connect(EXPERIMENT_DIR / "experiments.db")
+    n_exp, n_runs = con.execute(
+        "SELECT COUNT(*), COUNT(DISTINCT run_id) FROM experiments").fetchone()
+    n_steps = con.execute("SELECT COUNT(*) FROM trajectories").fetchone()[0]
+    n_ev = 0
+    for (blob,) in con.execute(
+            "SELECT output FROM trajectories WHERE agent='investigator'"):
+        try:
+            n_ev += len(_json.loads(blob).get("evidence", []))
+        except Exception:  # noqa: BLE001
+            pass
+    con.close()
+
+    def _count(path, key=None):
+        p = path
+        if not p.exists():
+            return 0
+        d = _json.loads(p.read_text())
+        return len(d if key is None else d.get(key, []))
+
+    scenarios = _count(DATA_DIR / "scenarios.json")
+    sweep = _count(REPORT_DIR / "ablation_adjudication.json", "sweep")
+
+    return {
+        "sources": [
+            {"key": "fleet", "label": "Fleet scores", "value":
+             int(e.data.df.machine_id.nunique()), "unit": "machines tracked",
+             "detail": "Risk, confidence and time-to-failure for every machine "
+                       "at any moment in the record.", "href": "#/"},
+            {"key": "evidence", "label": "Evidence items", "value": n_ev,
+             "unit": "recorded", "detail": "Facts computed from telemetry, each "
+                     "carrying the recipe that reproduces it.",
+             "href": "#/investigate"},
+            {"key": "experiments", "label": "Experiments", "value": n_exp,
+             "unit": f"across {n_runs} run{'s' if n_runs != 1 else ''}",
+             "detail": "Every model candidate with its measured outcome and "
+                       "the decision taken.", "href": "#/experiments"},
+            {"key": "evaluation", "label": "Evaluation", "value": scenarios,
+             "unit": "fixed scenarios", "detail": "Baseline against agent on "
+                     "identical cases, including the hard ones.",
+             "href": "#/evaluation"},
+            {"key": "ablation", "label": "Ablation", "value": sweep,
+             "unit": "threshold points", "detail": "Whether the hypothesis "
+                     "contest changed any decision. It did not.",
+             "href": "#/lab"},
+            {"key": "catalogue", "label": "Interventions", "value":
+             len(CATALOGUE), "unit": "approved actions",
+             "detail": "The only actions that may be proposed. Nothing outside "
+                       "this list.", "href": "#/remediate"},
+        ],
+        "agent_steps_logged": n_steps,
+    }
+
+
 @app.get("/api/fleet/overview")
 def fleet_overview(at: str | None = None, hours: int = Query(6, ge=1, le=48)):
     """Everything the command centre renders, computed from the scored fleet."""
