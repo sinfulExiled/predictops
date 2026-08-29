@@ -289,6 +289,7 @@ async def assistant(req: AskRequest):
 class IncidentRequest(BaseModel):
     machine_id: str
     timestamp: str | None = None
+    horizon_hours: float | None = None
 
 
 @app.post("/api/incidents")
@@ -302,7 +303,8 @@ async def incident(req: IncidentRequest):
     ts = pd.Timestamp(req.timestamp) if req.timestamp else g["timestamp"].max()
 
     def _run():
-        return e.run_incident(req.machine_id, ts, save=True)
+        return e.run_incident(req.machine_id, ts, save=True,
+                              horizon_hours=req.horizon_hours)
 
     report = await asyncio.to_thread(_run)
     q: asyncio.Queue = STATE["events"]

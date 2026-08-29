@@ -130,11 +130,15 @@ export const api = {
       `/api/machines/${id}/telemetry?hours=${hours}` +
         (until ? `&until=${encodeURIComponent(until)}` : ""),
     ),
-  incident: async (machine_id: string, timestamp?: string) => {
+  incident: async (
+    machine_id: string,
+    timestamp?: string,
+    horizon_hours?: number,
+  ) => {
     const r = await fetch("/api/incidents", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ machine_id, timestamp }),
+      body: JSON.stringify({ machine_id, timestamp, horizon_hours }),
     });
     if (!r.ok) throw new Error(await r.text());
     return (await r.json()) as IncidentReport;

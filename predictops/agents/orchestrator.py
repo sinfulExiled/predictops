@@ -189,8 +189,8 @@ class PredictOpsEngine:
         return self.bundle
 
     # -- incident half ------------------------------------------------------
-    def run_incident(self, machine_id: str, timestamp,
-                     save: bool = True) -> IncidentReport:
+    def run_incident(self, machine_id: str, timestamp, save: bool = True,
+                     horizon_hours: float | None = None) -> IncidentReport:
         """One machine, one moment, through the full agent workflow.
 
         The order matters. Facts are established once (investigator), both
@@ -251,7 +251,8 @@ class PredictOpsEngine:
         sim = SimulationAgent().execute(
             self.ctx, bundle=self.bundle, machine_id=machine_id,
             timestamp=timestamp, plan=rem.output["plan"],
-            baseline_probability=pred.output["failure_probability"])
+            baseline_probability=pred.output["failure_probability"],
+            **({"horizon_hours": horizon_hours} if horizon_hours else {}))
 
         # 8. does any of this hold up
         ver = VerificationAgent().execute(
