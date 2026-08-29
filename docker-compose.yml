@@ -1,0 +1,14 @@
+services:
+  predictops:
+    build: .
+    image: predictops:1.0.0
+    ports:
+      - "8000:8000"
+    volumes:
+      # Keep trained models, the experiment registry and reports across restarts.
+      - ./artifacts:/app/artifacts
+    environment:
+      # Default is the deterministic no-LLM path. Set to anthropic or openai
+      # (and pass the matching key) to enable narrative generation.
+      PREDICTOPS_LLM_PROVIDER: mock
+      # ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}

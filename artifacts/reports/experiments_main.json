@@ -1,0 +1,327 @@
+{
+  "run_id": "main",
+  "provider": {
+    "name": "mock",
+    "model": "deterministic"
+  },
+  "data_scientist": {
+    "inventory": {
+      "rows": 345600,
+      "machines": 80,
+      "span_days": 29.99,
+      "resolution_minutes": 10,
+      "raw_channels": [
+        "temperature",
+        "vibration",
+        "pressure",
+        "rpm",
+        "current",
+        "voltage",
+        "power",
+        "load",
+        "humidity",
+        "ambient_temp",
+        "operating_hours"
+      ],
+      "n_engineered_features": 74
+    },
+    "data_quality": {
+      "missing_by_channel": {
+        "temperature": 0.01975,
+        "vibration": 0.01975,
+        "pressure": 0.01975,
+        "rpm": 0.01975,
+        "current": 0.01975,
+        "voltage": 0.01975,
+        "power": 0.01975,
+        "load": 0.01975,
+        "humidity": 0.01975
+      },
+      "sensor_dropout_rate": 0.01975,
+      "downtime_rate": 0.00946
+    },
+    "class_balance": {
+      "train_positive_rate": 0.01127,
+      "imbalance_ratio": 87.8,
+      "train_positives": 2304
+    },
+    "leakage_audit": {
+      "leaky_columns_in_feature_list": [],
+      "splits_chronological": true,
+      "split_bounds": {
+        "purge": {
+          "start": "2025-03-18 18:00:00",
+          "end": "2025-03-23 11:50:00",
+          "rows": 5760,
+          "positives": 41
+        },
+        "test": {
+          "start": "2025-03-23 12:00:00",
+          "end": "2025-03-30 23:50:00",
+          "rows": 86400,
+          "positives": 1021
+        },
+        "train": {
+          "start": "2025-03-01 00:00:00",
+          "end": "2025-03-18 17:50:00",
+          "rows": 204480,
+          "positives": 2304
+        },
+        "val": {
+          "start": "2025-03-19 00:00:00",
+          "end": "2025-03-23 05:50:00",
+          "rows": 48960,
+          "positives": 666
+        }
+      },
+      "verdict": "clean"
+    },
+    "temporal_structure": {
+      "autocorr_lag_1h": {
+        "vibration": 0.4456,
+        "temperature": 0.859,
+        "current": 0.6794
+      }
+    },
+    "feature_signal": {
+      "top_features": [
+        {
+          "feature": "vibration",
+          "abs_corr": 0.2175
+        },
+        {
+          "feature": "vibration_mean_1h",
+          "abs_corr": 0.2119
+        },
+        {
+          "feature": "vib_per_load",
+          "abs_corr": 0.1979
+        },
+        {
+          "feature": "vibration_mean_3h",
+          "abs_corr": 0.1966
+        },
+        {
+          "feature": "vibration_mean_6h",
+          "abs_corr": 0.1774
+        },
+        {
+          "feature": "vibration_max_6h",
+          "abs_corr": 0.1588
+        },
+        {
+          "feature": "vib_z_6h",
+          "abs_corr": 0.1085
+        },
+        {
+          "feature": "vib_delta_3h",
+          "abs_corr": 0.0937
+        },
+        {
+          "feature": "temp_excess",
+          "abs_corr": 0.0837
+        },
+        {
+          "feature": "temperature",
+          "abs_corr": 0.0705
+        },
+        {
+          "feature": "temperature_mean_1h",
+          "abs_corr": 0.0676
+        },
+        {
+          "feature": "temperature_mean_3h",
+          "abs_corr": 0.0615
+        }
+      ],
+      "n_low_signal_features": 22,
+      "engineering_gain_over_raw": 0.0
+    },
+    "risks": [
+      "no ground-truth column appears in the feature list",
+      "splits are chronological with a purge gap; the test period is 2025-03-23 12:00:00 onwards",
+      "severe class imbalance (87.8:1 negative:positive)",
+      "sensor dropouts blank all channels together on 1.98% of rows; imputation is forward-fill with a train-median fallback",
+      "0.95% of rows are downtime and must be excluded from both training and scoring"
+    ],
+    "recommendations": [
+      "use PR-AUC (not accuracy or ROC-AUC) to select models: at 1.13% positives, accuracy is uninformative",
+      "subsample negatives for training only; score on the untouched distribution",
+      "ablate raw against engineered features rather than trusting these correlations: the best engineered feature gains only +0.000 marginally, but marginal correlation cannot see the interaction that matters here (vibration rising *while load stays flat*)",
+      "channels are strongly autocorrelated at 1 h lag -- sequence models are worth testing against a tabular baseline",
+      "lookback of 36 samples (6 h) covers the 6 h horizon without spanning typical downtime blocks",
+      "22 features carry almost no marginal signal (|corr| < 0.005), e.g. ['pressure', 'ambient_temp', 'rpm_instability_1h']"
+    ],
+    "recommended_plan": {
+      "selection_metric": "pr_auc",
+      "primary_report_metric": "f1",
+      "feature_sets_to_ablate": [
+        "raw",
+        "engineered"
+      ],
+      "try_sequence_models": true,
+      "lookback_steps": 36,
+      "balance_training_data": true
+    },
+    "headline": "345,600 rows across 80 machines at 10 min resolution; 1.13% positive."
+  },
+  "model_research": {
+    "candidates_run": [
+      "baseline",
+      "xgboost_raw",
+      "xgboost_engineered",
+      "lstm_raw",
+      "lstm_engineered",
+      "tft_engineered",
+      "ensemble"
+    ],
+    "experiments": [
+      {
+        "experiment": "Baseline",
+        "name": "threshold rule on vibration / temperature / current",
+        "model": "threshold_baseline",
+        "feature_set": "raw",
+        "val_pr_auc": 0.151701,
+        "test_f1": 0.258774,
+        "decision": "reference",
+        "learning": "Establishes the operating point the plant already has.",
+        "duration_s": 3.61
+      },
+      {
+        "experiment": "Iteration 1",
+        "name": "xgboost on raw features",
+        "model": "xgboost",
+        "feature_set": "raw",
+        "val_pr_auc": 0.428482,
+        "test_f1": 0.462537,
+        "decision": "kept",
+        "learning": "PR-AUC 0.4285 vs baseline 0.1517 (+0.2768). Trees on raw channels already beat the alarm rule, so most of the baseline's weakness was the fixed threshold, not the sensors.",
+        "duration_s": 7.58
+      },
+      {
+        "experiment": "Iteration 2",
+        "name": "xgboost on engineered features",
+        "model": "xgboost",
+        "feature_set": "engineered",
+        "val_pr_auc": 0.611207,
+        "test_f1": 0.536369,
+        "decision": "kept",
+        "learning": "PR-AUC 0.6112 vs raw features 0.4285 (+0.1827). Causal rolling statistics and load/ambient normalisation are worth more than any change of architecture tried below.",
+        "duration_s": 33.04
+      },
+      {
+        "experiment": "Iteration 3",
+        "name": "LSTM on raw channels",
+        "model": "lstm",
+        "feature_set": "raw",
+        "val_pr_auc": 0.434622,
+        "test_f1": 0.377778,
+        "decision": "removed",
+        "learning": "PR-AUC 0.4346 vs best tabular 0.6112 (-0.1766). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
+        "duration_s": 146.26
+      },
+      {
+        "experiment": "Iteration 4",
+        "name": "LSTM on engineered channels",
+        "model": "lstm",
+        "feature_set": "engineered",
+        "val_pr_auc": 0.584386,
+        "test_f1": 0.361574,
+        "decision": "removed",
+        "learning": "PR-AUC 0.5844 vs best tabular 0.6112 (-0.0268). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
+        "duration_s": 168.12
+      },
+      {
+        "experiment": "Iteration 5",
+        "name": "TFT on engineered channels",
+        "model": "tft",
+        "feature_set": "engineered",
+        "val_pr_auc": 0.575648,
+        "test_f1": 0.497706,
+        "decision": "removed",
+        "learning": "PR-AUC 0.5756 vs LSTM 0.5844. No material gain over the LSTM at this data scale -- the extra capacity is not paying for itself.",
+        "duration_s": 647.17
+      },
+      {
+        "experiment": "Iteration 6",
+        "name": "ensemble lstm_engineered + tft_engineered",
+        "model": "ensemble",
+        "feature_set": "engineered",
+        "val_pr_auc": 0.616673,
+        "test_f1": 0.462696,
+        "decision": "kept",
+        "learning": "PR-AUC 0.6167 vs best member 0.5844. The blend adds real signal.",
+        "duration_s": 50.28
+      }
+    ],
+    "selection": {
+      "experiment_id": 39,
+      "name": "xgboost on engineered features",
+      "model": "xgboost",
+      "feature_set": "engineered",
+      "val_pr_auc": 0.611207,
+      "test_f1": 0.536369,
+      "rationale": "xgboost on engineered features selected on validation PR-AUC 0.6112; ensemble lstm_engineered + tft_engineered scored 0.6167 but the +0.0055 gain is inside the 0.01 tolerance, so the simpler model wins the tie",
+      "selected_on": "validation pr_auc"
+    },
+    "selection_rationale": "xgboost on engineered features selected on validation PR-AUC 0.6112; ensemble lstm_engineered + tft_engineered scored 0.6167 but the +0.0055 gain is inside the 0.01 tolerance, so the simpler model wins the tie",
+    "notes": [
+      "Establishes the operating point the plant already has.",
+      "PR-AUC 0.4285 vs baseline 0.1517 (+0.2768). Trees on raw channels already beat the alarm rule, so most of the baseline's weakness was the fixed threshold, not the sensors.",
+      "PR-AUC 0.6112 vs raw features 0.4285 (+0.1827). Causal rolling statistics and load/ambient normalisation are worth more than any change of architecture tried below.",
+      "PR-AUC 0.4346 vs best tabular 0.6112 (-0.1766). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
+      "PR-AUC 0.5844 vs best tabular 0.6112 (-0.0268). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
+      "PR-AUC 0.5756 vs LSTM 0.5844. No material gain over the LSTM at this data scale -- the extra capacity is not paying for itself.",
+      "PR-AUC 0.6167 vs best member 0.5844. The blend adds real signal."
+    ]
+  },
+  "bundle": {
+    "kind": "xgboost",
+    "feature_set": "engineered",
+    "threshold": 0.42499999999999993,
+    "channels": [
+      "temperature",
+      "vibration",
+      "pressure",
+      "rpm",
+      "current",
+      "voltage",
+      "power",
+      "load",
+      "humidity",
+      "ambient_temp",
+      "operating_hours",
+      "temp_excess",
+      "vib_per_load",
+      "cur_per_load",
+      "power_per_load",
+      "vib_z_6h",
+      "temp_excess_z_6h",
+      "cur_z_6h",
+      "rpm_instability_1h",
+      "vib_delta_1h",
+      "temp_excess_delta_1h",
+      "cur_delta_1h",
+      "prs_delta_1h",
+      "is_missing"
+    ]
+  },
+  "llm_usage": {
+    "calls": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": 0.0,
+    "fallbacks": 2,
+    "by_agent": {
+      "data_scientist": {
+        "calls": 1,
+        "cost_usd": 0.0
+      },
+      "model_researcher": {
+        "calls": 1,
+        "cost_usd": 0.0
+      }
+    }
+  },
+  "wall_clock_s": 1077.8
+}

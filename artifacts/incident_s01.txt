@@ -1,0 +1,131 @@
+scenario S01: clear_degradation (easy) -- textbook degradation, late stage
+
+==============================================================================
+PREDICTOPS INCIDENT REPORT                                      COMPRESSOR-066
+                                               assessed at 2025-03-29 01:30:00
+==============================================================================
+
+  FAILURE PROBABILITY    99.6%   [############################]  HIGH
+  alert threshold        42.5%   (tuned on validation, frozen before test)
+
+  EXPECTED WINDOW       1.4-4.6 hours  (point estimate 3.0 h)   [model]
+  LIKELY FAILURE        bearing degradation   (99% classifier confidence)   [model]
+
+------------------------------------------------------------------------------
+  WHY
+------------------------------------------------------------------------------
+  [E1] Vibration rose 43% over the last 6 hours   [measured]
+  [E2] Temperature rose 5.9 deg C over the last 6 hours   [measured]
+  [E3] Temp excess rose 7.7 deg C above ambient over the last 6 hours   [measured]
+  [E4] Load fell 0.1 fraction over the last 6 hours   [measured]
+  [E5] Rpm_instability_1h rose 81% over the last 6 hours   [measured]
+  [E6] Temp excess moved in one direction across 100% of the hourly steps -- a sustained trend, not an excursion   [measured]
+  [E7] Load held flat (+2.0%) while those channels rose, so the rise is not explained by the duty   [measured]
+
+       operating context: load +2.0% / 3 h, ambient -3.5 C / 3 h
+       nearest historical match: pressure_loss on COMPRESSOR-002 (1 of 5 neighbours agree)   [measured]
+
+  Vibration rose 43% over the last 6 hours. Temperature rose 5.9 deg C over
+  the last 6 hours. Temp excess rose 7.7 deg C above ambient over the last 6
+  hours. Load fell 0.1 fraction over the last 6 hours. Rpm_instability_1h rose
+  81% over the last 6 hours. Temp excess moved in one direction across 100% of
+  the hourly steps -- a sustained trend, not an excursion. Load held flat
+  (+2.0%) while those channels rose, so the rise is not explained by the duty.
+
+------------------------------------------------------------------------------
+  COMPETING READINGS
+------------------------------------------------------------------------------
+  a fault is developing                               0.92
+       bearing degradation is developing
+  nothing is wrong                                    0.00
+       no benign explanation is available -- nothing in the operating con
+
+  DECISION  ALERT               margin +0.92
+       the degradation case survives by 0.92 (degradation 0.92 vs benign 0.00)
+
+  Hypotheses considered:
+    0.70  bearing_degradation     signature 67%, classifier 99%, history 0%
+    0.35  motor_overheating       signature 75%, classifier 0%, history 59%
+    0.22  electrical_fault        signature 60%, classifier 0%, history 20%
+    0.19  pressure_loss           signature 50%, classifier 0%, history 21%
+
+------------------------------------------------------------------------------
+  RECOMMENDED ACTION
+------------------------------------------------------------------------------
+  1. Reduce load to 70%   (low risk, $180)
+     reversible and reduces the driver of bearing degradation while the
+     inspection is arranged
+       requires: production schedule allows reduced throughput
+  2. Inspect bearing within 4 hours   (diagnostic, $150)
+     confirms the diagnosis before any irreversible work; within 1 h
+  3. Replace bearing   (high risk, $2,600, 4.0 h downtime)
+     the definitive fix, to be carried out after inspection confirms the fault
+       requires: inspection has confirmed bearing degradation
+       requires: replacement bearing in stock
+  4. Controlled shutdown   (high risk, $5,200, 6.0 h downtime)
+     probability 1.00 with an estimated 3.0 h to failure leaves little margin;
+     a controlled stop avoids secondary damage
+       requires: failure probability is high and the window is short
+       requires: operations has agreed a stop slot
+
+  Replace bearing is gated on: inspection has confirmed bearing degradation;
+  replacement bearing in stock
+
+  Shutdown proposed because the window is short -- requires operations sign-
+  off.
+
+  Estimated cost $8,130   downtime 10.0 h
+
+------------------------------------------------------------------------------
+  IF WE ACT  (simulated -- not a forecast)
+------------------------------------------------------------------------------
+  do nothing, 3 h from now                       23.8%   [simulated]
+  Reduce load to 70%                                            8.7%   (-15.2% vs no action)
+  Inspect bearing within 4 hours                       not simulated   (diagnostic action)
+  Replace bearing                                               0.1%   (-23.8% vs no action)
+  Controlled shutdown                                           0.0%   (-23.8% vs no action)
+
+  best risk reduction per dollar: reduce_load_70
+
+  Simulated futures use trend persistence for the underlying degradation and a
+  first-order effect model for each action. Use them to rank actions, not as a
+  forecast.
+
+------------------------------------------------------------------------------
+  VERIFICATION   PASS
+------------------------------------------------------------------------------
+  PASS  C1  evidence recomputes from raw telemetry
+         7 item(s) re-derived independently; 0 mismatch(es)
+  PASS  C2  evidence is consistent with the diagnosis
+         2/3 signature channels for bearing_degradation are present
+  PASS  C3  prediction clears the decision threshold
+         probability 0.9959 vs validation-tuned threshold 0.4250
+  PASS  C4  confidence is empirically grounded
+         confidence 0.862 read from the validation reliability curve
+  PASS  C5  benign alternatives considered
+         2 alternative(s) evaluated; 0 still plausible
+  PASS  C6  all proposed actions are in the approved catalogue
+         4 action(s) checked
+  PASS  C7  simulation beats its own do-nothing control
+         control 0.238 vs best action 0.000 (-0.238)
+  PASS  C8  narrative quotes only supported numbers
+         11 number(s) in the narrative; 0 not traceable to evidence
+  PASS  C9  consequential actions require human approval
+         3 action(s) require approval; gate present
+  PASS  C10  the competing hypotheses were resolved on evidence
+         degradation 0.92 vs benign 0.00, margin +0.92 -> alert
+
+  Confidence 86% -- measured share of validation cases scoring at least this high that were genuinely followed by a failure.
+
+  Proceed to human approval.
+
+  APPROVAL REQUIRED for: reduce_load_70, replace_bearing, controlled_shutdown.
+  PredictOps proposes; it does not act. No action is executed without a named
+  human approver.
+
+------------------------------------------------------------------------------
+  model xgboost on engineered features, 36-step lookback   |   0.9s   |   run incident-20260829-190728
+==============================================================================
+
+report -> D:\ashaib\Micro1AI\artifacts\reports\incident_COMPRESSOR-066_2025-03-29T013000.json
+trajectory: 9 agent steps recorded under run_id=incident-20260829-190728

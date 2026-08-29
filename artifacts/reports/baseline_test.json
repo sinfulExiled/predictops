@@ -1,0 +1,50 @@
+{
+  "row": {
+    "f1": 0.258119,
+    "precision": 0.224835,
+    "recall": 0.30297,
+    "roc_auc": 0.794101,
+    "pr_auc": 0.151766,
+    "false_positive_rate": 0.012737,
+    "threshold": 3.3,
+    "n": 83837,
+    "n_positive": 1010
+  },
+  "event": {
+    "n_events": 26,
+    "detected": 19,
+    "detection_rate": 0.730769,
+    "mean_early_warning_h": 4.114035,
+    "median_early_warning_h": 5.0,
+    "false_alarms_per_machine_day": 1.759963,
+    "detection_by_type": {
+      "bearing_degradation": {
+        "n": 9,
+        "detected": 6,
+        "rate": 0.6667
+      },
+      "electrical_fault": {
+        "n": 6,
+        "detected": 4,
+        "rate": 0.6667
+      },
+      "motor_overheating": {
+        "n": 4,
+        "detected": 4,
+        "rate": 1.0
+      },
+      "pressure_loss": {
+        "n": 5,
+        "detected": 3,
+        "rate": 0.6
+      },
+      "pump_cavitation": {
+        "n": 2,
+        "detected": 2,
+        "rate": 1.0
+      }
+    }
+  },
+  "model": "threshold_baseline",
+  "tuned_k": 3.2999999999999994
+}
