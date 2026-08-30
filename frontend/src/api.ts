@@ -82,6 +82,10 @@ export interface IncidentReport {
 }
 
 export interface TrajectoryStep {
+  /** Present on rows from /api/trajectories and on websocket steps, which are
+   *  the same `SELECT *` rows; absent only on hand-built fixtures. */
+  id?: number;
+  run_id?: string;
   agent: string;
   step: number;
   action: string;

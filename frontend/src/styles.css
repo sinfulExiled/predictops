@@ -434,3 +434,136 @@ button.suggest svg { width: 15px; height: 15px; }
 .chart-foot .small { max-width: 720px; line-height: 1.55; }
 
 tr.row-champion > td { background: rgba(63,185,80,.07); }
+
+/* --- Agent Activity ------------------------------------------------------ */
+/* An <a> does not inherit the `button` rule, so the link-shaped button needs
+   the same box painted explicitly or it renders as bare text. */
+a.ghost.btn-link {
+  background: transparent; color: var(--text); border: 1px solid var(--line);
+  border-radius: 6px; padding: 8px 15px; font-size: 13px; font-weight: 500;
+  text-decoration: none; line-height: 1;
+}
+a.ghost.btn-link:hover { border-color: #3a4653; }
+button.ghost, .ghost.btn-link { display: inline-flex; align-items: center; gap: 7px; }
+.ghost.accent { border-color: rgba(163,113,247,.45); color: #c9a6ff; }
+.ghost.accent:hover { border-color: #a371f7; background: rgba(163,113,247,.10); }
+
+.run-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.run-bar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.ws-pill {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12px;
+  padding: 6px 11px; border-radius: 20px; font-weight: 600;
+}
+.ws-pill svg { width: 15px; height: 15px; }
+.ws-pill.on { color: var(--ok); background: rgba(63,185,80,.14); border: 1px solid rgba(63,185,80,.4); }
+.ws-pill.off { color: var(--warn); background: rgba(210,153,34,.14); border: 1px solid rgba(210,153,34,.4); }
+
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.seg button {
+  background: transparent; border: 0; color: var(--muted); font-size: 12px;
+  padding: 7px 12px; cursor: pointer;
+}
+.seg button.on { background: var(--panel-2); color: var(--text); }
+.seg button:hover { color: var(--text); }
+
+.run-details { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 15px; }
+.rd-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px;
+}
+.rd-grid .label {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .7px;
+  color: var(--muted); font-weight: 600;
+}
+.rd-grid .v { font-size: 19px; font-weight: 600; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.rd-grid .v.small { font-size: 14px; }
+.rd-agents { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+.rd-agent {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 20px; padding: 5px 11px;
+}
+.rd-agent i { width: 8px; height: 8px; border-radius: 50%; }
+.rd-agent b { color: var(--muted); font-weight: 600; }
+
+.timeline { position: relative; }
+.tl-row { display: flex; gap: 16px; align-items: stretch; }
+.tl-rail { position: relative; flex: 0 0 44px; display: flex; justify-content: center; }
+.tl-rail::before {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(#2f3b4a, #2f3b4a); left: 50%;
+  transform: translateX(-50%); border-radius: 2px;
+}
+.tl-row:last-child .tl-rail::before { bottom: 50%; }
+.tl-node {
+  position: relative; z-index: 1; margin-top: 16px;
+  width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%;
+  border: 1px solid; display: grid; place-items: center;
+}
+.tl-node svg { width: 18px; height: 18px; }
+
+.tl-card {
+  flex: 1; min-width: 0; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 9px; padding: 15px 17px; margin-bottom: 18px;
+}
+.tl-card.tl-live { border-color: rgba(63,185,80,.45); }
+.tl-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap; margin-bottom: 9px;
+}
+.tl-who { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.tl-meta { display: flex; align-items: center; gap: 12px; }
+.tl-time { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tl-dur {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px;
+  color: var(--ok); font-variant-numeric: tabular-nums;
+}
+.tl-dur svg { width: 14px; height: 14px; }
+.icon-btn {
+  background: transparent; border: 0; color: var(--muted); cursor: pointer;
+  padding: 3px; display: grid; place-items: center; border-radius: 5px;
+}
+.icon-btn:hover { color: var(--text); background: var(--panel-2); }
+.icon-btn svg { width: 15px; height: 15px; }
+
+.tl-action { font-size: 13.5px; margin-bottom: 5px; }
+.tl-label { color: #c9a6ff; font-weight: 600; }
+.tl-label.plain { color: var(--text); }
+.tl-line { font-size: 12.5px; color: var(--muted); margin-bottom: 5px; }
+.tl-input {
+  font-size: 12px; color: var(--muted); overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.tl-tools { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
+.tool-chip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
+  padding: 4px 9px; border-radius: 6px; color: #9fb4cc;
+  background: rgba(74,158,255,.08); border: 1px solid rgba(74,158,255,.22);
+}
+.tl-out { margin-top: 12px; }
+.tl-out summary {
+  cursor: pointer; font-size: 12.5px; color: var(--muted); list-style: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.tl-out summary::before { content: "›"; display: inline-block; transition: transform .15s; }
+.tl-out[open] summary::before { transform: rotate(90deg); }
+.tl-out summary::-webkit-details-marker { display: none; }
+
+.pager {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 9px; padding: 13px 17px; margin-bottom: 18px;
+}
+.pager-btns { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.pager-btns button {
+  min-width: 32px; height: 32px; padding: 0 9px; font-size: 12.5px;
+  background: transparent; border: 1px solid var(--line); border-radius: 6px;
+  color: var(--muted); cursor: pointer;
+}
+.pager-btns button:hover:not(:disabled) { color: var(--text); border-color: #3a4653; }
+.pager-btns button.on {
+  background: rgba(163,113,247,.16); border-color: #a371f7; color: #c9a6ff; font-weight: 600;
+}
+.pager-btns button:disabled { opacity: .35; cursor: default; }
+.pager-gap { color: var(--muted); padding: 0 2px; }
+
+@media (max-width: 900px) { .hide-narrow { display: none; } }

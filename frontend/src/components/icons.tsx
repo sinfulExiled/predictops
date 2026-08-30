@@ -17,6 +17,29 @@ function Svg({ children, size = 16 }: { children: React.ReactNode; size?: number
 }
 
 export const Icon = {
+  book: () => (
+    <Svg>
+      <path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v14H5.5A1.5 1.5 0 0 0 4 18.5v-14Z" />
+      <path d="M4 18.5A1.5 1.5 0 0 0 5.5 20H19v-3" />
+    </Svg>
+  ),
+  copy: () => (
+    <Svg>
+      <rect x="9" y="9" width="11" height="11" rx="2" />
+      <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+    </Svg>
+  ),
+  clock: () => (
+    <Svg>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 1.8" />
+    </Svg>
+  ),
+  wave: () => (
+    <Svg>
+      <path d="M2 12h3l2.5-7 4 14 3-9 2 2h5.5" />
+    </Svg>
+  ),
   refresh: () => (
     <Svg>
       <path d="M21 12a9 9 0 1 1-2.6-6.4" />
