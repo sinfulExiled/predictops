@@ -96,14 +96,49 @@ export function ErrorNote({ error }: { error: string }) {
   );
 }
 
+/** Format like Python's `format(x, ".Nf")`, which rounds halves to even.
+ *
+ *  `toFixed` rounds halves away from zero, so a value sitting exactly on the
+ *  boundary renders differently in the browser than in the CLI that produced
+ *  it: the suite's F1 of 0.5625 printed as 56.2% from `evaluate.py` and the
+ *  README, and 56.3% here. Same number, two conventions, and a reader
+ *  comparing the two surfaces cannot tell which is wrong. The reports are the
+ *  reproducible artifact, so the UI follows them.
+ *
+ *  The tie test reads the double's decimal expansion rather than rescaling by
+ *  a power of ten. Rescaling rounds a second time: 4.55 is really
+ *  4.54999...82 and must round DOWN, but 4.55 * 10 lands exactly on 45.5 and
+ *  would round up, putting the nuisance rate at 4.6% against the report's 4.5%.
+ */
+function fixed(v: number, nd: number): string {
+  if (!Number.isFinite(v)) return String(v);
+  const neg = v < 0;
+  const a = Math.abs(v);
+  const exact = a.toFixed(20);
+  const dot = exact.indexOf(".");
+  const beyond = exact.slice(dot + 1).slice(nd);
+  let out: string;
+  if (/^50*$/.test(beyond)) {
+    // Exact tie: keep the truncated value if its last kept digit is even,
+    // otherwise step one unit up in the last kept place.
+    const keptStr = nd > 0 ? exact.slice(0, dot + 1 + nd) : exact.slice(0, dot);
+    const lastDigit = Number(keptStr[keptStr.length - 1]);
+    const kept = Number(keptStr);
+    out = (lastDigit % 2 === 0 ? kept : kept + 10 ** -nd).toFixed(nd);
+  } else {
+    out = a.toFixed(nd);
+  }
+  return neg && Number(out) !== 0 ? `-${out}` : out;
+}
+
 export function pct(v: number | null | undefined, nd = 1) {
   if (v === null || v === undefined || Number.isNaN(v)) return "—";
-  return `${(v * 100).toFixed(nd)}%`;
+  return `${fixed(v * 100, nd)}%`;
 }
 
 export function num(v: number | null | undefined, nd = 3) {
   if (v === null || v === undefined || Number.isNaN(v)) return "—";
-  return v.toFixed(nd);
+  return fixed(v, nd);
 }
 
 /** Small hook: fetch once, expose {data, error, loading}. */

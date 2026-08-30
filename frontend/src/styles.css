@@ -674,3 +674,31 @@ button.ghost, .ghost.btn-link { display: inline-flex; align-items: center; gap: 
   color: var(--muted); font-weight: 600;
 }
 .xp-ops .v { font-size: 21px; font-weight: 600; margin: 3px 0 1px; font-variant-numeric: tabular-nums; }
+
+/* --- Evaluation ---------------------------------------------------------- */
+.cmp-metric { display: inline-flex; align-items: center; gap: 11px; }
+.cmp-icon {
+  width: 28px; height: 28px; flex: 0 0 28px; border-radius: 50%;
+  display: grid; place-items: center;
+}
+.cmp-icon svg { width: 15px; height: 15px; }
+table.cmp td { vertical-align: middle; }
+table.cmp .num { font-variant-numeric: tabular-nums; font-size: 13.5px; }
+
+.cm-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+.cm-title {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .7px; margin-bottom: 10px;
+}
+.cm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.cm-cell {
+  border: 1px solid var(--line); border-radius: 8px; padding: 11px 13px;
+  background: var(--panel-2);
+}
+.cm-cell.good { border-color: rgba(63,185,80,.32); }
+.cm-cell.bad { border-color: rgba(248,81,73,.28); }
+.cm-k {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .8px; color: var(--muted);
+}
+.cm-v { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.cm-note { font-size: 11.5px; color: var(--muted); }
