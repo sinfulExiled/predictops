@@ -71,6 +71,99 @@ failure there is concrete enough to argue about.
 
 ## 2. What it does
 
+### System architecture
+
+```mermaid
+flowchart TB
+    subgraph DATA["DATA"]
+        direction LR
+        GEN["generator.py<br/><i>physics-lite model +<br/>injected confounders</i>"]
+        STORE[("artifacts/data<br/><i>telemetry · failures<br/>machines</i>")]
+        PRE["preprocessing.py<br/><b>leakage controls</b><br/><i>purge gap · train-only scaler<br/>causal windows</i>"]
+        GEN --> STORE --> PRE
+    end
+
+    subgraph MLL["ML — the prediction, never an LLM"]
+        direction LR
+        FEAT["features.py<br/><i>causal rolling stats</i>"]
+        CAND["torch_models · trees<br/><i>LSTM · TFT · XGBoost<br/>LightGBM · ensemble</i>"]
+        HARN["harness.py<br/><i>canonical eval set:<br/>identical rows</i>"]
+        BUND["bundle.py<br/><i>winner · frozen threshold<br/>reliability curve</i>"]
+        FEAT --> CAND --> HARN --> BUND
+    end
+
+    SVC{{"<b>service.py — MODEL SERVICE</b><br/>probability · band · confidence<br/><i>the only route to a model</i>"}}
+
+    subgraph AGENTS["AGENTS — 12, passing structured state"]
+        direction LR
+        RESEARCH["<b>Research</b><br/><i>Data Scientist<br/>Model Research</i>"]
+        PIPE["<b>Investigate</b><br/><i>Prediction · Context<br/>Investigation</i>"]
+        CONTEST["<b>Contest</b><br/><i>Degradation vs Confound<br/>→ Adjudicator</i>"]
+        ACT["<b>Act</b><br/><i>Remediation · Simulation<br/>Verification</i>"]
+        ASSIST["<b>Assistant</b><br/><i>retrieval + citations</i>"]
+        PIPE --> CONTEST --> ACT
+    end
+
+    CAT["<b>13 approved actions</b><br/><i>selected by id</i>"]
+    EVID["<b>recompute recipe</b><br/><i>on every fact</i>"]
+    HUMAN(["<b>Human approval</b><br/><i>nothing is actuated</i>"])
+    LLM["<b>llm/provider.py</b><br/><i>narration only ·<br/>runs on Mock</i>"]
+    REG[("registry.py — SQLite<br/><i>every experiment,<br/>every agent step</i>")]
+    EVAL["<b>evaluate.py · ablate_adjudication.py</b><br/><i>45 fixed scenarios · baseline vs agent<br/>does each agent earn its place?</i>"]
+    API["api/app.py + React UI<br/><i>FastAPI · WebSocket · 9 pages</i>"]
+
+    PRE --> FEAT
+    BUND --> SVC
+    SVC ==> PIPE
+    SVC --> ASSIST
+    RESEARCH -. "selects on validation" .-> CAND
+
+    EVID --> ACT
+    CAT --> ACT
+    ACT ==> HUMAN
+    STORE -. "verifier re-derives<br/>from raw telemetry" .-> ACT
+
+    AGENTS -. "writes every step" .-> REG
+    LLM -. "phrasing only" .-> AGENTS
+    AGENTS ==> EVAL
+    SVC --> EVAL
+    EVAL --> REG
+    REG --> API
+    SVC --> API
+    HUMAN --> API
+
+    classDef boundary fill:#12293f,stroke:#4a9eff,stroke-width:3px,color:#e6edf3
+    classDef guardStyle fill:#2b2417,stroke:#d29922,stroke-width:2px,color:#e6edf3
+    classDef llmStyle fill:#2a1f2e,stroke:#a371f7,stroke-width:2px,stroke-dasharray:5 3,color:#e6edf3
+    classDef human fill:#12301c,stroke:#3fb950,stroke-width:3px,color:#e6edf3
+    class SVC boundary
+    class CAT,EVID guardStyle
+    class LLM llmStyle
+    class HUMAN human
+    classDef evalStyle fill:#1a2733,stroke:#56d4dd,stroke-width:2px,color:#e6edf3
+    class EVAL evalStyle
+```
+
+**Four relationships carry the design.**
+
+1. **Everything reaches a model through `ml/service.py`.** An agent asks a
+   question; a fitted model answers. No agent decides whether to investigate —
+   the orchestrator does, from the band the service returns. That boundary is
+   why the research agent could swap XGBoost in for the TFT without touching a
+   single downstream agent.
+2. **The LLM is attached sideways, not in-line.** It phrases findings. No
+   metric, threshold or decision passes through it, which is why every number
+   in this README reproduces on `MockProvider` with no API key.
+3. **The arrow back to raw telemetry is the point.** Verification does not ask
+   a model to review prose — it re-derives each evidence item from the stored
+   telemetry using the recipe the evidence carries, and diffs the values.
+4. **The system is pointed at itself.** `evaluate.py` and
+   `ablate_adjudication.py` run the agents against a frozen 45-scenario suite
+   and against a model-only control, so "does this agent earn its place?" is a
+   measurement rather than an opinion. §6 reports where the answer was no.
+
+### The agent flow
+
 ```
 telemetry ─► Data Scientist ─► Model Research ─►┐
                                                 │   MODEL SERVICE
