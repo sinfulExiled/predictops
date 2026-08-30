@@ -329,3 +329,108 @@ button.suggest svg { width: 15px; height: 15px; }
   align-items: flex-end; gap: 7px; min-width: 108px;
 }
 .step-cost { font-size: 19px; font-weight: 650; font-variant-numeric: tabular-nums; }
+
+/* --- Model Lab ----------------------------------------------------------- */
+.run-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 7px; padding: 7px 12px; font-size: 12.5px;
+}
+.run-chip svg { width: 15px; height: 15px; color: var(--muted); }
+
+.prod-banner {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  background: linear-gradient(90deg, rgba(74,158,255,.09), rgba(74,158,255,.02));
+  border: 1px solid rgba(74,158,255,.28); border-radius: 9px;
+  padding: 16px 18px; margin-bottom: 18px;
+}
+.prod-icon {
+  width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--accent); background: rgba(74,158,255,.15);
+}
+.prod-icon svg { width: 20px; height: 20px; }
+
+.champion {
+  display: flex; align-items: center; gap: 11px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; padding: 11px 15px; min-width: 240px;
+}
+.champion-icon {
+  width: 34px; height: 34px; flex: 0 0 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--ok); background: rgba(63,185,80,.16);
+}
+.champion-icon svg { width: 17px; height: 17px; }
+.champion-label {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--muted); font-weight: 600;
+}
+.champion-name {
+  font-size: 13.5px; color: var(--ok); font-weight: 600; margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.kpi-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px; margin-bottom: 18px;
+}
+.kpi {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 9px; padding: 15px 17px;
+}
+.kpi-icon {
+  width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%;
+  display: grid; place-items: center;
+}
+.kpi-icon svg { width: 20px; height: 20px; }
+.kpi-label {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--muted); font-weight: 600;
+}
+.kpi-value {
+  font-size: 27px; font-weight: 600; line-height: 1.15; margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; overflow-wrap: anywhere; }
+
+.band-track {
+  display: flex; height: 36px; border-radius: 7px; overflow: hidden;
+  border: 1px solid var(--line);
+}
+.band-seg { display: grid; place-items: center; min-width: 2px; }
+.band-name { font-size: 12px; font-weight: 700; letter-spacing: .6px; }
+.band-ticks { position: relative; height: 18px; margin-top: 5px; }
+.band-ticks span {
+  position: absolute; transform: translateX(-50%); font-size: 11px;
+  color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.band-ticks span:first-child { transform: none; }
+.band-ticks span:last-child { transform: translateX(-100%); }
+.band-key { margin-top: 12px; display: grid; gap: 7px; }
+.band-key-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12.5px;
+}
+.band-key-row strong { min-width: 96px; font-size: 12px; letter-spacing: .5px; }
+.band-dot { width: 9px; height: 9px; border-radius: 2px; flex: 0 0 9px; }
+.band-width { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+.chart-legend {
+  display: flex; gap: 15px; align-items: center; flex-wrap: nowrap;
+  white-space: nowrap;
+}
+.chart-legend span {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; color: var(--muted);
+}
+.chart-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+.chart-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; margin-top: 12px;
+  border-top: 1px solid var(--line); padding-top: 12px;
+}
+.chart-foot .small { max-width: 720px; line-height: 1.55; }
+
+tr.row-champion > td { background: rgba(63,185,80,.07); }

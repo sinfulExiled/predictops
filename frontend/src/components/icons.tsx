@@ -17,6 +17,45 @@ function Svg({ children, size = 16 }: { children: React.ReactNode; size?: number
 }
 
 export const Icon = {
+  refresh: () => (
+    <Svg>
+      <path d="M21 12a9 9 0 1 1-2.6-6.4" />
+      <path d="M21 3v6h-6" />
+    </Svg>
+  ),
+  database: () => (
+    <Svg>
+      <ellipse cx="12" cy="5.5" rx="8" ry="3" />
+      <path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+      <path d="M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+    </Svg>
+  ),
+  rocket: () => (
+    <Svg>
+      <path d="M12 2.5c3 2 4.7 5.3 4.7 9L12 16l-4.7-4.5c0-3.7 1.7-7 4.7-9Z" />
+      <path d="M7.3 11.5 5 13l1.5 4L9 15.4M16.7 11.5 19 13l-1.5 4L15 15.4" />
+      <path d="M12 8.5h.01" />
+    </Svg>
+  ),
+  target: () => (
+    <Svg>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <path d="M12 12h.01" />
+    </Svg>
+  ),
+  trend: () => (
+    <Svg>
+      <path d="M3 17l6-6 4 4 8-8" />
+      <path d="M14 7h7v7" />
+    </Svg>
+  ),
+  layers: () => (
+    <Svg>
+      <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+      <path d="M3 13l9 5 9-5M3 18l9 5 9-5" />
+    </Svg>
+  ),
   fleet: () => (
     <Svg>
       <path d="M3 21h18M5 21V8l5-3v16M14 21V11l5-2v12" />
