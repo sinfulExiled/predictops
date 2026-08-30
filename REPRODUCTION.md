@@ -276,7 +276,7 @@ Agent Activity (live WebSocket stream) · Model Lab · Experiments · Evaluation
 ## 9. Tests
 
 ```bash
-python -m pytest              # 127 tests, ~9 min
+python -m pytest              # 134 tests, ~9 min
 python -m pytest -q tests/test_generator.py   # data integrity + leakage
 python -m pytest -q tests/test_features.py    # causality + splits
 python -m pytest -q tests/test_agents.py      # agent contracts + verification
@@ -319,8 +319,18 @@ To start completely fresh, delete `artifacts/` — it is entirely regenerable.
 
 ## 11. Troubleshooting
 
+**API says `setup_required` / routes return 503** — a clone carries no
+generated dataset (`artifacts/data/` is regenerable, so it is gitignored). The
+server starts anyway and `/api/health` names the fix; run `generate_data.py`,
+then `run_experiments.py`, then restart it. The Experiments, Evaluation and
+Agent Activity views work before that, because they read committed reports.
+
 **`no model bundle; run run_experiments.py`** — `run_pipeline.py`, `evaluate.py`
 and the API all need `artifacts/models/bundle/`. Run `run_experiments.py` first.
+
+**Dashboard is a 404 at `/`** — the API serves `frontend/dist/`, which is a
+build product and not committed. Run `cd frontend && npm install && npm run
+build` once.
 
 **Training is much slower than 12 min** — check nothing else is saturating the
 CPU; the TFT is the long pole at ~45 s/epoch. Use `--quick` to smoke-test the

@@ -33,19 +33,37 @@ from ..simulation.interventions import CATALOGUE
 STATE: dict[str, Any] = {}
 
 
+SETUP_HINT = ("Generate the dataset first:  python generate_data.py  "
+              "(then python run_experiments.py to train a model).")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    data = prepare()
-    store = ExperimentStore()
-    engine = PredictOpsEngine(data=data, store=store,
-                              provider=get_provider(), verbose=False)
-    try:
-        engine.load_bundle()
-    except Exception as exc:  # noqa: BLE001 - the API still serves data views
-        print(f"[api] no model bundle yet ({exc}); run run_experiments.py first")
-    STATE["engine"] = engine
-    STATE["store"] = store
+    # The registry and the queue never depend on generated data, so build them
+    # first: the report views read committed JSON and stay usable even on a
+    # fresh clone that has not generated anything yet.
+    STATE["store"] = ExperimentStore()
     STATE["events"] = asyncio.Queue()
+    STATE["setup_error"] = None
+
+    try:
+        data = prepare()
+    except (FileNotFoundError, OSError) as exc:
+        # A clone carries no dataset -- artifacts/data is regenerable and so is
+        # gitignored. Starting anyway and saying what to run beats exiting with
+        # a bare traceback, which is what anyone who runs uvicorn before
+        # generate_data.py used to get.
+        STATE["setup_error"] = f"no dataset on disk. {SETUP_HINT} ({exc})"
+        print(f"[api] {STATE['setup_error']}")
+    else:
+        engine = PredictOpsEngine(data=data, store=STATE["store"],
+                                  provider=get_provider(), verbose=False)
+        try:
+            engine.load_bundle()
+        except Exception as exc:  # noqa: BLE001 - the API still serves data views
+            print(f"[api] no model bundle yet ({exc}); "
+                  f"run run_experiments.py first")
+        STATE["engine"] = engine
     yield
     STATE.clear()
 
@@ -60,7 +78,7 @@ app.add_middleware(
 def engine() -> PredictOpsEngine:
     e = STATE.get("engine")
     if e is None:
-        raise HTTPException(503, "engine not ready")
+        raise HTTPException(503, STATE.get("setup_error") or "engine not ready")
     return e
 
 
@@ -86,7 +104,9 @@ def _clean(obj):
 def health():
     e = STATE.get("engine")
     return {
-        "status": "ok",
+        "status": "ok" if e else "setup_required",
+        "setup_error": STATE.get("setup_error"),
+        "data_loaded": e is not None,
         "model_loaded": bool(e and e.bundle),
         "model": (
             {"kind": e.bundle.kind, "feature_set": e.bundle.feature_set,

@@ -136,8 +136,8 @@ pip install -r requirements.txt
 
 python generate_data.py --machines 80 --days 30 --seed 42   # ~5 s
 python train_baseline.py                                     # ~15 s
-python run_experiments.py                                    # ~20 min
-python evaluate.py                                           # ~4 min
+python run_experiments.py                                    # ~12 min
+python evaluate.py                                           # ~35 s
 python run_pipeline.py --scenario S01                        # ~2 s
 python ablate_adjudication.py                                # ~30 s
 ```
@@ -469,7 +469,7 @@ ANTHROPIC_API_KEY=... python llm_baseline.py --provider anthropic   # < $1
   returns each agent's deterministic findings unchanged. With an LLM
   configured the prose improves; **the measured metrics do not move**, because
   no metric passes through the LLM.
-- **127 tests**, including causality, leakage, determinism and the
+- **134 tests**, including causality, leakage, determinism and the
   fabricated-evidence catch: `python -m pytest`.
 
 Leakage controls are concentrated in `data/preprocessing.py` and enforced by
@@ -591,7 +591,7 @@ predictops/
 ├── api/            FastAPI + WebSocket agent-activity stream
 └── reporting.py    the incident report a planner actually reads
 frontend/           React + TypeScript dashboard (9 pages)
-tests/              127 tests
+tests/              134 tests
 ```
 
 **Written for this hackathon.** Pre-existing components used as libraries:
