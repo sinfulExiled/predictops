@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api, TrajectoryStep } from "../api";
-import { ErrorNote, Loading, Panel, Pill, num, useAsync } from "../components/common";
+import {
+  ErrorNote,
+  Loading,
+  Panel,
+  Pill,
+  num,
+  pageWindow,
+  useAsync,
+} from "../components/common";
 import { Icon } from "../components/icons";
 
 const REPO_DOCS = "https://github.com/sinfulExiled/predictops#readme";
@@ -436,17 +444,3 @@ export default function AgentActivity() {
   );
 }
 
-/** 1 … 4 5 6 … 12 — always shows first, last and a window around the current. */
-function pageWindow(cur: number, pages: number): (number | "…")[] {
-  if (pages <= 7) return Array.from({ length: pages }, (_, i) => i + 1);
-  const out: (number | "…")[] = [1];
-  // Keep the run of numbers the same length wherever the cursor sits, so the
-  // control does not visibly resize as you page through.
-  const lo = Math.max(2, Math.min(cur - 2, pages - 4));
-  const hi = Math.min(pages - 1, Math.max(cur + 2, 5));
-  if (lo > 2) out.push("…");
-  for (let p = lo; p <= hi; p++) out.push(p);
-  if (hi < pages - 1) out.push("…");
-  out.push(pages);
-  return out;
-}

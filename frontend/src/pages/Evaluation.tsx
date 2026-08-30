@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "../api";
 import {
   ErrorNote,
@@ -7,6 +7,7 @@ import {
   Panel,
   Pill,
   num,
+  pageWindow,
   pct,
   useAsync,
 } from "../components/common";
@@ -29,6 +30,30 @@ const METRICS: Row[] = [
   { label: "Cause accuracy (of those alerted)", key: "cause_accuracy_when_alerted", icon: "check", tone: "#56d4dd", higherIsBetter: true },
   { label: "Hard-case accuracy", key: "hard_case_accuracy", icon: "activity", tone: "#f0883e", higherIsBetter: true },
   { label: "False alarms on nuisance cases", key: "false_alarm_rate_on_nuisance_cases", icon: "alert", tone: "#f85149", higherIsBetter: false },
+];
+
+/** Which quadrant of the confusion matrix a case landed in. The dot shows it
+ *  at a glance, which the alert columns alone do not: "quiet" is right on a
+ *  nuisance case and wrong on a real one. */
+const OUTCOME = {
+  TP: { color: "#3fb950", label: "caught" },
+  TN: { color: "#4a9eff", label: "correctly quiet" },
+  FN: { color: "#d29922", label: "missed" },
+  FP: { color: "#f85149", label: "false alarm" },
+} as const;
+
+function outcomeOf(c: any): keyof typeof OUTCOME {
+  if (c.expected_alert) return c.alert ? "TP" : "FN";
+  return c.alert ? "FP" : "TN";
+}
+
+const PRESETS: { k: string; label: string }[] = [
+  { k: "all", label: "All scenarios" },
+  { k: "positive", label: "Real failures only" },
+  { k: "negative", label: "Nuisance only" },
+  { k: "disagree", label: "Where the two disagree" },
+  { k: "agent_wrong", label: "Agent wrong" },
+  { k: "baseline_wrong", label: "Baseline wrong" },
 ];
 
 function Kpi({ label, value, sub, icon, tone }: {
@@ -80,6 +105,9 @@ export default function Evaluation() {
   const [cat, setCat] = useState("all");
   const [diff, setDiff] = useState("all");
   const [outcome, setOutcome] = useState("all");
+  const [preset, setPreset] = useState("all");
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(15);
 
   const d: any = ev.data;
   const cases: any[] = d?.cases?.agent ?? [];
@@ -94,16 +122,28 @@ export default function Evaluation() {
       cases.filter((c) => {
         if (cat !== "all" && c.category !== cat) return false;
         if (diff !== "all" && c.difficulty !== diff) return false;
-        const b = byId.get(c.scenario_id);
-        if (outcome === "agent_wrong" && c.correct_alert) return false;
-        if (outcome === "baseline_wrong" && b?.correct_alert) return false;
-        if (outcome === "disagree" && !!b?.alert === !!c.alert) return false;
-        if (outcome === "agent_better" && !(c.correct_alert && !b?.correct_alert))
-          return false;
+        const b: any = byId.get(c.scenario_id);
+        for (const k of [preset, outcome]) {
+          if (k === "positive" && !c.expected_alert) return false;
+          if (k === "negative" && c.expected_alert) return false;
+          if (k === "agent_wrong" && c.correct_alert) return false;
+          if (k === "baseline_wrong" && b?.correct_alert) return false;
+          if (k === "disagree" && !!b?.alert === !!c.alert) return false;
+          if (k === "agent_better" && !(c.correct_alert && !b?.correct_alert))
+            return false;
+        }
         return true;
       }),
-    [cases, byId, cat, diff, outcome],
+    [cases, byId, cat, diff, outcome, preset],
   );
+
+  const pages = Math.max(1, Math.ceil(shown.length / perPage));
+  const cur = Math.min(page, pages);
+  const from = (cur - 1) * perPage;
+  const pageRows = shown.slice(from, from + perPage);
+
+  // Narrowing the set can strand the reader on a page that no longer exists.
+  useEffect(() => setPage(1), [cat, diff, outcome, preset, perPage]);
 
   if (ev.loading) return <Loading what="evaluation results" />;
   if (ev.error)
@@ -124,7 +164,8 @@ export default function Evaluation() {
   const agent = d.agent;
   const categories = [...new Set(cases.map((c) => c.category))].sort();
   const nuisance = d.suite.n_negative;
-  const filtered = cat !== "all" || diff !== "all" || outcome !== "all";
+  const filtered =
+    cat !== "all" || diff !== "all" || outcome !== "all" || preset !== "all";
 
   function exportReport() {
     const blob = new Blob([JSON.stringify(d, null, 2)], { type: "application/json" });
@@ -398,14 +439,19 @@ export default function Evaluation() {
                   <option value="baseline_wrong">baseline wrong</option>
                 </select>
                 {filtered && (
-                  <button className="ghost" onClick={() => { setCat("all"); setDiff("all"); setOutcome("all"); }}>
+                  <button className="ghost" onClick={() => { setCat("all"); setDiff("all"); setOutcome("all"); setPreset("all"); }}>
                     Clear
                   </button>
                 )}
               </>
             ) : (
-              <span className="small muted">use Filters to narrow</span>
+              <span className="small muted">Use Filters to narrow results</span>
             )}
+            <select value={preset} onChange={(e) => setPreset(e.target.value)}>
+              {PRESETS.map((x) => (
+                <option key={x.k} value={x.k}>{x.label}</option>
+              ))}
+            </select>
           </div>
         }
       >
@@ -413,6 +459,7 @@ export default function Evaluation() {
           <table>
             <thead>
               <tr>
+                <th style={{ width: 26 }} />
                 <th>ID</th>
                 <th>Category</th>
                 <th>Difficulty</th>
@@ -426,10 +473,18 @@ export default function Evaluation() {
               </tr>
             </thead>
             <tbody>
-              {shown.map((c: any) => {
+              {pageRows.map((c: any) => {
                 const b: any = byId.get(c.scenario_id);
+                const o = OUTCOME[outcomeOf(c)];
                 return (
                   <tr key={c.scenario_id}>
+                    <td>
+                      <span
+                        className="dot-out"
+                        style={{ background: o.color }}
+                        title={`${outcomeOf(c)} — ${o.label}`}
+                      />
+                    </td>
                     <td className="mono">{c.scenario_id}</td>
                     <td className="small">{c.category.replace(/_/g, " ")}</td>
                     <td><span className="tag">{c.difficulty}</span></td>
@@ -441,7 +496,17 @@ export default function Evaluation() {
                     <td className="num" style={{ color: c.correct_alert ? "var(--ok)" : "var(--bad)" }}>
                       {c.alert ? "alert" : "quiet"}
                     </td>
-                    <td className="num">{pct(c.probability)}</td>
+                    <td className="num">
+                      <span className="risk-cell">
+                        {pct(c.probability)}
+                        <span className="risk-bar">
+                          <span style={{
+                            width: `${Math.min(100, (c.probability ?? 0) * 100)}%`,
+                            background: c.alert ? "#f85149" : "#4a9eff",
+                          }} />
+                        </span>
+                      </span>
+                    </td>
                     <td className="small">
                       {c.predicted_type ? (
                         <span style={{
@@ -464,7 +529,7 @@ export default function Evaluation() {
               })}
               {shown.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="muted small">
+                  <td colSpan={11} className="muted small">
                     No cases match these filters.
                   </td>
                 </tr>
@@ -472,6 +537,44 @@ export default function Evaluation() {
             </tbody>
           </table>
         </div>
+        <div className="case-foot">
+          <div className="out-legend">
+            {(Object.keys(OUTCOME) as (keyof typeof OUTCOME)[]).map((k) => (
+              <span key={k}>
+                <i style={{ background: OUTCOME[k].color }} />
+                {k} · {OUTCOME[k].label}
+              </span>
+            ))}
+          </div>
+          <span className="small muted">
+            Showing {shown.length === 0 ? 0 : from + 1}–
+            {Math.min(from + perPage, shown.length)} of {shown.length} scenarios
+            {shown.length !== cases.length && ` (filtered from ${cases.length})`}
+          </span>
+          <div className="pager-btns">
+            <button onClick={() => setPage(cur - 1)} disabled={cur === 1} title="Previous">‹</button>
+            {pageWindow(cur, pages).map((x, i) =>
+              x === "…" ? (
+                <span key={`g${i}`} className="pager-gap">…</span>
+              ) : (
+                <button
+                  key={x}
+                  className={x === cur ? "on" : ""}
+                  onClick={() => setPage(x as number)}
+                >
+                  {x}
+                </button>
+              ),
+            )}
+            <button onClick={() => setPage(cur + 1)} disabled={cur === pages} title="Next">›</button>
+          </div>
+          <select value={perPage} onChange={(e) => setPerPage(Number(e.target.value))}>
+            {[15, 25, 45].map((n) => (
+              <option key={n} value={n}>{n} / page</option>
+            ))}
+          </select>
+        </div>
+
         <div className="small muted" style={{ marginTop: 12 }}>
           Model under test: <span className="mono">{d.model_under_test?.kind}</span> on{" "}
           <span className="mono">{d.model_under_test?.feature_set}</span> features,
