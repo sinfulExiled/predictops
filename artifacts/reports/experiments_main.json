@@ -27,17 +27,17 @@
     },
     "data_quality": {
       "missing_by_channel": {
-        "temperature": 0.01975,
-        "vibration": 0.01975,
-        "pressure": 0.01975,
-        "rpm": 0.01975,
-        "current": 0.01975,
-        "voltage": 0.01975,
-        "power": 0.01975,
-        "load": 0.01975,
-        "humidity": 0.01975
+        "temperature": 0.01991,
+        "vibration": 0.01991,
+        "pressure": 0.01991,
+        "rpm": 0.01991,
+        "current": 0.01991,
+        "voltage": 0.01991,
+        "power": 0.01991,
+        "load": 0.01991,
+        "humidity": 0.01991
       },
-      "sensor_dropout_rate": 0.01975,
+      "sensor_dropout_rate": 0.01991,
       "downtime_rate": 0.00946
     },
     "class_balance": {
@@ -78,70 +78,88 @@
     },
     "temporal_structure": {
       "autocorr_lag_1h": {
-        "vibration": 0.4456,
-        "temperature": 0.859,
-        "current": 0.6794
-      }
+        "vibration": 0.4366,
+        "temperature": 0.9138,
+        "current": 0.6699
+      },
+      "autocorr_range": {
+        "vibration": {
+          "min": 0.1872,
+          "max": 0.7103,
+          "n_machines": 12
+        },
+        "temperature": {
+          "min": 0.8055,
+          "max": 0.9598,
+          "n_machines": 12
+        },
+        "current": {
+          "min": 0.4938,
+          "max": 0.7889,
+          "n_machines": 12
+        }
+      },
+      "machines_sampled": 12
     },
     "feature_signal": {
       "top_features": [
         {
           "feature": "vibration",
-          "abs_corr": 0.2175
+          "abs_corr": 0.2263
         },
         {
           "feature": "vibration_mean_1h",
-          "abs_corr": 0.2119
-        },
-        {
-          "feature": "vib_per_load",
-          "abs_corr": 0.1979
+          "abs_corr": 0.2204
         },
         {
           "feature": "vibration_mean_3h",
-          "abs_corr": 0.1966
+          "abs_corr": 0.204
+        },
+        {
+          "feature": "vib_per_load",
+          "abs_corr": 0.2003
         },
         {
           "feature": "vibration_mean_6h",
-          "abs_corr": 0.1774
+          "abs_corr": 0.1837
         },
         {
           "feature": "vibration_max_6h",
-          "abs_corr": 0.1588
+          "abs_corr": 0.1647
         },
         {
           "feature": "vib_z_6h",
-          "abs_corr": 0.1085
-        },
-        {
-          "feature": "vib_delta_3h",
-          "abs_corr": 0.0937
+          "abs_corr": 0.1109
         },
         {
           "feature": "temp_excess",
-          "abs_corr": 0.0837
+          "abs_corr": 0.0977
+        },
+        {
+          "feature": "vib_delta_3h",
+          "abs_corr": 0.0977
         },
         {
           "feature": "temperature",
-          "abs_corr": 0.0705
+          "abs_corr": 0.0795
         },
         {
           "feature": "temperature_mean_1h",
-          "abs_corr": 0.0676
+          "abs_corr": 0.0763
         },
         {
-          "feature": "temperature_mean_3h",
-          "abs_corr": 0.0615
+          "feature": "temp_excess_mean_6h",
+          "abs_corr": 0.0702
         }
       ],
-      "n_low_signal_features": 22,
+      "n_low_signal_features": 13,
       "engineering_gain_over_raw": 0.0
     },
     "risks": [
       "no ground-truth column appears in the feature list",
       "splits are chronological with a purge gap; the test period is 2025-03-23 12:00:00 onwards",
       "severe class imbalance (87.8:1 negative:positive)",
-      "sensor dropouts blank all channels together on 1.98% of rows; imputation is forward-fill with a train-median fallback",
+      "sensor dropouts blank all channels together on 1.99% of rows; imputation is forward-fill with a train-median fallback",
       "0.95% of rows are downtime and must be excluded from both training and scoring"
     ],
     "recommendations": [
@@ -150,7 +168,7 @@
       "ablate raw against engineered features rather than trusting these correlations: the best engineered feature gains only +0.000 marginally, but marginal correlation cannot see the interaction that matters here (vibration rising *while load stays flat*)",
       "channels are strongly autocorrelated at 1 h lag -- sequence models are worth testing against a tabular baseline",
       "lookback of 36 samples (6 h) covers the 6 h horizon without spanning typical downtime blocks",
-      "22 features carry almost no marginal signal (|corr| < 0.005), e.g. ['pressure', 'ambient_temp', 'rpm_instability_1h']"
+      "13 features carry almost no marginal signal (|corr| < 0.005), e.g. ['pressure_std_1h', 'pressure_std_6h', 'ambient_temp']"
     ],
     "recommended_plan": {
       "selection_metric": "pr_auc",
@@ -181,104 +199,104 @@
         "name": "threshold rule on vibration / temperature / current",
         "model": "threshold_baseline",
         "feature_set": "raw",
-        "val_pr_auc": 0.151701,
-        "test_f1": 0.258774,
+        "val_pr_auc": 0.144614,
+        "test_f1": 0.257009,
         "decision": "reference",
         "learning": "Establishes the operating point the plant already has.",
-        "duration_s": 3.61
+        "duration_s": 1.42
       },
       {
         "experiment": "Iteration 1",
         "name": "xgboost on raw features",
         "model": "xgboost",
         "feature_set": "raw",
-        "val_pr_auc": 0.428482,
-        "test_f1": 0.462537,
+        "val_pr_auc": 0.309893,
+        "test_f1": 0.442974,
         "decision": "kept",
-        "learning": "PR-AUC 0.4285 vs baseline 0.1517 (+0.2768). Trees on raw channels already beat the alarm rule, so most of the baseline's weakness was the fixed threshold, not the sensors.",
-        "duration_s": 7.58
+        "learning": "PR-AUC 0.3099 vs baseline 0.1446 (+0.1653). Trees on raw channels already beat the alarm rule, so most of the baseline's weakness was the fixed threshold, not the sensors.",
+        "duration_s": 2.07
       },
       {
         "experiment": "Iteration 2",
         "name": "xgboost on engineered features",
         "model": "xgboost",
         "feature_set": "engineered",
-        "val_pr_auc": 0.611207,
-        "test_f1": 0.536369,
+        "val_pr_auc": 0.507196,
+        "test_f1": 0.511823,
         "decision": "kept",
-        "learning": "PR-AUC 0.6112 vs raw features 0.4285 (+0.1827). Causal rolling statistics and load/ambient normalisation are worth more than any change of architecture tried below.",
-        "duration_s": 33.04
+        "learning": "PR-AUC 0.5072 vs raw features 0.3099 (+0.1973). Causal rolling statistics and load/ambient normalisation are worth more than any change of architecture tried below.",
+        "duration_s": 7.69
       },
       {
         "experiment": "Iteration 3",
         "name": "LSTM on raw channels",
         "model": "lstm",
         "feature_set": "raw",
-        "val_pr_auc": 0.434622,
-        "test_f1": 0.377778,
+        "val_pr_auc": 0.364006,
+        "test_f1": 0.43134,
         "decision": "removed",
-        "learning": "PR-AUC 0.4346 vs best tabular 0.6112 (-0.1766). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
-        "duration_s": 146.26
+        "learning": "PR-AUC 0.3640 vs best tabular 0.5072 (-0.1432). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
+        "duration_s": 87.98
       },
       {
         "experiment": "Iteration 4",
         "name": "LSTM on engineered channels",
         "model": "lstm",
         "feature_set": "engineered",
-        "val_pr_auc": 0.584386,
-        "test_f1": 0.361574,
-        "decision": "removed",
-        "learning": "PR-AUC 0.5844 vs best tabular 0.6112 (-0.0268). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
-        "duration_s": 168.12
+        "val_pr_auc": 0.554167,
+        "test_f1": 0.493747,
+        "decision": "kept",
+        "learning": "PR-AUC 0.5542 vs best tabular 0.5072 (+0.0470). The sequence view finds structure the tabular one misses.",
+        "duration_s": 106.77
       },
       {
         "experiment": "Iteration 5",
         "name": "TFT on engineered channels",
         "model": "tft",
         "feature_set": "engineered",
-        "val_pr_auc": 0.575648,
-        "test_f1": 0.497706,
+        "val_pr_auc": 0.558284,
+        "test_f1": 0.465902,
         "decision": "removed",
-        "learning": "PR-AUC 0.5756 vs LSTM 0.5844. No material gain over the LSTM at this data scale -- the extra capacity is not paying for itself.",
-        "duration_s": 647.17
+        "learning": "PR-AUC 0.5583 vs LSTM 0.5542. No material gain over the LSTM at this data scale -- the extra capacity is not paying for itself.",
+        "duration_s": 432.55
       },
       {
         "experiment": "Iteration 6",
         "name": "ensemble lstm_engineered + tft_engineered",
         "model": "ensemble",
         "feature_set": "engineered",
-        "val_pr_auc": 0.616673,
-        "test_f1": 0.462696,
+        "val_pr_auc": 0.585467,
+        "test_f1": 0.514219,
         "decision": "kept",
-        "learning": "PR-AUC 0.6167 vs best member 0.5844. The blend adds real signal.",
-        "duration_s": 50.28
+        "learning": "PR-AUC 0.5855 vs best member 0.5583. The blend adds real signal.",
+        "duration_s": 37.93
       }
     ],
     "selection": {
-      "experiment_id": 39,
-      "name": "xgboost on engineered features",
-      "model": "xgboost",
+      "experiment_id": 60,
+      "name": "ensemble lstm_engineered + tft_engineered",
+      "model": "ensemble",
       "feature_set": "engineered",
-      "val_pr_auc": 0.611207,
-      "test_f1": 0.536369,
-      "rationale": "xgboost on engineered features selected on validation PR-AUC 0.6112; ensemble lstm_engineered + tft_engineered scored 0.6167 but the +0.0055 gain is inside the 0.01 tolerance, so the simpler model wins the tie",
+      "val_pr_auc": 0.585467,
+      "test_f1": 0.514219,
+      "rationale": "ensemble lstm_engineered + tft_engineered selected on validation PR-AUC 0.5855 (+0.0272 over TFT on engineered channels)",
       "selected_on": "validation pr_auc"
     },
-    "selection_rationale": "xgboost on engineered features selected on validation PR-AUC 0.6112; ensemble lstm_engineered + tft_engineered scored 0.6167 but the +0.0055 gain is inside the 0.01 tolerance, so the simpler model wins the tie",
+    "selection_rationale": "ensemble lstm_engineered + tft_engineered selected on validation PR-AUC 0.5855 (+0.0272 over TFT on engineered channels)",
     "notes": [
       "Establishes the operating point the plant already has.",
-      "PR-AUC 0.4285 vs baseline 0.1517 (+0.2768). Trees on raw channels already beat the alarm rule, so most of the baseline's weakness was the fixed threshold, not the sensors.",
-      "PR-AUC 0.6112 vs raw features 0.4285 (+0.1827). Causal rolling statistics and load/ambient normalisation are worth more than any change of architecture tried below.",
-      "PR-AUC 0.4346 vs best tabular 0.6112 (-0.1766). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
-      "PR-AUC 0.5844 vs best tabular 0.6112 (-0.0268). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
-      "PR-AUC 0.5756 vs LSTM 0.5844. No material gain over the LSTM at this data scale -- the extra capacity is not paying for itself.",
-      "PR-AUC 0.6167 vs best member 0.5844. The blend adds real signal."
+      "PR-AUC 0.3099 vs baseline 0.1446 (+0.1653). Trees on raw channels already beat the alarm rule, so most of the baseline's weakness was the fixed threshold, not the sensors.",
+      "PR-AUC 0.5072 vs raw features 0.3099 (+0.1973). Causal rolling statistics and load/ambient normalisation are worth more than any change of architecture tried below.",
+      "PR-AUC 0.3640 vs best tabular 0.5072 (-0.1432). Learning the temporal structure from raw sequence does not beat handing a tree the same structure explicitly.",
+      "PR-AUC 0.5542 vs best tabular 0.5072 (+0.0470). The sequence view finds structure the tabular one misses.",
+      "PR-AUC 0.5583 vs LSTM 0.5542. No material gain over the LSTM at this data scale -- the extra capacity is not paying for itself.",
+      "PR-AUC 0.5855 vs best member 0.5583. The blend adds real signal."
     ]
   },
   "bundle": {
-    "kind": "xgboost",
+    "kind": "ensemble",
     "feature_set": "engineered",
-    "threshold": 0.42499999999999993,
+    "threshold": 0.9869715992065325,
     "channels": [
       "temperature",
       "vibration",
@@ -323,5 +341,5 @@
       }
     }
   },
-  "wall_clock_s": 1077.8
+  "wall_clock_s": 694.3
 }

@@ -10,7 +10,10 @@ from predictops.config import GeneratorConfig, HORIZON_HOURS, SENSOR_COLUMNS
 from predictops.data.generator import PlantGenerator
 from predictops.data.schemas import FAILURE_MODES
 
-SMALL = GeneratorConfig(n_machines=8, days=6, seed=42)
+# 16 machines is the smallest fleet that draws at least one of every class
+# under MACHINE_MIX (conveyors are only 10% of the plant), which is what
+# test_multiple_failure_modes_are_present needs to be a real check.
+SMALL = GeneratorConfig(n_machines=16, days=6, seed=42)
 
 
 @pytest.fixture(scope="module")
@@ -26,7 +29,7 @@ def test_same_seed_is_bit_identical():
 
 
 def test_different_seed_changes_data():
-    other = GeneratorConfig(n_machines=8, days=6, seed=43)
+    other = GeneratorConfig(n_machines=16, days=6, seed=43)
     a = PlantGenerator(SMALL).generate().telemetry
     b = PlantGenerator(other).generate().telemetry
     assert not np.allclose(

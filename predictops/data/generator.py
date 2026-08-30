@@ -1,5 +1,11 @@
 """Deterministic synthetic plant: telemetry, degradation, failures, labels.
 
+Models a mid-sized water / wastewater treatment works -- pumps, aeration
+blowers, drive motors and sludge conveyors -- because that fleet mix makes the
+failure economics concrete. The physics is equipment-level (bearing wear,
+cavitation, overheating, pressure loss, electrical faults), so nothing here is
+specific to water; the same generator would serve any rotating-equipment site.
+
 Design notes
 ------------
 The generator is built so that a *threshold* rule cannot win.  Every symptom a
@@ -21,7 +27,7 @@ import numpy as np
 import pandas as pd
 from scipy.signal import lfilter
 
-from ..config import DATA_DIR, GeneratorConfig, HORIZON_HOURS
+from ..config import DATA_DIR, MACHINE_MIX, GeneratorConfig, HORIZON_HOURS
 from .schemas import (
     ARCHETYPES,
     FAILURE_MODES,
@@ -420,14 +426,22 @@ class PlantGenerator:
         site_rng = np.random.default_rng(self.cfg.seed + 1)
         sites = self._sites(site_rng)
 
-        kinds = list(ARCHETYPES)
+        # Lay the fleet out to the configured mix, largest class first, so the
+        # counts are exact rather than approximate.
+        kinds: list[str] = []
+        for kind, share in sorted(MACHINE_MIX.items(), key=lambda kv: -kv[1]):
+            kinds += [kind] * int(round(share * self.cfg.n_machines))
+        while len(kinds) < self.cfg.n_machines:
+            kinds.append(max(MACHINE_MIX, key=MACHINE_MIX.get))
+        kinds = kinds[:self.cfg.n_machines]
+
         frames, machine_rows = [], []
         all_failures: list = []
         all_maint: list = []
 
         for i in range(self.cfg.n_machines):
             rng = np.random.default_rng(self.cfg.seed * 1000 + i)
-            kind = kinds[i % len(kinds)]
+            kind = kinds[i]
             arch = ARCHETYPES[kind]
             machine_id = f"{kind}-{i:03d}"
             site = int(master.integers(0, N_SITES))

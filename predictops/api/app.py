@@ -411,4 +411,10 @@ async def agent_activity(ws: WebSocket):
 # it earlier would shadow the API routes and the websocket above it.
 _DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
 if _DIST.is_dir():
+    # The dashboard uses a hash router (`createHashRouter`), so every client
+    # route lives under "/#/..." and the server only ever sees "/". Plain
+    # StaticFiles is therefore correct and complete here: a refresh or a
+    # shared link on any page resolves to index.html on its own, and a
+    # path-style URL like "/assistant" -- which the app never produces --
+    # stays a 404 rather than silently rendering the wrong page.
     app.mount("/", StaticFiles(directory=str(_DIST), html=True), name="ui")

@@ -59,6 +59,16 @@ VAL_FRACTION = 0.15
 PURGE_STEPS = HORIZON_STEPS
 
 
+#: Equipment mix of a mid-sized water / wastewater treatment works. Real
+#: plants are pump-dominated; an even split across machine classes would be a
+#: synthetic convenience that no site actually looks like.
+#:   PUMP       raw-water, transfer, return-activated-sludge and dosing pumps
+#:   COMPRESSOR aeration blowers and the instrument-air package
+#:   MOTOR      mixer, screen and clarifier-drive motors
+#:   CONVEYOR   screenings and dewatered-sludge handling
+MACHINE_MIX = {"PUMP": 0.40, "COMPRESSOR": 0.25, "MOTOR": 0.25, "CONVEYOR": 0.10}
+
+
 @dataclass(frozen=True)
 class GeneratorConfig:
     """Deterministic knobs for the synthetic plant."""

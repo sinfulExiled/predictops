@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-29T19:07:23",
-  "tuned_threshold": 0.42499999999999993,
+  "generated": "2026-08-30T07:12:00",
+  "tuned_threshold": 0.9869715992065325,
   "cases": [
     {
       "id": "S01",
       "category": "clear_degradation",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.9959,
-      "deg": 0.9223,
+      "p": 0.9956,
+      "deg": 0.8624,
       "conf": 0.0,
       "benign": null
     },
@@ -17,8 +17,8 @@
       "category": "clear_degradation",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.5874,
-      "deg": 0.6954,
+      "p": 0.9937,
+      "deg": 0.8497,
       "conf": 0.0,
       "benign": null
     },
@@ -27,9 +27,9 @@
       "category": "clear_degradation",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.9528,
-      "deg": 0.909,
-      "conf": 0.0717,
+      "p": 0.9965,
+      "deg": 0.9361,
+      "conf": 0.0692,
       "benign": "ambient temperature rise"
     },
     {
@@ -37,9 +37,9 @@
       "category": "clear_degradation",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.0258,
-      "deg": 0.3995,
-      "conf": 0.3624,
+      "p": 0.9784,
+      "deg": 0.8826,
+      "conf": 0.2052,
       "benign": "unreliable instrumentation"
     },
     {
@@ -47,9 +47,9 @@
       "category": "subtle_degradation",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.6718,
-      "deg": 0.8864,
-      "conf": 0.2326,
+      "p": 0.9969,
+      "deg": 0.8999,
+      "conf": 0.1654,
       "benign": "unreliable instrumentation"
     },
     {
@@ -57,8 +57,8 @@
       "category": "subtle_degradation",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0036,
-      "deg": 0.5319,
+      "p": 0.0097,
+      "deg": 0.4941,
       "conf": 0.0,
       "benign": null
     },
@@ -67,8 +67,8 @@
       "category": "subtle_degradation",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0015,
-      "deg": 0.4597,
+      "p": 0.004,
+      "deg": 0.3209,
       "conf": 0.0,
       "benign": null
     },
@@ -77,9 +77,9 @@
       "category": "subtle_degradation",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.717,
-      "deg": 0.9015,
-      "conf": 0.0985,
+      "p": 0.9863,
+      "deg": 0.8708,
+      "conf": 0.0809,
       "benign": "ambient temperature rise"
     },
     {
@@ -87,9 +87,9 @@
       "category": "sudden_failure",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0001,
-      "deg": 0.3712,
-      "conf": 0.4458,
+      "p": 0.0027,
+      "deg": 0.3851,
+      "conf": 0.4453,
       "benign": "production load increase"
     },
     {
@@ -97,9 +97,9 @@
       "category": "sudden_failure",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0,
-      "deg": 0.2996,
-      "conf": 0.2667,
+      "p": 0.009,
+      "deg": 0.3544,
+      "conf": 0.3652,
       "benign": "unreliable instrumentation"
     },
     {
@@ -107,19 +107,19 @@
       "category": "sudden_failure",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0,
-      "deg": 0.528,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.0026,
+      "deg": 0.5374,
+      "conf": 0.2664,
+      "benign": "unreliable instrumentation"
     },
     {
       "id": "S12",
       "category": "sudden_failure",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0002,
-      "deg": 0.5148,
-      "conf": 0.2666,
+      "p": 0.0022,
+      "deg": 0.4531,
+      "conf": 0.2664,
       "benign": "unreliable instrumentation"
     },
     {
@@ -127,9 +127,9 @@
       "category": "atypical_pattern",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0443,
-      "deg": 0.4715,
-      "conf": 0.7773,
+      "p": 0.996,
+      "deg": 0.8602,
+      "conf": 0.4377,
       "benign": "production load increase"
     },
     {
@@ -137,8 +137,8 @@
       "category": "atypical_pattern",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.934,
-      "deg": 0.8987,
+      "p": 0.9952,
+      "deg": 0.9567,
       "conf": 0.0,
       "benign": null
     },
@@ -147,9 +147,9 @@
       "category": "atypical_pattern",
       "difficulty": "hard",
       "expect": true,
-      "p": 0.0531,
-      "deg": 0.377,
-      "conf": 0.5987,
+      "p": 0.0036,
+      "deg": 0.3506,
+      "conf": 0.6123,
       "benign": "production load increase"
     },
     {
@@ -157,8 +157,8 @@
       "category": "early_warning",
       "difficulty": "moderate",
       "expect": true,
-      "p": 0.4882,
-      "deg": 0.7204,
+      "p": 0.9964,
+      "deg": 0.8865,
       "conf": 0.0,
       "benign": null
     },
@@ -167,9 +167,9 @@
       "category": "early_warning",
       "difficulty": "moderate",
       "expect": true,
-      "p": 0.0058,
-      "deg": 0.5498,
-      "conf": 0.3657,
+      "p": 0.0719,
+      "deg": 0.5594,
+      "conf": 0.3548,
       "benign": "unreliable instrumentation"
     },
     {
@@ -177,9 +177,9 @@
       "category": "early_warning",
       "difficulty": "moderate",
       "expect": true,
-      "p": 0.0089,
-      "deg": 0.3528,
-      "conf": 0.1469,
+      "p": 0.0033,
+      "deg": 0.3233,
+      "conf": 0.1473,
       "benign": "ambient temperature rise"
     },
     {
@@ -187,8 +187,8 @@
       "category": "early_warning",
       "difficulty": "moderate",
       "expect": true,
-      "p": 0.5034,
-      "deg": 0.6187,
+      "p": 0.9953,
+      "deg": 0.7731,
       "conf": 0.0,
       "benign": null
     },
@@ -197,8 +197,8 @@
       "category": "late_warning",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.9956,
-      "deg": 0.9318,
+      "p": 0.9962,
+      "deg": 0.9394,
       "conf": 0.0,
       "benign": null
     },
@@ -207,9 +207,9 @@
       "category": "late_warning",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.2826,
-      "deg": 0.5796,
-      "conf": 0.8728,
+      "p": 0.995,
+      "deg": 0.9357,
+      "conf": 0.5523,
       "benign": "production load increase"
     },
     {
@@ -217,9 +217,9 @@
       "category": "late_warning",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.9685,
-      "deg": 0.8774,
-      "conf": 0.0641,
+      "p": 0.0043,
+      "deg": 0.4273,
+      "conf": 0.1134,
       "benign": "ambient temperature rise"
     },
     {
@@ -227,8 +227,8 @@
       "category": "late_warning",
       "difficulty": "easy",
       "expect": true,
-      "p": 0.9941,
-      "deg": 0.9536,
+      "p": 0.9957,
+      "deg": 0.9585,
       "conf": 0.0,
       "benign": null
     },
@@ -237,8 +237,8 @@
       "category": "hot_weather_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0003,
-      "deg": 0.4011,
+      "p": 0.0031,
+      "deg": 0.4623,
       "conf": 0.0,
       "benign": null
     },
@@ -247,18 +247,18 @@
       "category": "hot_weather_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0,
-      "deg": 0.3185,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.0047,
+      "deg": 0.5004,
+      "conf": 0.4798,
+      "benign": "production load increase"
     },
     {
       "id": "S26",
       "category": "hot_weather_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0005,
-      "deg": 0.4631,
+      "p": 0.0031,
+      "deg": 0.4218,
       "conf": 0.0,
       "benign": null
     },
@@ -267,19 +267,19 @@
       "category": "hot_weather_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0002,
-      "deg": 0.5175,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.0024,
+      "deg": 0.2881,
+      "conf": 0.3656,
+      "benign": "production load increase"
     },
     {
       "id": "S28",
       "category": "load_surge_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0022,
-      "deg": 0.4525,
-      "conf": 0.6766,
+      "p": 0.0026,
+      "deg": 0.3936,
+      "conf": 0.5385,
       "benign": "production load increase"
     },
     {
@@ -287,9 +287,9 @@
       "category": "load_surge_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0002,
-      "deg": 0.358,
-      "conf": 0.9849,
+      "p": 0.0029,
+      "deg": 0.3361,
+      "conf": 0.968,
       "benign": "production load increase"
     },
     {
@@ -297,9 +297,9 @@
       "category": "load_surge_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0001,
-      "deg": 0.2548,
-      "conf": 0.336,
+      "p": 0.0035,
+      "deg": 0.4009,
+      "conf": 0.9347,
       "benign": "production load increase"
     },
     {
@@ -307,9 +307,9 @@
       "category": "load_surge_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0001,
-      "deg": 0.3189,
-      "conf": 0.3964,
+      "p": 0.2784,
+      "deg": 0.4343,
+      "conf": 0.2468,
       "benign": "production load increase"
     },
     {
@@ -317,8 +317,8 @@
       "category": "missing_telemetry",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0003,
-      "deg": 0.3808,
+      "p": 0.0053,
+      "deg": 0.4274,
       "conf": 0.0,
       "benign": null
     },
@@ -327,29 +327,29 @@
       "category": "missing_telemetry",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0,
-      "deg": 0.4213,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.0036,
+      "deg": 0.4741,
+      "conf": 0.2206,
+      "benign": "production load increase"
     },
     {
       "id": "S34",
       "category": "missing_telemetry",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0,
-      "deg": 0.3372,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.0022,
+      "deg": 0.3518,
+      "conf": 0.4995,
+      "benign": "unreliable instrumentation"
     },
     {
       "id": "S35",
       "category": "sensor_spike_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0011,
-      "deg": 0.338,
-      "conf": 0.4567,
+      "p": 0.017,
+      "deg": 0.3384,
+      "conf": 0.4089,
       "benign": "production load increase"
     },
     {
@@ -357,18 +357,18 @@
       "category": "sensor_spike_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.1325,
-      "deg": 0.4574,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.0099,
+      "deg": 0.3077,
+      "conf": 0.7857,
+      "benign": "production load increase"
     },
     {
       "id": "S37",
       "category": "sensor_spike_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0002,
-      "deg": 0.5229,
+      "p": 0.9912,
+      "deg": 0.878,
       "conf": 0.0,
       "benign": null
     },
@@ -377,58 +377,58 @@
       "category": "multiple_anomalies_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0005,
-      "deg": 0.3001,
-      "conf": 0.6125,
-      "benign": "production load increase"
+      "p": 0.0034,
+      "deg": 0.3286,
+      "conf": 0.2663,
+      "benign": "unreliable instrumentation"
     },
     {
       "id": "S39",
       "category": "multiple_anomalies_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0011,
-      "deg": 0.3421,
-      "conf": 0.2665,
-      "benign": "unreliable instrumentation"
+      "p": 0.2947,
+      "deg": 0.4841,
+      "conf": 0.4018,
+      "benign": "production load increase"
     },
     {
       "id": "S40",
       "category": "multiple_anomalies_no_failure",
       "difficulty": "hard",
       "expect": false,
-      "p": 0.0005,
-      "deg": 0.4266,
-      "conf": 0.0,
-      "benign": null
+      "p": 0.9674,
+      "deg": 1.0,
+      "conf": 0.2823,
+      "benign": "unreliable instrumentation"
     },
     {
       "id": "S41",
       "category": "healthy_machine",
       "difficulty": "easy",
       "expect": false,
-      "p": 0.0026,
-      "deg": 0.4464,
-      "conf": 0.3329,
-      "benign": "unreliable instrumentation"
+      "p": 0.0028,
+      "deg": 0.4396,
+      "conf": 0.2729,
+      "benign": "production load increase"
     },
     {
       "id": "S42",
       "category": "healthy_machine",
       "difficulty": "easy",
       "expect": false,
-      "p": 0.0002,
-      "deg": 0.4976,
-      "conf": 0.4635,
-      "benign": "production load increase"
+      "p": 0.0028,
+      "deg": 0.2995,
+      "conf": 0.1251,
+      "benign": "ambient temperature rise"
     },
     {
       "id": "S43",
       "category": "healthy_machine",
       "difficulty": "easy",
       "expect": false,
-      "p": 0.0007,
-      "deg": 0.406,
+      "p": 0.0022,
+      "deg": 0.3738,
       "conf": 0.0,
       "benign": null
     },
@@ -437,9 +437,9 @@
       "category": "healthy_machine",
       "difficulty": "easy",
       "expect": false,
-      "p": 0.0001,
-      "deg": 0.2992,
-      "conf": 0.5,
+      "p": 0.0047,
+      "deg": 0.4285,
+      "conf": 0.3326,
       "benign": "unreliable instrumentation"
     },
     {
@@ -447,33 +447,33 @@
       "category": "healthy_machine",
       "difficulty": "easy",
       "expect": false,
-      "p": 0.0,
-      "deg": 0.4363,
-      "conf": 0.55,
-      "benign": "post-service run-in"
+      "p": 0.0032,
+      "deg": 0.3955,
+      "conf": 0.0,
+      "benign": null
     }
   ],
   "sweep": [
     {
       "ratio": 1.0,
-      "threshold": 0.425,
+      "threshold": 0.987,
       "model_only": {
-        "precision": 1.0,
+        "precision": 0.9167,
         "recall": 0.4783,
-        "f1": 0.6471,
+        "f1": 0.6286,
         "tp": 11,
-        "fp": 0,
+        "fp": 1,
         "fn": 12,
-        "tn": 22
+        "tn": 21
       },
       "adjudicated": {
-        "precision": 1.0,
+        "precision": 0.9167,
         "recall": 0.4783,
-        "f1": 0.6471,
+        "f1": 0.6286,
         "tp": 11,
-        "fp": 0,
+        "fp": 1,
         "fn": 12,
-        "tn": 22
+        "tn": 21
       },
       "verdicts_changed": 0,
       "changes_that_helped": 0,
@@ -482,24 +482,24 @@
     },
     {
       "ratio": 0.75,
-      "threshold": 0.3187,
+      "threshold": 0.7402,
       "model_only": {
-        "precision": 1.0,
-        "recall": 0.4783,
-        "f1": 0.6471,
-        "tp": 11,
-        "fp": 0,
-        "fn": 12,
-        "tn": 22
+        "precision": 0.8667,
+        "recall": 0.5652,
+        "f1": 0.6842,
+        "tp": 13,
+        "fp": 2,
+        "fn": 10,
+        "tn": 20
       },
       "adjudicated": {
-        "precision": 1.0,
-        "recall": 0.4783,
-        "f1": 0.6471,
-        "tp": 11,
-        "fp": 0,
-        "fn": 12,
-        "tn": 22
+        "precision": 0.8667,
+        "recall": 0.5652,
+        "f1": 0.6842,
+        "tp": 13,
+        "fp": 2,
+        "fn": 10,
+        "tn": 20
       },
       "verdicts_changed": 0,
       "changes_that_helped": 0,
@@ -508,24 +508,24 @@
     },
     {
       "ratio": 0.5,
-      "threshold": 0.2125,
+      "threshold": 0.4935,
       "model_only": {
-        "precision": 1.0,
-        "recall": 0.5217,
-        "f1": 0.6857,
-        "tp": 12,
-        "fp": 0,
-        "fn": 11,
-        "tn": 22
+        "precision": 0.8667,
+        "recall": 0.5652,
+        "f1": 0.6842,
+        "tp": 13,
+        "fp": 2,
+        "fn": 10,
+        "tn": 20
       },
       "adjudicated": {
-        "precision": 1.0,
-        "recall": 0.5217,
-        "f1": 0.6857,
-        "tp": 12,
-        "fp": 0,
-        "fn": 11,
-        "tn": 22
+        "precision": 0.8667,
+        "recall": 0.5652,
+        "f1": 0.6842,
+        "tp": 13,
+        "fp": 2,
+        "fn": 10,
+        "tn": 20
       },
       "verdicts_changed": 0,
       "changes_that_helped": 0,
@@ -534,24 +534,24 @@
     },
     {
       "ratio": 0.35,
-      "threshold": 0.1487,
+      "threshold": 0.3454,
       "model_only": {
-        "precision": 1.0,
-        "recall": 0.5217,
-        "f1": 0.6857,
-        "tp": 12,
-        "fp": 0,
-        "fn": 11,
-        "tn": 22
+        "precision": 0.8667,
+        "recall": 0.5652,
+        "f1": 0.6842,
+        "tp": 13,
+        "fp": 2,
+        "fn": 10,
+        "tn": 20
       },
       "adjudicated": {
-        "precision": 1.0,
-        "recall": 0.5217,
-        "f1": 0.6857,
-        "tp": 12,
-        "fp": 0,
-        "fn": 11,
-        "tn": 22
+        "precision": 0.8667,
+        "recall": 0.5652,
+        "f1": 0.6842,
+        "tp": 13,
+        "fp": 2,
+        "fn": 10,
+        "tn": 20
       },
       "verdicts_changed": 0,
       "changes_that_helped": 0,
@@ -560,24 +560,24 @@
     },
     {
       "ratio": 0.25,
-      "threshold": 0.1062,
+      "threshold": 0.2467,
       "model_only": {
-        "precision": 0.9231,
-        "recall": 0.5217,
-        "f1": 0.6667,
-        "tp": 12,
-        "fp": 1,
-        "fn": 11,
-        "tn": 21
+        "precision": 0.7647,
+        "recall": 0.5652,
+        "f1": 0.65,
+        "tp": 13,
+        "fp": 4,
+        "fn": 10,
+        "tn": 18
       },
       "adjudicated": {
-        "precision": 0.9231,
-        "recall": 0.5217,
-        "f1": 0.6667,
-        "tp": 12,
-        "fp": 1,
-        "fn": 11,
-        "tn": 21
+        "precision": 0.7647,
+        "recall": 0.5652,
+        "f1": 0.65,
+        "tp": 13,
+        "fp": 4,
+        "fn": 10,
+        "tn": 18
       },
       "verdicts_changed": 0,
       "changes_that_helped": 0,
@@ -586,24 +586,24 @@
     },
     {
       "ratio": 0.15,
-      "threshold": 0.0637,
+      "threshold": 0.148,
       "model_only": {
-        "precision": 0.9231,
-        "recall": 0.5217,
-        "f1": 0.6667,
-        "tp": 12,
-        "fp": 1,
-        "fn": 11,
-        "tn": 21
+        "precision": 0.7647,
+        "recall": 0.5652,
+        "f1": 0.65,
+        "tp": 13,
+        "fp": 4,
+        "fn": 10,
+        "tn": 18
       },
       "adjudicated": {
-        "precision": 0.9231,
-        "recall": 0.5217,
-        "f1": 0.6667,
-        "tp": 12,
-        "fp": 1,
-        "fn": 11,
-        "tn": 21
+        "precision": 0.7647,
+        "recall": 0.5652,
+        "f1": 0.65,
+        "tp": 13,
+        "fp": 4,
+        "fn": 10,
+        "tn": 18
       },
       "verdicts_changed": 0,
       "changes_that_helped": 0,
@@ -615,8 +615,8 @@
     "verdicts_changed": 0,
     "helped": 0,
     "hurt": 0,
-    "best_model_only_f1": 0.6857,
-    "best_adjudicated_f1": 0.6857,
+    "best_model_only_f1": 0.6842,
+    "best_adjudicated_f1": 0.6842,
     "delta_f1": 0.0
   }
 }

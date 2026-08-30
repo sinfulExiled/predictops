@@ -45,15 +45,28 @@ def main() -> None:
 
     t0 = time.time()
     data = prepare()
+    def _fresh_suite():
+        s = build_suite(data.df, data.failures)
+        save_suite(s)
+        return s
+
     if args.rebuild_suite:
-        suite = build_suite(data.df, data.failures)
-        save_suite(suite)
+        suite = _fresh_suite()
     else:
         try:
             suite = load_suite()
         except FileNotFoundError:
-            suite = build_suite(data.df, data.failures)
-            save_suite(suite)
+            suite = _fresh_suite()
+        else:
+            # A suite built against a different dataset names machines that no
+            # longer exist, which used to surface as an opaque IndexError deep
+            # inside the baseline. Detect it and rebuild.
+            known = set(data.df["machine_id"].unique())
+            missing = [c.machine_id for c in suite if c.machine_id not in known]
+            if missing:
+                print(f"scenario suite references {len(missing)} machine(s) "
+                      f"not in this dataset (e.g. {missing[0]}) — rebuilding\n")
+                suite = _fresh_suite()
 
     print(f"scenario suite: {json.dumps(summarise(suite))}\n")
 

@@ -17,7 +17,7 @@ interface Turn {
 
 const SUGGESTIONS: { q: string; icon: keyof typeof Icon; tone: string }[] = [
   { q: "Which machines are at risk?", icon: "fleet", tone: "#3fb950" },
-  { q: "Why is MOTOR-045 flagged?", icon: "alert", tone: "#f85149" },
+  { q: "Why is PUMP-017 flagged?", icon: "alert", tone: "#f85149" },
   { q: "Did the adjudicator actually help?", icon: "graph", tone: "#a371f7" },
   { q: "Which model was selected and why?", icon: "lab", tone: "#4a9eff" },
   { q: "How good is it against the baseline?", icon: "activity", tone: "#56d4dd" },

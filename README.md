@@ -26,28 +26,46 @@ result in this README is identical with and without an API key.
 
 ## 1. The problem, and who has it
 
-**Who.** The reliability engineer and shift maintenance planner at a
-mid-sized plant running a few dozen pumps, motors, compressors and conveyors,
-with a historian collecting sensor data every few minutes.
+**Who.** The reliability engineer at a mid-sized **water and wastewater
+treatment works** — one plant, 80 rotating assets, a two-person maintenance
+crew, and a historian that has been logging sensor data every ten minutes for
+years without anyone having time to look at it.
+
+The fleet is what such a site actually runs, and it is pump-dominated:
+
+| Class | Count | What they are |
+|---|---|---|
+| Pumps | 32 | raw-water, transfer, return-activated-sludge and dosing |
+| Compressors | 20 | aeration blowers, plus the instrument-air package |
+| Motors | 20 | mixer, screen and clarifier drives |
+| Conveyors | 8 | screenings and dewatered-sludge handling |
 
 **The bottleneck.** They already have condition monitoring, and it is a
 nuisance generator. Fixed alarm thresholds fire on anything unusual — and on
-this plant, "unusual" is usually innocent: a production load surge, a hot
-afternoon, a transducer glitch. In this project's measured baseline, a tuned
-per-machine threshold rule produces **1.75 false alarms per machine per day**.
-Across 80 machines that is ~140 nuisance callouts a day. The rational response
-is to stop trusting the alarms — and then the one that mattered is missed too.
+this plant, "unusual" is usually innocent: a storm-flow surge that ramps every
+transfer pump, a hot afternoon, a fouled transducer. In this project's measured
+baseline, a tuned per-machine threshold rule produces **2.06 false alarms per
+machine per day**. Across 80 machines that is ~165 nuisance callouts a day for
+two people. The rational response is to stop trusting the alarms — and then the
+one that mattered is missed too.
 
 The gap is not detection. It is **discrimination plus explanation**: telling a
-developing bearing fault apart from a busy Tuesday, and handing the planner
-enough evidence that they act on it before the machine stops.
+cavitating transfer pump apart from a wet Tuesday, and handing the engineer
+enough evidence to act on it before the machine stops.
 
-**Why it is worth solving.** Unplanned downtime on a production-critical
-machine costs hours of lost output plus secondary damage. The difference
-between a controlled 4-hour bearing change and an unplanned failure is roughly
-an order of magnitude in cost. But acting on a bad prediction is expensive
-too — which is why this system reports what it does *not* know as carefully as
-what it does.
+**Why it is worth solving.** A failed raw-water or RAS pump is not an
+inconvenience: it is lost treatment capacity, a possible consent breach, and a
+conversation with the regulator. The difference between a planned four-hour
+bearing change and an unplanned failure is roughly an order of magnitude in
+cost, before any environmental penalty. But acting on a bad prediction is
+expensive too — a two-person crew has no spare callouts — which is why this
+system reports what it does *not* know as carefully as what it does.
+
+**On the domain.** The failure physics modelled here is equipment-level —
+bearing wear, cavitation, overheating, pressure loss, electrical faults — so
+the same models would serve any rotating-equipment plant. Water treatment is
+the framing because it fits the fleet mix, and because the cost of a missed
+failure there is concrete enough to argue about.
 
 ---
 
@@ -212,48 +230,71 @@ have quietly rigged the result.
 
 | Stage | Model | Val PR-AUC | Test F1 | Decision |
 |---|---|---|---|---|
-| Baseline | threshold rule | 0.1517 | 0.2588 | reference |
-| Iteration 1 | XGBoost, raw features | 0.4285 | 0.4625 | kept |
-| Iteration 2 | **XGBoost, engineered features** | **0.6112** | **0.5364** | **selected** |
-| Iteration 3 | LSTM, raw channels | 0.4346 | 0.3778 | removed |
-| Iteration 4 | LSTM, engineered channels | 0.5844 | 0.3616 | removed |
-| Iteration 5 | TFT, engineered channels | 0.5756 | 0.4977 | removed |
-| Iteration 6 | Ensemble LSTM + TFT | 0.6167 | 0.4627 | kept, not selected |
+| Baseline | threshold rule | 0.1446 | 0.2570 | reference |
+| Iteration 1 | XGBoost, raw features | 0.3099 | 0.4430 | kept |
+| Iteration 2 | XGBoost, engineered features | 0.5072 | 0.5118 | kept |
+| Iteration 3 | LSTM, raw channels | 0.3640 | 0.4313 | removed |
+| Iteration 4 | LSTM, engineered channels | 0.5542 | 0.4937 | kept |
+| Iteration 5 | TFT, engineered channels | 0.5583 | 0.4659 | removed |
+| Iteration 6 | **Ensemble LSTM + TFT** | **0.5855** | **0.5142** | **selected** |
 
-**Test F1 more than doubled over the baseline: 0.259 → 0.536 (+107%).**
+**Test F1 exactly doubled over the baseline: 0.257 → 0.514 (+100%).**
 
-The single largest contribution is **feature engineering, not architecture**:
-XGBoost gains +0.183 validation PR-AUC moving from raw channels to causal
-rolling features — more than any change of model.
+The single largest contribution is **feature engineering, not architecture**.
+Moving from raw channels to causal rolling features is worth **+0.197**
+validation PR-AUC to XGBoost and **+0.190** to the LSTM. The best architectural
+change in the entire run — blending the two sequence models — is worth
+**+0.027**, and swapping an LSTM for a TFT is worth **+0.004**. An order of
+magnitude separates the two kinds of work.
 
 ### What the plant actually feels
 
-Row-level F1 is the selection metric. This is the table the maintenance
+Row-level PR-AUC is the selection metric. This is the table the maintenance
 planner cares about, over the 26 real failure events in the test period:
 
 | | Events caught | Mean early warning | **False alarms / machine / day** |
 |---|---|---|---|
-| Threshold baseline | 19 / 26 (73%) | 4.11 h | **1.75** |
-| **PredictOps (selected model)** | **23 / 26 (88%)** | 4.01 h | **0.51** |
+| Threshold baseline | 19 / 26 (73%) | 4.39 h | **2.06** |
+| **PredictOps (selected: ensemble)** | 16 / 26 (62%) | 4.72 h | **0.46** |
+| *XGBoost engineered (ran, not selected)* | *21 / 26 (81%)* | *4.51 h* | *0.69* |
 
-**More failures caught, with 3.4× fewer false alarms** — across 80 machines
-that is ~140 nuisance callouts a day falling to ~41, while catching four more
-of the failures that matter. The early warning is unchanged at ~4 hours, which
-is the point: the gain is discrimination, not lead time.
+Against the alarm rule the plant already runs, the deployed model cuts false
+callouts **4.5×** — across 80 machines, ~165 nuisance callouts a day falling to
+~37 — and adds about 20 minutes of warning. It also catches three fewer of the
+26 events. Read the third row before accepting that trade.
 
 ### The result we did not expect
 
-**The deep sequence models lost.** The ensemble edged out XGBoost on
-validation by +0.0055 PR-AUC — inside the 0.01 tie tolerance — so the simpler
-model won the tie. It then also turned out to have the best test F1 of every
-candidate (0.536 vs the ensemble's 0.463), so the tie-break was right for
-reasons the selection rule could not see.
+**The selection metric and the operational metric disagree, and we are shipping
+the model the selection metric chose.**
 
-This is the finding the brief warned against assuming away, and it is worth
-stating plainly: on ~2,300 positive training windows, a TFT's variable
-selection and attention did not pay for their capacity. Once causal rolling
-statistics are handed to a tree, the temporal structure the sequence models
-exist to discover has already been made explicit.
+The ensemble won on validation PR-AUC (0.5855, +0.027 over the TFT) and went on
+to post the best test F1 of any candidate (0.5142). By the rule fixed before
+the run, it is the winner. But the model it beat — XGBoost on engineered
+features, val PR-AUC 0.5072 — catches **21 of 26 failure events to the
+ensemble's 16**, for 0.69 false alarms per machine-day against 0.46.
+
+Those two facts are not in conflict; they are measuring different things.
+PR-AUC scores 83,837 ten-minute rows as if each were an independent question.
+A planner is not asked 83,837 questions — they are asked 26, one per failure,
+and a run of rows correctly flagged inside one long degradation counts once.
+The ensemble is the more *precise* model per row; XGBoost is the more
+*sensitive* model per event.
+
+We did not switch. Changing the selection metric after seeing which model it
+would favour is exactly the selection-on-the-outcome this project was built to
+avoid, and the honest report is the disagreement itself: **a plant that cannot
+afford to miss five failures in a quarter should deploy the XGBoost model, and
+the selection rule as written would not have handed it to them.** The fix is
+not a different winner, it is a different metric declared up front — event
+recall at a fixed false-alarm budget — and that is a change for the next run,
+not this one.
+
+The brief warned against assuming TFT + LSTM would win. Here they did win — but
+only because they were made to earn it against five alternatives on a metric
+fixed in advance, and the same discipline is what exposed the metric's own
+limits. Not assuming the architecture and not assuming the yardstick turn out
+to be the same habit.
 
 ---
 
@@ -272,29 +313,45 @@ signature channel suppressed), `hot_weather_no_failure`,
 
 | Metric | Simple baseline | Agent solution | Change |
 |---|---|---|---|
-| **Alert accuracy** (primary) | 64.4% | **73.3%** | +8.9 pp |
-| F1 | 50.0% | 64.7% | +14.7 pp |
-| Precision | 88.9% | **100.0%** | +11.1 pp |
-| Recall | 34.8% | 47.8% | +13.1 pp |
-| Cause accuracy — over *all* real failures | 30.4% | 43.5% | +13.1 pp |
-| Cause accuracy — over the ones it *alerted on* | 87.5% | **90.9%** | +3.4 pp |
-| Hard-case accuracy | 57.1% | 71.4% | +14.3 pp |
-| **False alarms on nuisance cases** | 4.5% | **0.0%** | −4.5 pp |
-| Seconds per case | 0.012 | 0.47 | — |
+| **Alert accuracy** (primary) | 68.9% | **71.1%** | +2.2 pp |
+| F1 | 56.2% | **62.9%** | +6.6 pp |
+| Precision | **100.0%** | 91.7% | −8.3 pp |
+| Recall | 39.1% | **47.8%** | +8.7 pp |
+| Cause accuracy — over *all* real failures | 30.4% | **39.1%** | +8.7 pp |
+| Cause accuracy — over the ones it *alerted on* | 77.8% | **81.8%** | +4.0 pp |
+| Hard-case accuracy | 64.3% | **67.9%** | +3.6 pp |
+| **False alarms on nuisance cases** | **0.0%** | 4.5% | +4.5 pp |
+| Seconds per case | 0.014 | 0.641 | — |
+
+Confusion, since the percentages above hide how few cases each rests on
+(23 real warning windows, 22 nuisance):
+
+| | TP | FP | FN | TN |
+|---|---|---|---|---|
+| Baseline | 9 | 0 | 14 | 22 |
+| Agent | 11 | 1 | 12 | 21 |
+
+**The precision and nuisance rows are one case.** The agent fires on one of the
+22 nuisance scenarios and the baseline fires on none; rendered as percentages
+that reads as an 8.3-point precision regression, which is more than a 45-case
+suite can resolve. What the suite *does* support is the recall column — the
+agent finds two failures the baseline misses at the cost of that one callout —
+and the row-level result behind it, measured over 83,837 test rows rather than
+45: F1 0.257 → 0.514.
 
 Cause accuracy is reported two ways because they answer different questions,
 and only quoting the flattering one would be misleading. An earlier version of
 this table showed a single 69.6% figure; that was **inflated** — it read the
 investigator's internal ranking even on cases where the system never raised an
 alert, crediting it for a diagnosis no human would ever have seen. Silence now
-counts as naming no cause, which is what drops the coverage figure to 43.5%.
+counts as naming no cause, which is what drops the coverage figure to 39.1%.
 
 Cost per case: **$0.00** in the default configuration (no LLM call is required).
 
-**The agent never fired on a nuisance case** — 22 of 22 correct across hot
-weather, load surges, sensor spikes, dropouts and simultaneous anomalies. That
-is the result the problem statement asked for, and it is where the +39 pp on
-cause accuracy comes from too.
+**The agent held on 21 of 22 nuisance cases** — hot weather, load surges,
+sensor spikes, dropouts and simultaneous anomalies — against 22 of 22 for the
+baseline, which achieves that by alerting on very little at all. Rejecting
+confounders is most of what separates the two systems on cause accuracy.
 
 **Where it is weak, stated plainly.** Recall is 47.8%: it misses more than half
 the warning windows at this operating point. Specifically it catches **0 of 4
@@ -326,9 +383,9 @@ the same 45 scenarios.
 
 | Alert threshold | Model only (P / R / F1) | Adjudicated (P / R / F1) | Verdicts changed |
 |---|---|---|---|
-| 0.425 (tuned) | 1.000 / 0.478 / 0.647 | 1.000 / 0.478 / 0.647 | 0 |
-| 0.213 | 1.000 / 0.522 / **0.686** | 1.000 / 0.522 / **0.686** | 0 |
-| 0.106 | 0.923 / 0.522 / 0.667 | 0.923 / 0.522 / 0.667 | 0 |
+| 0.987 (tuned) | 0.917 / 0.478 / 0.629 | 0.917 / 0.478 / 0.629 | 0 |
+| 0.740 | 0.867 / 0.565 / **0.684** | 0.867 / 0.565 / **0.684** | 0 |
+| 0.247 | 0.765 / 0.565 / 0.650 | 0.765 / 0.565 / 0.650 | 0 |
 
 **Adjudication is worth +0.0000 F1. It never changed a verdict.**
 
@@ -340,11 +397,31 @@ confound advocate scored 0.87 against degradation's 0.56. The fix is a rule
 worth stating: **a benign explanation may break a marginal case, never a strong
 one** (`DEGRADATION_FLOOR` in `agents/hypothesis.py`).
 
-Why is it inert? Because the model has no problem to solve here: it already
-achieves **100% precision on nuisance cases** at every sensible threshold, and
-scores them 0.00–0.13 — far below even the investigation trigger. There are
-essentially no false positives left for a confound advocate to catch. The
-contest is solving a problem this model does not have.
+Why is it inert? Not, any longer, for want of a target. The suite contains
+exactly one false positive, and it is precisely the case the confound advocate
+was built for — **S37, an isolated pressure-transducer glitch on PUMP-030 with
+no underlying trend**. Here is what every component did with it:
+
+| Component | Output on S37 |
+|---|---|
+| Ensemble model | **99.1%** failure probability (threshold 98.7%) |
+| Degradation advocate | 0.88 |
+| **Confound advocate** | **0.00 — it did not argue at all** |
+| Adjudicator | alert, margin +0.88 |
+| Verifier | **PASS on all ten checks**, including C5 "benign alternatives considered" and C10 "resolved on evidence" |
+| Remediation | cleared to act: `restore_suction`, $350, medium risk, 0.5 h downtime |
+| Reliability curve | **55%** — the only component that hedged |
+
+A spike is a *confound*; recognising one is the confound advocate's entire
+purpose; it scored the benign explanation at zero. The contest did not fail to
+overturn a marginal call — it never contested. And C5 passed because it checks
+that alternatives were *considered*, not that they were considered *well*: a
+0.00 counter-argument is a considered alternative by that definition. So the
+one case where the architecture should have earned its keep is also the case
+where it, and the check meant to police it, were both silent together.
+
+The reliability curve was right, at 55%. That number was on the screen and no
+gate was reading it.
 
 **So what is it kept for, honestly?** Not accuracy. It changes what the system
 *does* and what the human *sees*:
@@ -392,7 +469,7 @@ ANTHROPIC_API_KEY=... python llm_baseline.py --provider anthropic   # < $1
   returns each agent's deterministic findings unchanged. With an LLM
   configured the prose improves; **the measured metrics do not move**, because
   no metric passes through the LLM.
-- **66 tests**, including causality, leakage, determinism and the
+- **127 tests**, including causality, leakage, determinism and the
   fabricated-evidence catch: `python -m pytest`.
 
 Leakage controls are concentrated in `data/preprocessing.py` and enforced by
@@ -430,7 +507,8 @@ by any test:
 | Defect | Symptom | Cause | Fix |
 |---|---|---|---|
 | Reliability curve | **13% confidence on a 99.6% prediction** | quantile bins on a 1.4%-positive set: the top bin spanned the top 8% of all rows and drowned in ordinary ones | measure *tail* precision — "of validation cases scoring at least this high, how many failed?" Same case now reads 86% |
-| Verification scope | **25 of 45 evaluation cases marked FAIL** | diagnosis checks ran on machines the model was *not* alerting about, failing for want of a diagnosis that was never asserted | scope checks to the claim being made; `n/a` when there is no alert. Verdicts went from 26 FAIL to **PASS 23 / PASS+WARN 21 / FAIL 1**, and the one remaining FAIL is a real catch |
+| Verification scope | **25 of 45 evaluation cases marked FAIL** | diagnosis checks ran on machines the model was *not* alerting about, failing for want of a diagnosis that was never asserted | scope checks to the claim being made; `n/a` when there is no alert. Verdicts now read **PASS 28 / PASS+WARN 15 / FAIL 2**, and both remaining FAILs are real catches |
+| Two fleet views | **the assistant named a stopped pump as the plant's highest risk (69.5%) while the dashboard showed the same pump as `down`** | both were "right": the dashboard reads the canonical window set, which never scores a window spanning downtime; `fleet_scores` — behind the assistant and the incident picker — checked only whether the *last* step was downtime, so it scored a sequence model on a lookback straddling an outage | apply the rule the deployed model was *trained* under, which differs by kind: whole lookback clean for a sequence model, current row usable for a tabular one. The two views now return identical scores for identical machines (`test_fleet_scores_and_overview_agree`) |
 
 ### Hot take
 
@@ -447,12 +525,17 @@ It is also worth **+0.0000 F1**, and the first version of it was worth
 one hour from happening. I only know that because I built the ablation
 (`ablate_adjudication.py`) instead of assuming.
 
-The reason is not that the idea is bad; it is that the idea addresses a failure
-mode this system does not have. The confound advocate exists to catch alarms
-caused by load surges, hot weather and sensor spikes — and the model already
-rejects all 22 of those, scoring them 0.00–0.13 against a 0.19 trigger. The
-agent was built to solve a problem that the feature engineering had already
-solved two iterations earlier.
+For most of the suite the reason is that the idea addresses a failure mode the
+system does not have: the model rejects 21 of 22 confounders on its own, so
+there is nothing to overturn. But the twenty-second is worse than inert. On
+S37 — a pressure-transducer spike scored at 99.1% — the confound advocate,
+whose whole job is spikes, scored the benign explanation **0.00**, and ten of
+ten verification checks passed a $350 physical intervention on a healthy pump.
+
+The component did not merely fail to help. It supplied the *appearance* of
+scrutiny — a contest, a margin, a ten-point audit — over a decision nothing had
+actually challenged. That is a worse failure than not having built it, because
+an inert component is ignorable and a confidently empty one is trusted.
 
 Three lessons I would carry to the next build:
 
@@ -461,22 +544,29 @@ Three lessons I would carry to the next build:
    one of them should decide whether the component ships.
 2. **Measure where the headroom actually is before designing for it.** The
    headroom here was recall (47.8%), and the biggest single win in the whole
-   project — +0.183 PR-AUC — came from causal rolling features, not from any
-   agent.
+   project — **+0.197 PR-AUC** — came from causal rolling features, not from
+   any agent. Every architectural change in the bake-off put together is worth
+   less than a sixth of that.
 3. **Keep the component if it changes the decision, not because it changes the
    score.** The contest stays because a `contested` verdict routes to *inspect*
    rather than *repair*, and because a planner seeing "0.92 vs 0.00" trusts it
    differently from "0.56 vs 0.48". Those are honest reasons. "It improved
    accuracy" would not have been.
 
-The same discipline caught the other three defects in this project, all silent,
-none surfaced by a test: a vocabulary mismatch that rejected correct
-diagnoses, a reliability curve that reported 13% confidence on a 99.6%
-prediction, and a verifier that failed 25 of 45 cases for the crime of being
-healthy. In a system where agents pass structured state to each other, the
-realistic failure is never a model that lies. It is two components that are
-each correct and do not agree — and a metric that is arithmetically right and
-quietly measuring the wrong thing.
+The same discipline caught the other defects in this project, all silent, none
+surfaced by a test: a vocabulary mismatch that rejected correct diagnoses, a
+reliability curve that reported 13% confidence on a 99.6% prediction, a
+verifier that failed 25 of 45 cases for the crime of being healthy, a ten-point
+audit that passed a physical intervention on a healthy pump because it checks
+whether a counter-argument was *made*, not whether it was *made well*, and two
+fleet views that disagreed about which machine was the plant's biggest risk
+because each applied a defensible — and different — definition of "scorable".
+
+In a system where agents pass structured state to each other, the realistic
+failure is never a model that lies. It is two components that are each correct
+and do not agree; a metric that is arithmetically right and quietly measuring
+the wrong thing; and a check that is satisfied by the shape of an argument
+rather than its content.
 
 ---
 
@@ -501,7 +591,7 @@ predictops/
 ├── api/            FastAPI + WebSocket agent-activity stream
 └── reporting.py    the incident report a planner actually reads
 frontend/           React + TypeScript dashboard (9 pages)
-tests/              66 tests
+tests/              127 tests
 ```
 
 **Written for this hackathon.** Pre-existing components used as libraries:

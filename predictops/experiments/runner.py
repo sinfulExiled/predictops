@@ -242,9 +242,17 @@ class ExperimentRunner:
              "val_pr_auc": round(best_s, 5), "threshold": round(threshold, 5)},
             metrics, dt)
 
+        # Wrap the members in a real module so the bundle can score with it.
+        # Previously the ensemble Fitted carried no model at all, which only
+        # mattered once the ensemble actually won selection -- then the bundle
+        # tried to score with None.
+        from ..ml.torch_models import EnsembleModel
+        blend = EnsembleModel(list(models), [best_w, 1.0 - best_w])
+
         f = Fitted("ensemble", "ensemble", feature_set, aligned, threshold,
-                   metrics, scaler=scaler, channels=cols,
+                   metrics, scaler=scaler, channels=cols, torch_model=blend,
                    extra={"members": members, "weight_first": best_w,
+                          "member_kinds": [self.fitted[m].kind for m in members],
                           "val_pr_auc": best_s})
         self.fitted["ensemble"] = f
         return f, exp_id

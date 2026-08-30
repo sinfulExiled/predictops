@@ -217,3 +217,56 @@ def test_every_scenario_is_actually_scoreable(engine, data):
                             engine.bundle.lookback)
         assert x.shape == (engine.bundle.lookback, len(engine.bundle.channels))
         assert np.isfinite(x).all()
+
+
+# --- the two fleet views must answer from the same rule --------------------
+def test_fleet_scores_and_overview_agree(engine):
+    """`engine.fleet_scores()` (assistant, incident picker) and
+    `fleet.overview()` (dashboard) score the same machines identically.
+
+    They used to disagree: overview draws on the canonical window set, which
+    excludes any window spanning downtime, while fleet_scores only checked
+    whether the *last* step was downtime. A machine freshly back from a stop
+    was therefore scored on a lookback straddling the outage and reported to
+    the assistant as the highest risk in the plant, while the dashboard showed
+    the same machine as `down`.
+    """
+    import pandas as pd
+    from predictops.fleet import overview
+
+    at = engine.busiest_timestamp("test")
+    fs = engine.fleet_scores(at=at)
+    ov = overview(engine, at=at)
+
+    scored = {r.machine_id: round(float(r.failure_probability), 4)
+              for r in fs.itertuples() if pd.notna(r.failure_probability)}
+    shown = {m["machine_id"]: m["failure_probability"] for m in ov["machines"]
+             if m["failure_probability"] is not None}
+
+    assert set(scored) == set(shown), (
+        f"only fleet_scores: {sorted(set(scored) - set(shown))}; "
+        f"only overview: {sorted(set(shown) - set(scored))}")
+    for mid, p in scored.items():
+        assert abs(p - shown[mid]) < 1e-4, mid
+
+
+def test_no_machine_is_scored_on_input_it_was_not_trained_for(engine):
+    """The rule behind the agreement above, asserted directly.
+
+    It differs by model kind, matching how each was trained: a sequence model
+    needs the whole lookback free of downtime, a tabular model only needs the
+    scored row itself to be usable.
+    """
+    import pandas as pd
+
+    at = engine.busiest_timestamp("test")
+    fs = engine.fleet_scores(at=at)
+    df = engine.data.df
+    span = engine.bundle.lookback if engine.bundle.is_sequence() else 1
+    for r in fs.itertuples():
+        if pd.isna(r.failure_probability):
+            continue
+        g = df[(df.machine_id == r.machine_id) & (df.timestamp <= at)]
+        assert int(g["is_downtime"].tail(span).max()) == 0, (
+            f"{r.machine_id} scored {r.failure_probability} on "
+            f"{span} step(s) containing downtime")

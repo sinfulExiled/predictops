@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-29T19:06:55",
+  "generated": "2026-08-30T07:10:50",
   "suite": {
     "n_cases": 45,
     "n_positive": 23,
@@ -25,32 +25,115 @@
     }
   },
   "model_under_test": {
-    "kind": "xgboost",
+    "kind": "ensemble",
     "feature_set": "engineered",
-    "threshold": 0.42499999999999993
+    "threshold": 0.9869715992065325
   },
   "baseline": {
     "n_cases": 45,
-    "alert_accuracy": 0.6444,
-    "precision": 0.8889,
-    "recall": 0.3478,
-    "f1": 0.5,
-    "true_positives": 8,
-    "false_negatives": 15,
-    "false_positives": 1,
-    "true_negatives": 21,
-    "false_alarm_rate_on_nuisance_cases": 0.0455,
+    "alert_accuracy": 0.6889,
+    "precision": 1.0,
+    "recall": 0.3913,
+    "f1": 0.5625,
+    "true_positives": 9,
+    "false_negatives": 14,
+    "false_positives": 0,
+    "true_negatives": 22,
+    "false_alarm_rate_on_nuisance_cases": 0.0,
     "cause_accuracy": 0.3043,
-    "cause_accuracy_when_alerted": 0.875,
-    "n_alerted_positives": 8,
-    "hard_case_accuracy": 0.5714,
-    "mean_early_warning_h": 2.88,
-    "median_seconds_per_case": 0.023,
+    "cause_accuracy_when_alerted": 0.7778,
+    "n_alerted_positives": 9,
+    "hard_case_accuracy": 0.6429,
+    "mean_early_warning_h": 2.89,
+    "median_seconds_per_case": 0.014,
     "by_category": {
       "atypical_pattern": {
         "n": 3,
         "correct": 0,
         "accuracy": 0.0
+      },
+      "clear_degradation": {
+        "n": 4,
+        "correct": 3,
+        "accuracy": 0.75
+      },
+      "early_warning": {
+        "n": 4,
+        "correct": 2,
+        "accuracy": 0.5
+      },
+      "healthy_machine": {
+        "n": 5,
+        "correct": 5,
+        "accuracy": 1.0
+      },
+      "hot_weather_no_failure": {
+        "n": 4,
+        "correct": 4,
+        "accuracy": 1.0
+      },
+      "late_warning": {
+        "n": 4,
+        "correct": 3,
+        "accuracy": 0.75
+      },
+      "load_surge_no_failure": {
+        "n": 4,
+        "correct": 4,
+        "accuracy": 1.0
+      },
+      "missing_telemetry": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0
+      },
+      "multiple_anomalies_no_failure": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0
+      },
+      "sensor_spike_no_failure": {
+        "n": 3,
+        "correct": 3,
+        "accuracy": 1.0
+      },
+      "subtle_degradation": {
+        "n": 4,
+        "correct": 1,
+        "accuracy": 0.25
+      },
+      "sudden_failure": {
+        "n": 4,
+        "correct": 0,
+        "accuracy": 0.0
+      }
+    },
+    "verification_verdicts": {
+      "not available (threshold rule)": 45
+    }
+  },
+  "agent": {
+    "n_cases": 45,
+    "alert_accuracy": 0.7111,
+    "precision": 0.9167,
+    "recall": 0.4783,
+    "f1": 0.6286,
+    "true_positives": 11,
+    "false_negatives": 12,
+    "false_positives": 1,
+    "true_negatives": 21,
+    "false_alarm_rate_on_nuisance_cases": 0.0455,
+    "cause_accuracy": 0.3913,
+    "cause_accuracy_when_alerted": 0.8182,
+    "n_alerted_positives": 11,
+    "hard_case_accuracy": 0.6786,
+    "mean_early_warning_h": 2.91,
+    "median_seconds_per_case": 0.641,
+    "by_category": {
+      "atypical_pattern": {
+        "n": 3,
+        "correct": 2,
+        "accuracy": 0.667
       },
       "clear_degradation": {
         "n": 4,
@@ -99,91 +182,8 @@
       },
       "subtle_degradation": {
         "n": 4,
-        "correct": 0,
-        "accuracy": 0.0
-      },
-      "sudden_failure": {
-        "n": 4,
-        "correct": 0,
-        "accuracy": 0.0
-      }
-    },
-    "verification_verdicts": {
-      "not available (threshold rule)": 45
-    }
-  },
-  "agent": {
-    "n_cases": 45,
-    "alert_accuracy": 0.7333,
-    "precision": 1.0,
-    "recall": 0.4783,
-    "f1": 0.6471,
-    "true_positives": 11,
-    "false_negatives": 12,
-    "false_positives": 0,
-    "true_negatives": 22,
-    "false_alarm_rate_on_nuisance_cases": 0.0,
-    "cause_accuracy": 0.4348,
-    "cause_accuracy_when_alerted": 0.9091,
-    "n_alerted_positives": 11,
-    "hard_case_accuracy": 0.7143,
-    "mean_early_warning_h": 2.91,
-    "median_seconds_per_case": 0.74,
-    "by_category": {
-      "atypical_pattern": {
-        "n": 3,
         "correct": 1,
-        "accuracy": 0.333
-      },
-      "clear_degradation": {
-        "n": 4,
-        "correct": 3,
-        "accuracy": 0.75
-      },
-      "early_warning": {
-        "n": 4,
-        "correct": 2,
-        "accuracy": 0.5
-      },
-      "healthy_machine": {
-        "n": 5,
-        "correct": 5,
-        "accuracy": 1.0
-      },
-      "hot_weather_no_failure": {
-        "n": 4,
-        "correct": 4,
-        "accuracy": 1.0
-      },
-      "late_warning": {
-        "n": 4,
-        "correct": 3,
-        "accuracy": 0.75
-      },
-      "load_surge_no_failure": {
-        "n": 4,
-        "correct": 4,
-        "accuracy": 1.0
-      },
-      "missing_telemetry": {
-        "n": 3,
-        "correct": 3,
-        "accuracy": 1.0
-      },
-      "multiple_anomalies_no_failure": {
-        "n": 3,
-        "correct": 3,
-        "accuracy": 1.0
-      },
-      "sensor_spike_no_failure": {
-        "n": 3,
-        "correct": 3,
-        "accuracy": 1.0
-      },
-      "subtle_degradation": {
-        "n": 4,
-        "correct": 2,
-        "accuracy": 0.5
+        "accuracy": 0.25
       },
       "sudden_failure": {
         "n": 4,
@@ -192,12 +192,12 @@
       }
     },
     "verification_verdicts": {
-      "PASS_WITH_WARNINGS": 26,
-      "PASS": 18,
-      "FAIL": 1
+      "PASS": 28,
+      "PASS_WITH_WARNINGS": 15,
+      "FAIL": 2
     },
     "cases_cleared_to_act": 10,
-    "mean_simulated_risk_reduction": 0.1386
+    "mean_simulated_risk_reduction": 0.2833
   },
   "llm_usage": {
     "calls": 180,
@@ -224,19 +224,19 @@
       }
     }
   },
-  "wall_clock_s": 38.9,
+  "wall_clock_s": 32.3,
   "cases": {
     "baseline": [
       {
         "scenario_id": "S01",
         "category": "clear_degradation",
         "difficulty": "easy",
-        "machine_id": "COMPRESSOR-066",
+        "machine_id": "MOTOR-066",
         "timestamp": "2025-03-29 01:30:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 9.4146,
+        "probability": 9.0298,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -245,7 +245,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.025152921676635742
+        "duration_s": 0.017230749130249023
       },
       {
         "scenario_id": "S02",
@@ -256,7 +256,7 @@
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 8.1952,
+        "probability": 8.1986,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -265,18 +265,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02770209312438965
+        "duration_s": 0.01575160026550293
       },
       {
         "scenario_id": "S03",
         "category": "clear_degradation",
         "difficulty": "easy",
-        "machine_id": "CONVEYOR-003",
+        "machine_id": "PUMP-003",
         "timestamp": "2025-03-24 19:40:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 9.6208,
+        "probability": 9.4928,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -285,7 +285,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.027339696884155273
+        "duration_s": 0.016450166702270508
       },
       {
         "scenario_id": "S04",
@@ -296,7 +296,7 @@
         "expected_alert": true,
         "expected_type": "pump_cavitation",
         "alert": false,
-        "probability": 2.6995,
+        "probability": 2.7066,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -305,38 +305,38 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02221965789794922
+        "duration_s": 0.016827821731567383
       },
       {
         "scenario_id": "S05",
         "category": "subtle_degradation",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-023",
+        "machine_id": "PUMP-023",
         "timestamp": "2025-03-28 04:40:00",
         "expected_alert": true,
-        "expected_type": "motor_overheating",
-        "alert": false,
-        "probability": 1.571,
-        "predicted_type": null,
-        "correct_alert": false,
+        "expected_type": "pump_cavitation",
+        "alert": true,
+        "probability": 5.1353,
+        "predicted_type": "bearing_degradation",
+        "correct_alert": true,
         "correct_type": false,
-        "early_warning_h": null,
+        "early_warning_h": 3.0,
         "verification": "not available (threshold rule)",
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02160191535949707
+        "duration_s": 0.013527393341064453
       },
       {
         "scenario_id": "S06",
         "category": "subtle_degradation",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-059",
+        "machine_id": "MOTOR-059",
         "timestamp": "2025-03-29 11:10:00",
         "expected_alert": true,
         "expected_type": "electrical_fault",
         "alert": false,
-        "probability": 1.5277,
+        "probability": 1.4557,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -345,18 +345,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02175617218017578
+        "duration_s": 0.012085914611816406
       },
       {
         "scenario_id": "S07",
         "category": "subtle_degradation",
         "difficulty": "hard",
-        "machine_id": "COMPRESSOR-002",
+        "machine_id": "PUMP-002",
         "timestamp": "2025-03-30 03:00:00",
         "expected_alert": true,
         "expected_type": "pressure_loss",
         "alert": false,
-        "probability": 0.1185,
+        "probability": -0.2524,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -365,18 +365,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.0227200984954834
+        "duration_s": 0.019404888153076172
       },
       {
         "scenario_id": "S08",
         "category": "subtle_degradation",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-063",
+        "machine_id": "MOTOR-063",
         "timestamp": "2025-03-28 20:40:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": false,
-        "probability": 2.6221,
+        "probability": 2.5833,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -385,18 +385,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.023848295211791992
+        "duration_s": 0.014791727066040039
       },
       {
         "scenario_id": "S09",
         "category": "sudden_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-011",
+        "machine_id": "PUMP-011",
         "timestamp": "2025-03-24 05:50:00",
         "expected_alert": true,
-        "expected_type": "electrical_fault",
+        "expected_type": "pressure_loss",
         "alert": false,
-        "probability": -0.0427,
+        "probability": -0.1264,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -405,18 +405,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021881818771362305
+        "duration_s": 0.010952472686767578
       },
       {
         "scenario_id": "S10",
         "category": "sudden_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-056",
+        "machine_id": "MOTOR-056",
         "timestamp": "2025-03-26 17:30:00",
         "expected_alert": true,
         "expected_type": "electrical_fault",
         "alert": false,
-        "probability": 0.0596,
+        "probability": 0.2399,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -425,18 +425,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.022152423858642578
+        "duration_s": 0.011656045913696289
       },
       {
         "scenario_id": "S11",
         "category": "sudden_failure",
         "difficulty": "hard",
-        "machine_id": "MOTOR-041",
+        "machine_id": "COMPRESSOR-041",
         "timestamp": "2025-03-26 06:30:00",
         "expected_alert": true,
-        "expected_type": "electrical_fault",
+        "expected_type": "motor_overheating",
         "alert": false,
-        "probability": 0.0344,
+        "probability": -0.1445,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -445,7 +445,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021276473999023438
+        "duration_s": 0.010794639587402344
       },
       {
         "scenario_id": "S12",
@@ -456,7 +456,7 @@
         "expected_alert": true,
         "expected_type": "pressure_loss",
         "alert": false,
-        "probability": 0.3827,
+        "probability": 0.3787,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -465,7 +465,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.022246360778808594
+        "duration_s": 0.011452674865722656
       },
       {
         "scenario_id": "S13",
@@ -476,7 +476,7 @@
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": false,
-        "probability": 1.4185,
+        "probability": 1.4193,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -485,7 +485,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021518230438232422
+        "duration_s": 0.012691020965576172
       },
       {
         "scenario_id": "S14",
@@ -496,7 +496,7 @@
         "expected_alert": true,
         "expected_type": "motor_overheating",
         "alert": false,
-        "probability": 1.1828,
+        "probability": 1.1837,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -505,7 +505,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021880626678466797
+        "duration_s": 0.011848688125610352
       },
       {
         "scenario_id": "S15",
@@ -516,7 +516,7 @@
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": false,
-        "probability": 1.1874,
+        "probability": 1.1777,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -525,18 +525,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.023514509201049805
+        "duration_s": 0.016178607940673828
       },
       {
         "scenario_id": "S16",
         "category": "early_warning",
         "difficulty": "moderate",
-        "machine_id": "CONVEYOR-003",
+        "machine_id": "PUMP-003",
         "timestamp": "2025-03-24 17:10:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 9.838,
+        "probability": 9.6733,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -545,7 +545,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.024110794067382812
+        "duration_s": 0.02279043197631836
       },
       {
         "scenario_id": "S17",
@@ -556,7 +556,7 @@
         "expected_alert": true,
         "expected_type": "pump_cavitation",
         "alert": false,
-        "probability": -0.0828,
+        "probability": -0.0877,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -565,7 +565,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.020273208618164062
+        "duration_s": 0.01462864875793457
       },
       {
         "scenario_id": "S18",
@@ -576,7 +576,7 @@
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": false,
-        "probability": 0.6318,
+        "probability": 0.6244,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -585,18 +585,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.019822120666503906
+        "duration_s": 0.016431570053100586
       },
       {
         "scenario_id": "S19",
         "category": "early_warning",
         "difficulty": "moderate",
-        "machine_id": "COMPRESSOR-066",
+        "machine_id": "MOTOR-066",
         "timestamp": "2025-03-28 23:00:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 8.6192,
+        "probability": 6.7689,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -605,18 +605,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.023020505905151367
+        "duration_s": 0.013539552688598633
       },
       {
         "scenario_id": "S20",
         "category": "late_warning",
         "difficulty": "easy",
-        "machine_id": "CONVEYOR-003",
+        "machine_id": "PUMP-003",
         "timestamp": "2025-03-24 21:40:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 9.5218,
+        "probability": 9.4678,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -625,7 +625,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02087116241455078
+        "duration_s": 0.02182793617248535
       },
       {
         "scenario_id": "S21",
@@ -636,7 +636,7 @@
         "expected_alert": true,
         "expected_type": "pump_cavitation",
         "alert": true,
-        "probability": 7.9532,
+        "probability": 7.9799,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": false,
@@ -645,7 +645,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.022866010665893555
+        "duration_s": 0.021855831146240234
       },
       {
         "scenario_id": "S22",
@@ -656,7 +656,7 @@
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": false,
-        "probability": 2.0682,
+        "probability": 2.0615,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -665,18 +665,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02311873435974121
+        "duration_s": 0.019735336303710938
       },
       {
         "scenario_id": "S23",
         "category": "late_warning",
         "difficulty": "easy",
-        "machine_id": "COMPRESSOR-066",
+        "machine_id": "MOTOR-066",
         "timestamp": "2025-03-29 03:30:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 11.1852,
+        "probability": 10.2601,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -685,18 +685,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02388763427734375
+        "duration_s": 0.023082733154296875
       },
       {
         "scenario_id": "S24",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "COMPRESSOR-006",
-        "timestamp": "2025-03-24 22:30:00",
+        "machine_id": "COMPRESSOR-035",
+        "timestamp": "2025-03-24 02:30:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 2.2445,
+        "probability": 0.8795,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -705,18 +705,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.020987272262573242
+        "duration_s": 0.016082048416137695
       },
       {
         "scenario_id": "S25",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-055",
-        "timestamp": "2025-03-24 10:20:00",
+        "machine_id": "CONVEYOR-073",
+        "timestamp": "2025-03-24 10:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 1.6642,
+        "probability": 1.7373,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -725,18 +725,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02314472198486328
+        "duration_s": 0.014214277267456055
       },
       {
         "scenario_id": "S26",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-032",
-        "timestamp": "2025-03-24 22:10:00",
+        "machine_id": "PUMP-009",
+        "timestamp": "2025-03-24 20:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 2.0489,
+        "probability": 2.5426,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -745,18 +745,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.027594804763793945
+        "duration_s": 0.01350855827331543
       },
       {
         "scenario_id": "S27",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-044",
-        "timestamp": "2025-03-24 04:00:00",
+        "machine_id": "PUMP-022",
+        "timestamp": "2025-03-24 02:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.7177,
+        "probability": 0.2371,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -765,18 +765,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.026653289794921875
+        "duration_s": 0.011616945266723633
       },
       {
         "scenario_id": "S28",
         "category": "load_surge_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-032",
-        "timestamp": "2025-03-24 01:30:00",
+        "machine_id": "PUMP-016",
+        "timestamp": "2025-03-25 11:00:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.7513,
+        "probability": 1.1644,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -785,18 +785,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.024679899215698242
+        "duration_s": 0.012309074401855469
       },
       {
         "scenario_id": "S29",
         "category": "load_surge_no_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-071",
-        "timestamp": "2025-03-26 04:30:00",
+        "machine_id": "MOTOR-058",
+        "timestamp": "2025-03-27 09:00:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.364,
+        "probability": 1.2687,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -805,18 +805,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.0217134952545166
+        "duration_s": 0.017288923263549805
       },
       {
         "scenario_id": "S30",
         "category": "load_surge_no_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-015",
-        "timestamp": "2025-03-27 18:20:00",
+        "machine_id": "COMPRESSOR-047",
+        "timestamp": "2025-03-29 20:40:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.9718,
+        "probability": 1.7484,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -825,18 +825,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021684646606445312
+        "duration_s": 0.012458086013793945
       },
       {
         "scenario_id": "S31",
         "category": "load_surge_no_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-023",
-        "timestamp": "2025-03-27 06:00:00",
+        "machine_id": "COMPRESSOR-050",
+        "timestamp": "2025-03-25 16:30:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.4418,
+        "probability": 2.2635,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -845,18 +845,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.026765108108520508
+        "duration_s": 0.020678043365478516
       },
       {
         "scenario_id": "S32",
         "category": "missing_telemetry",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-071",
-        "timestamp": "2025-03-29 01:10:00",
+        "machine_id": "MOTOR-061",
+        "timestamp": "2025-03-28 10:40:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.6678,
+        "probability": -0.2602,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -865,18 +865,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02392721176147461
+        "duration_s": 0.019404172897338867
       },
       {
         "scenario_id": "S33",
         "category": "missing_telemetry",
         "difficulty": "hard",
-        "machine_id": "COMPRESSOR-030",
-        "timestamp": "2025-03-29 21:10:00",
+        "machine_id": "COMPRESSOR-040",
+        "timestamp": "2025-03-24 11:10:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.5741,
+        "probability": 1.9569,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -885,18 +885,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.0224764347076416
+        "duration_s": 0.014356851577758789
       },
       {
         "scenario_id": "S34",
         "category": "missing_telemetry",
         "difficulty": "hard",
-        "machine_id": "COMPRESSOR-006",
-        "timestamp": "2025-03-30 20:50:00",
+        "machine_id": "COMPRESSOR-034",
+        "timestamp": "2025-03-27 01:20:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.6174,
+        "probability": 0.8435,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -905,18 +905,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.026112794876098633
+        "duration_s": 0.012223005294799805
       },
       {
         "scenario_id": "S35",
         "category": "sensor_spike_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-040",
-        "timestamp": "2025-03-25 03:50:00",
+        "machine_id": "PUMP-022",
+        "timestamp": "2025-03-26 09:20:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 2.1536,
+        "probability": 1.7269,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -925,38 +925,38 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02214813232421875
+        "duration_s": 0.01380157470703125
       },
       {
         "scenario_id": "S36",
         "category": "sensor_spike_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-068",
-        "timestamp": "2025-03-24 20:00:00",
+        "machine_id": "PUMP-028",
+        "timestamp": "2025-03-30 00:20:00",
         "expected_alert": false,
         "expected_type": null,
-        "alert": true,
-        "probability": 17.7601,
-        "predicted_type": "bearing_degradation",
-        "correct_alert": false,
+        "alert": false,
+        "probability": 1.2611,
+        "predicted_type": null,
+        "correct_alert": true,
         "correct_type": null,
         "early_warning_h": null,
         "verification": "not available (threshold rule)",
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.024068355560302734
+        "duration_s": 0.011189699172973633
       },
       {
         "scenario_id": "S37",
         "category": "sensor_spike_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-072",
-        "timestamp": "2025-03-24 07:30:00",
+        "machine_id": "PUMP-030",
+        "timestamp": "2025-03-27 05:40:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 1.6911,
+        "probability": 1.1463,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -965,18 +965,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.020095109939575195
+        "duration_s": 0.015150308609008789
       },
       {
         "scenario_id": "S38",
         "category": "multiple_anomalies_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-036",
-        "timestamp": "2025-03-25 10:10:00",
+        "machine_id": "PUMP-026",
+        "timestamp": "2025-03-30 00:40:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 2.1571,
+        "probability": 1.1404,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -985,18 +985,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.023967981338500977
+        "duration_s": 0.013090133666992188
       },
       {
         "scenario_id": "S39",
         "category": "multiple_anomalies_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-060",
-        "timestamp": "2025-03-25 05:30:00",
+        "machine_id": "COMPRESSOR-049",
+        "timestamp": "2025-03-28 06:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 3.0438,
+        "probability": 0.2464,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1005,18 +1005,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021478891372680664
+        "duration_s": 0.014652013778686523
       },
       {
         "scenario_id": "S40",
         "category": "multiple_anomalies_no_failure",
         "difficulty": "hard",
-        "machine_id": "COMPRESSOR-074",
-        "timestamp": "2025-03-28 03:00:00",
+        "machine_id": "COMPRESSOR-044",
+        "timestamp": "2025-03-24 18:40:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 1.3217,
+        "probability": 2.9158,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1025,18 +1025,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02642202377319336
+        "duration_s": 0.01356196403503418
       },
       {
         "scenario_id": "S41",
         "category": "healthy_machine",
         "difficulty": "easy",
-        "machine_id": "MOTOR-001",
-        "timestamp": "2025-03-26 19:50:00",
+        "machine_id": "MOTOR-064",
+        "timestamp": "2025-03-29 18:10:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.3512,
+        "probability": 0.6634,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1045,18 +1045,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02270817756652832
+        "duration_s": 0.01398611068725586
       },
       {
         "scenario_id": "S42",
         "category": "healthy_machine",
         "difficulty": "easy",
-        "machine_id": "CONVEYOR-023",
-        "timestamp": "2025-03-25 06:10:00",
+        "machine_id": "CONVEYOR-078",
+        "timestamp": "2025-03-26 17:30:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.6865,
+        "probability": 0.1945,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1065,18 +1065,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.021825075149536133
+        "duration_s": 0.013551950454711914
       },
       {
         "scenario_id": "S43",
         "category": "healthy_machine",
         "difficulty": "easy",
-        "machine_id": "MOTOR-033",
-        "timestamp": "2025-03-28 14:20:00",
+        "machine_id": "PUMP-001",
+        "timestamp": "2025-03-26 08:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.1207,
+        "probability": 0.2451,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1085,18 +1085,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.026229143142700195
+        "duration_s": 0.01350092887878418
       },
       {
         "scenario_id": "S44",
         "category": "healthy_machine",
         "difficulty": "easy",
-        "machine_id": "COMPRESSOR-034",
-        "timestamp": "2025-03-27 12:50:00",
+        "machine_id": "COMPRESSOR-040",
+        "timestamp": "2025-03-30 10:00:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.3411,
+        "probability": 0.1119,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1105,18 +1105,18 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.024163246154785156
+        "duration_s": 0.016658782958984375
       },
       {
         "scenario_id": "S45",
         "category": "healthy_machine",
         "difficulty": "easy",
-        "machine_id": "PUMP-036",
-        "timestamp": "2025-03-28 07:10:00",
+        "machine_id": "PUMP-021",
+        "timestamp": "2025-03-29 09:30:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": -0.365,
+        "probability": -0.5123,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1125,7 +1125,7 @@
         "safe_to_act": null,
         "plan": [],
         "simulated_reduction": null,
-        "duration_s": 0.02200484275817871
+        "duration_s": 0.015680313110351562
       }
     ],
     "agent": [
@@ -1133,12 +1133,58 @@
         "scenario_id": "S01",
         "category": "clear_degradation",
         "difficulty": "easy",
-        "machine_id": "COMPRESSOR-066",
+        "machine_id": "MOTOR-066",
         "timestamp": "2025-03-29 01:30:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 0.9959,
+        "probability": 0.9956,
+        "predicted_type": "bearing_degradation",
+        "correct_alert": true,
+        "correct_type": true,
+        "early_warning_h": 3.0,
+        "verification": "PASS",
+        "safe_to_act": true,
+        "plan": [
+          "reduce_load_70",
+          "inspect_bearing",
+          "replace_bearing"
+        ],
+        "simulated_reduction": 0.9911,
+        "duration_s": 0.6754324436187744
+      },
+      {
+        "scenario_id": "S02",
+        "category": "clear_degradation",
+        "difficulty": "easy",
+        "machine_id": "COMPRESSOR-038",
+        "timestamp": "2025-03-30 11:30:00",
+        "expected_alert": true,
+        "expected_type": "bearing_degradation",
+        "alert": true,
+        "probability": 0.9937,
+        "predicted_type": "bearing_degradation",
+        "correct_alert": true,
+        "correct_type": true,
+        "early_warning_h": 3.0,
+        "verification": "FAIL",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.45892906188964844
+      },
+      {
+        "scenario_id": "S03",
+        "category": "clear_degradation",
+        "difficulty": "easy",
+        "machine_id": "PUMP-003",
+        "timestamp": "2025-03-24 19:40:00",
+        "expected_alert": true,
+        "expected_type": "bearing_degradation",
+        "alert": true,
+        "probability": 0.9965,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -1151,56 +1197,8 @@
           "replace_bearing",
           "controlled_shutdown"
         ],
-        "simulated_reduction": 0.2384,
-        "duration_s": 0.848376989364624
-      },
-      {
-        "scenario_id": "S02",
-        "category": "clear_degradation",
-        "difficulty": "easy",
-        "machine_id": "COMPRESSOR-038",
-        "timestamp": "2025-03-30 11:30:00",
-        "expected_alert": true,
-        "expected_type": "bearing_degradation",
-        "alert": true,
-        "probability": 0.5874,
-        "predicted_type": "bearing_degradation",
-        "correct_alert": true,
-        "correct_type": true,
-        "early_warning_h": 3.0,
-        "verification": "FAIL",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70",
-          "inspect_bearing",
-          "replace_bearing"
-        ],
-        "simulated_reduction": 0.0518,
-        "duration_s": 0.7679343223571777
-      },
-      {
-        "scenario_id": "S03",
-        "category": "clear_degradation",
-        "difficulty": "easy",
-        "machine_id": "CONVEYOR-003",
-        "timestamp": "2025-03-24 19:40:00",
-        "expected_alert": true,
-        "expected_type": "bearing_degradation",
-        "alert": true,
-        "probability": 0.9528,
-        "predicted_type": "bearing_degradation",
-        "correct_alert": true,
-        "correct_type": true,
-        "early_warning_h": 3.0,
-        "verification": "PASS",
-        "safe_to_act": true,
-        "plan": [
-          "reduce_load_70",
-          "inspect_bearing",
-          "replace_bearing"
-        ],
-        "simulated_reduction": 0.4486,
-        "duration_s": 0.8104989528656006
+        "simulated_reduction": 0.852,
+        "duration_s": 0.7214374542236328
       },
       {
         "scenario_id": "S04",
@@ -1211,7 +1209,123 @@
         "expected_alert": true,
         "expected_type": "pump_cavitation",
         "alert": false,
-        "probability": 0.0258,
+        "probability": 0.9784,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "restore_suction"
+        ],
+        "simulated_reduction": 0.0191,
+        "duration_s": 0.6972448825836182
+      },
+      {
+        "scenario_id": "S05",
+        "category": "subtle_degradation",
+        "difficulty": "hard",
+        "machine_id": "PUMP-023",
+        "timestamp": "2025-03-28 04:40:00",
+        "expected_alert": true,
+        "expected_type": "pump_cavitation",
+        "alert": true,
+        "probability": 0.9969,
+        "predicted_type": "pump_cavitation",
+        "correct_alert": true,
+        "correct_type": true,
+        "early_warning_h": 3.0,
+        "verification": "FAIL",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "restore_suction",
+          "controlled_shutdown"
+        ],
+        "simulated_reduction": 0.9783,
+        "duration_s": 0.7715816497802734
+      },
+      {
+        "scenario_id": "S06",
+        "category": "subtle_degradation",
+        "difficulty": "hard",
+        "machine_id": "MOTOR-059",
+        "timestamp": "2025-03-29 11:10:00",
+        "expected_alert": true,
+        "expected_type": "electrical_fault",
+        "alert": false,
+        "probability": 0.0097,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "inspect_electrical",
+          "correct_supply"
+        ],
+        "simulated_reduction": 0.9529,
+        "duration_s": 0.7214577198028564
+      },
+      {
+        "scenario_id": "S07",
+        "category": "subtle_degradation",
+        "difficulty": "hard",
+        "machine_id": "PUMP-002",
+        "timestamp": "2025-03-30 03:00:00",
+        "expected_alert": true,
+        "expected_type": "pressure_loss",
+        "alert": false,
+        "probability": 0.004,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "restore_suction"
+        ],
+        "simulated_reduction": 0.0668,
+        "duration_s": 0.5352911949157715
+      },
+      {
+        "scenario_id": "S08",
+        "category": "subtle_degradation",
+        "difficulty": "hard",
+        "machine_id": "MOTOR-063",
+        "timestamp": "2025-03-28 20:40:00",
+        "expected_alert": true,
+        "expected_type": "bearing_degradation",
+        "alert": false,
+        "probability": 0.9863,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "controlled_shutdown"
+        ],
+        "simulated_reduction": 0.6799,
+        "duration_s": 0.6716792583465576
+      },
+      {
+        "scenario_id": "S09",
+        "category": "sudden_failure",
+        "difficulty": "hard",
+        "machine_id": "PUMP-011",
+        "timestamp": "2025-03-24 05:50:00",
+        "expected_alert": true,
+        "expected_type": "pressure_loss",
+        "alert": false,
+        "probability": 0.0027,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
@@ -1219,21 +1333,112 @@
         "verification": "PASS_WITH_WARNINGS",
         "safe_to_act": false,
         "plan": [
-          "restore_suction"
+          "reduce_load_70",
+          "inspect_electrical",
+          "correct_supply"
         ],
-        "simulated_reduction": 0.0001,
-        "duration_s": 0.6659839153289795
+        "simulated_reduction": 0.0005,
+        "duration_s": 0.7170095443725586
       },
       {
-        "scenario_id": "S05",
-        "category": "subtle_degradation",
+        "scenario_id": "S10",
+        "category": "sudden_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-023",
-        "timestamp": "2025-03-28 04:40:00",
+        "machine_id": "MOTOR-056",
+        "timestamp": "2025-03-26 17:30:00",
+        "expected_alert": true,
+        "expected_type": "electrical_fault",
+        "alert": false,
+        "probability": 0.009,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70"
+        ],
+        "simulated_reduction": 0.0002,
+        "duration_s": 0.5996243953704834
+      },
+      {
+        "scenario_id": "S11",
+        "category": "sudden_failure",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-041",
+        "timestamp": "2025-03-26 06:30:00",
+        "expected_alert": true,
+        "expected_type": "motor_overheating",
+        "alert": false,
+        "probability": 0.0026,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70"
+        ],
+        "simulated_reduction": -0.0592,
+        "duration_s": 0.5480921268463135
+      },
+      {
+        "scenario_id": "S12",
+        "category": "sudden_failure",
+        "difficulty": "hard",
+        "machine_id": "PUMP-024",
+        "timestamp": "2025-03-29 13:30:00",
+        "expected_alert": true,
+        "expected_type": "pressure_loss",
+        "alert": false,
+        "probability": 0.0022,
+        "predicted_type": null,
+        "correct_alert": false,
+        "correct_type": false,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.43919992446899414
+      },
+      {
+        "scenario_id": "S13",
+        "category": "atypical_pattern",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-042",
+        "timestamp": "2025-03-28 07:50:00",
+        "expected_alert": true,
+        "expected_type": "bearing_degradation",
+        "alert": true,
+        "probability": 0.996,
+        "predicted_type": "motor_overheating",
+        "correct_alert": true,
+        "correct_type": false,
+        "early_warning_h": 3.0,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": true,
+        "plan": [
+          "reduce_load_70",
+          "controlled_shutdown"
+        ],
+        "simulated_reduction": -0.1015,
+        "duration_s": 0.6705429553985596
+      },
+      {
+        "scenario_id": "S14",
+        "category": "atypical_pattern",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-042",
+        "timestamp": "2025-03-24 05:50:00",
         "expected_alert": true,
         "expected_type": "motor_overheating",
         "alert": true,
-        "probability": 0.6718,
+        "probability": 0.9952,
         "predicted_type": "motor_overheating",
         "correct_alert": true,
         "correct_type": true,
@@ -1241,19 +1446,20 @@
         "verification": "PASS",
         "safe_to_act": true,
         "plan": [
-          "reduce_load_70"
+          "reduce_load_70",
+          "controlled_shutdown"
         ],
-        "simulated_reduction": 0.4554,
-        "duration_s": 0.6344320774078369
+        "simulated_reduction": 0.075,
+        "duration_s": 0.6867046356201172
       },
       {
-        "scenario_id": "S06",
-        "category": "subtle_degradation",
+        "scenario_id": "S15",
+        "category": "atypical_pattern",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-059",
-        "timestamp": "2025-03-29 11:10:00",
+        "machine_id": "PUMP-004",
+        "timestamp": "2025-03-23 19:20:00",
         "expected_alert": true,
-        "expected_type": "electrical_fault",
+        "expected_type": "bearing_degradation",
         "alert": false,
         "probability": 0.0036,
         "predicted_type": null,
@@ -1267,227 +1473,19 @@
           "inspect_electrical",
           "correct_supply"
         ],
-        "simulated_reduction": 0.0017,
-        "duration_s": 0.7770459651947021
-      },
-      {
-        "scenario_id": "S07",
-        "category": "subtle_degradation",
-        "difficulty": "hard",
-        "machine_id": "COMPRESSOR-002",
-        "timestamp": "2025-03-30 03:00:00",
-        "expected_alert": true,
-        "expected_type": "pressure_loss",
-        "alert": false,
-        "probability": 0.0015,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "restore_suction"
-        ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.6699950695037842
-      },
-      {
-        "scenario_id": "S08",
-        "category": "subtle_degradation",
-        "difficulty": "hard",
-        "machine_id": "CONVEYOR-063",
-        "timestamp": "2025-03-28 20:40:00",
-        "expected_alert": true,
-        "expected_type": "bearing_degradation",
-        "alert": true,
-        "probability": 0.717,
-        "predicted_type": "bearing_degradation",
-        "correct_alert": true,
-        "correct_type": true,
-        "early_warning_h": 3.0,
-        "verification": "PASS",
-        "safe_to_act": true,
-        "plan": [
-          "reduce_load_70",
-          "inspect_bearing",
-          "replace_bearing"
-        ],
-        "simulated_reduction": 0.4168,
-        "duration_s": 0.7756876945495605
-      },
-      {
-        "scenario_id": "S09",
-        "category": "sudden_failure",
-        "difficulty": "hard",
-        "machine_id": "CONVEYOR-011",
-        "timestamp": "2025-03-24 05:50:00",
-        "expected_alert": true,
-        "expected_type": "electrical_fault",
-        "alert": false,
-        "probability": 0.0001,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70",
-          "inspect_electrical",
-          "correct_supply"
-        ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.8731534481048584
-      },
-      {
-        "scenario_id": "S10",
-        "category": "sudden_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-056",
-        "timestamp": "2025-03-26 17:30:00",
-        "expected_alert": true,
-        "expected_type": "electrical_fault",
-        "alert": false,
-        "probability": 0.0,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "increase_monitoring"
-        ],
-        "simulated_reduction": null,
-        "duration_s": 0.5178041458129883
-      },
-      {
-        "scenario_id": "S11",
-        "category": "sudden_failure",
-        "difficulty": "hard",
-        "machine_id": "MOTOR-041",
-        "timestamp": "2025-03-26 06:30:00",
-        "expected_alert": true,
-        "expected_type": "electrical_fault",
-        "alert": false,
-        "probability": 0.0,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70",
-          "inspect_electrical",
-          "correct_supply"
-        ],
-        "simulated_reduction": 0.0002,
-        "duration_s": 0.7686820030212402
-      },
-      {
-        "scenario_id": "S12",
-        "category": "sudden_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-024",
-        "timestamp": "2025-03-29 13:30:00",
-        "expected_alert": true,
-        "expected_type": "pressure_loss",
-        "alert": false,
-        "probability": 0.0002,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "restore_suction"
-        ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.6118495464324951
-      },
-      {
-        "scenario_id": "S13",
-        "category": "atypical_pattern",
-        "difficulty": "hard",
-        "machine_id": "COMPRESSOR-042",
-        "timestamp": "2025-03-28 07:50:00",
-        "expected_alert": true,
-        "expected_type": "bearing_degradation",
-        "alert": false,
-        "probability": 0.0443,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70",
-          "inspect_bearing",
-          "replace_bearing"
-        ],
-        "simulated_reduction": 0.3561,
-        "duration_s": 0.8045775890350342
-      },
-      {
-        "scenario_id": "S14",
-        "category": "atypical_pattern",
-        "difficulty": "hard",
-        "machine_id": "COMPRESSOR-042",
-        "timestamp": "2025-03-24 05:50:00",
-        "expected_alert": true,
-        "expected_type": "motor_overheating",
-        "alert": true,
-        "probability": 0.934,
-        "predicted_type": "motor_overheating",
-        "correct_alert": true,
-        "correct_type": true,
-        "early_warning_h": 3.0,
-        "verification": "PASS",
-        "safe_to_act": true,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0696,
-        "duration_s": 0.6542060375213623
-      },
-      {
-        "scenario_id": "S15",
-        "category": "atypical_pattern",
-        "difficulty": "hard",
-        "machine_id": "PUMP-004",
-        "timestamp": "2025-03-23 19:20:00",
-        "expected_alert": true,
-        "expected_type": "bearing_degradation",
-        "alert": false,
-        "probability": 0.0531,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70",
-          "inspect_electrical",
-          "correct_supply"
-        ],
-        "simulated_reduction": 0.0014,
-        "duration_s": 0.7117054462432861
+        "simulated_reduction": 0.0006,
+        "duration_s": 0.6741676330566406
       },
       {
         "scenario_id": "S16",
         "category": "early_warning",
         "difficulty": "moderate",
-        "machine_id": "CONVEYOR-003",
+        "machine_id": "PUMP-003",
         "timestamp": "2025-03-24 17:10:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 0.4882,
+        "probability": 0.9964,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -1497,10 +1495,11 @@
         "plan": [
           "reduce_load_70",
           "inspect_bearing",
-          "replace_bearing"
+          "replace_bearing",
+          "controlled_shutdown"
         ],
-        "simulated_reduction": 0.4604,
-        "duration_s": 0.8754692077636719
+        "simulated_reduction": 0.7776,
+        "duration_s": 0.8181478977203369
       },
       {
         "scenario_id": "S17",
@@ -1511,19 +1510,19 @@
         "expected_alert": true,
         "expected_type": "pump_cavitation",
         "alert": false,
-        "probability": 0.0058,
+        "probability": 0.0719,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
         "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
+        "verification": "PASS",
         "safe_to_act": false,
         "plan": [
           "reduce_load_70",
           "restore_suction"
         ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.9255199432373047
+        "simulated_reduction": 0.2247,
+        "duration_s": 0.6489219665527344
       },
       {
         "scenario_id": "S18",
@@ -1534,55 +1533,53 @@
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": false,
-        "probability": 0.0089,
+        "probability": 0.0033,
         "predicted_type": null,
         "correct_alert": false,
         "correct_type": false,
         "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
+        "verification": "PASS",
         "safe_to_act": false,
         "plan": [
           "reduce_load_70",
           "inspect_electrical",
           "correct_supply"
         ],
-        "simulated_reduction": -0.0002,
-        "duration_s": 1.0968167781829834
+        "simulated_reduction": 0.2175,
+        "duration_s": 0.6569437980651855
       },
       {
         "scenario_id": "S19",
         "category": "early_warning",
         "difficulty": "moderate",
-        "machine_id": "COMPRESSOR-066",
+        "machine_id": "MOTOR-066",
         "timestamp": "2025-03-28 23:00:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 0.5034,
-        "predicted_type": "bearing_degradation",
+        "probability": 0.9953,
+        "predicted_type": "motor_overheating",
         "correct_alert": true,
-        "correct_type": true,
+        "correct_type": false,
         "early_warning_h": 5.5,
         "verification": "PASS_WITH_WARNINGS",
         "safe_to_act": true,
         "plan": [
-          "reduce_load_70",
-          "inspect_bearing",
-          "replace_bearing"
+          "reduce_load_70"
         ],
-        "simulated_reduction": 0.7515,
-        "duration_s": 0.9509077072143555
+        "simulated_reduction": 0.7705,
+        "duration_s": 0.5907771587371826
       },
       {
         "scenario_id": "S20",
         "category": "late_warning",
         "difficulty": "easy",
-        "machine_id": "CONVEYOR-003",
+        "machine_id": "PUMP-003",
         "timestamp": "2025-03-24 21:40:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 0.9956,
+        "probability": 0.9962,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -1595,8 +1592,8 @@
           "replace_bearing",
           "controlled_shutdown"
         ],
-        "simulated_reduction": 0.9648,
-        "duration_s": 0.9597122669219971
+        "simulated_reduction": 0.8229,
+        "duration_s": 0.7971453666687012
       },
       {
         "scenario_id": "S21",
@@ -1606,19 +1603,21 @@
         "timestamp": "2025-03-27 10:20:00",
         "expected_alert": true,
         "expected_type": "pump_cavitation",
-        "alert": false,
-        "probability": 0.2826,
-        "predicted_type": null,
-        "correct_alert": false,
-        "correct_type": false,
-        "early_warning_h": null,
+        "alert": true,
+        "probability": 0.995,
+        "predicted_type": "pump_cavitation",
+        "correct_alert": true,
+        "correct_type": true,
+        "early_warning_h": 1.0,
         "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
+        "safe_to_act": true,
         "plan": [
-          "increase_monitoring"
+          "reduce_load_70",
+          "restore_suction",
+          "controlled_shutdown"
         ],
-        "simulated_reduction": null,
-        "duration_s": 0.5275106430053711
+        "simulated_reduction": 0.1383,
+        "duration_s": 0.7997996807098389
       },
       {
         "scenario_id": "S22",
@@ -1628,32 +1627,32 @@
         "timestamp": "2025-03-23 21:20:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
-        "alert": true,
-        "probability": 0.9685,
-        "predicted_type": "electrical_fault",
-        "correct_alert": true,
+        "alert": false,
+        "probability": 0.0043,
+        "predicted_type": null,
+        "correct_alert": false,
         "correct_type": false,
-        "early_warning_h": 1.0,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": true,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
         "plan": [
           "reduce_load_70",
           "inspect_electrical",
           "correct_supply"
         ],
-        "simulated_reduction": 0.0023,
-        "duration_s": 0.9385490417480469
+        "simulated_reduction": 0.0138,
+        "duration_s": 0.6862185001373291
       },
       {
         "scenario_id": "S23",
         "category": "late_warning",
         "difficulty": "easy",
-        "machine_id": "COMPRESSOR-066",
+        "machine_id": "MOTOR-066",
         "timestamp": "2025-03-29 03:30:00",
         "expected_alert": true,
         "expected_type": "bearing_degradation",
         "alert": true,
-        "probability": 0.9941,
+        "probability": 0.9957,
         "predicted_type": "bearing_degradation",
         "correct_alert": true,
         "correct_type": true,
@@ -1666,63 +1665,63 @@
           "replace_bearing",
           "controlled_shutdown"
         ],
-        "simulated_reduction": 0.7239,
-        "duration_s": 1.1126408576965332
+        "simulated_reduction": 0.9751,
+        "duration_s": 0.7865486145019531
       },
       {
         "scenario_id": "S24",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "COMPRESSOR-006",
-        "timestamp": "2025-03-24 22:30:00",
+        "machine_id": "COMPRESSOR-035",
+        "timestamp": "2025-03-24 02:30:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.0003,
+        "probability": 0.0031,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
         "early_warning_h": null,
-        "verification": "PASS",
+        "verification": "PASS_WITH_WARNINGS",
         "safe_to_act": false,
         "plan": [
-          "increase_monitoring"
+          "reduce_load_70"
         ],
-        "simulated_reduction": null,
-        "duration_s": 0.6623809337615967
+        "simulated_reduction": 0.0006,
+        "duration_s": 0.5292627811431885
       },
       {
         "scenario_id": "S25",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "CONVEYOR-055",
-        "timestamp": "2025-03-24 10:20:00",
+        "machine_id": "CONVEYOR-073",
+        "timestamp": "2025-03-24 10:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.0,
+        "probability": 0.0047,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
         "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
+        "verification": "PASS",
         "safe_to_act": false,
         "plan": [
           "reduce_load_70"
         ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.7647850513458252
+        "simulated_reduction": 0.0194,
+        "duration_s": 0.570824146270752
       },
       {
         "scenario_id": "S26",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-032",
-        "timestamp": "2025-03-24 22:10:00",
+        "machine_id": "PUMP-009",
+        "timestamp": "2025-03-24 20:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.0005,
+        "probability": 0.0031,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -1732,326 +1731,37 @@
         "plan": [
           "restore_suction"
         ],
-        "simulated_reduction": -0.0027,
-        "duration_s": 0.7024657726287842
+        "simulated_reduction": 0.0002,
+        "duration_s": 0.6120703220367432
       },
       {
         "scenario_id": "S27",
         "category": "hot_weather_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-044",
-        "timestamp": "2025-03-24 04:00:00",
+        "machine_id": "PUMP-022",
+        "timestamp": "2025-03-24 02:50:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.0002,
+        "probability": 0.0024,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
         "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
+        "verification": "PASS",
         "safe_to_act": false,
         "plan": [
-          "reduce_load_70",
-          "restore_suction"
+          "increase_monitoring"
         ],
-        "simulated_reduction": 0.0002,
-        "duration_s": 0.8757071495056152
+        "simulated_reduction": null,
+        "duration_s": 0.4701366424560547
       },
       {
         "scenario_id": "S28",
         "category": "load_surge_no_failure",
         "difficulty": "hard",
-        "machine_id": "PUMP-032",
-        "timestamp": "2025-03-24 01:30:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0022,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "restore_suction"
-        ],
-        "simulated_reduction": -0.0038,
-        "duration_s": 0.673325777053833
-      },
-      {
-        "scenario_id": "S29",
-        "category": "load_surge_no_failure",
-        "difficulty": "hard",
-        "machine_id": "CONVEYOR-071",
-        "timestamp": "2025-03-26 04:30:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0002,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.7735109329223633
-      },
-      {
-        "scenario_id": "S30",
-        "category": "load_surge_no_failure",
-        "difficulty": "hard",
-        "machine_id": "CONVEYOR-015",
-        "timestamp": "2025-03-27 18:20:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0001,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0001,
-        "duration_s": 0.753389835357666
-      },
-      {
-        "scenario_id": "S31",
-        "category": "load_surge_no_failure",
-        "difficulty": "hard",
-        "machine_id": "CONVEYOR-023",
-        "timestamp": "2025-03-27 06:00:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0001,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0001,
-        "duration_s": 0.719703197479248
-      },
-      {
-        "scenario_id": "S32",
-        "category": "missing_telemetry",
-        "difficulty": "hard",
-        "machine_id": "CONVEYOR-071",
-        "timestamp": "2025-03-29 01:10:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0003,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "increase_monitoring"
-        ],
-        "simulated_reduction": null,
-        "duration_s": 0.5877673625946045
-      },
-      {
-        "scenario_id": "S33",
-        "category": "missing_telemetry",
-        "difficulty": "hard",
-        "machine_id": "COMPRESSOR-030",
-        "timestamp": "2025-03-29 21:10:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.1371,
-        "duration_s": 0.7274620532989502
-      },
-      {
-        "scenario_id": "S34",
-        "category": "missing_telemetry",
-        "difficulty": "hard",
-        "machine_id": "COMPRESSOR-006",
-        "timestamp": "2025-03-30 20:50:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "restore_suction"
-        ],
-        "simulated_reduction": 0.0003,
-        "duration_s": 0.7402615547180176
-      },
-      {
-        "scenario_id": "S35",
-        "category": "sensor_spike_no_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-040",
-        "timestamp": "2025-03-25 03:50:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0011,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "restore_suction"
-        ],
-        "simulated_reduction": -0.0012,
-        "duration_s": 0.7490670680999756
-      },
-      {
-        "scenario_id": "S36",
-        "category": "sensor_spike_no_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-068",
-        "timestamp": "2025-03-24 20:00:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.1325,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "increase_monitoring"
-        ],
-        "simulated_reduction": null,
-        "duration_s": 0.5708508491516113
-      },
-      {
-        "scenario_id": "S37",
-        "category": "sensor_spike_no_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-072",
-        "timestamp": "2025-03-24 07:30:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0002,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70",
-          "inspect_electrical",
-          "correct_supply"
-        ],
-        "simulated_reduction": 0.0005,
-        "duration_s": 0.9113447666168213
-      },
-      {
-        "scenario_id": "S38",
-        "category": "multiple_anomalies_no_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-036",
-        "timestamp": "2025-03-25 10:10:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0005,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "increase_monitoring"
-        ],
-        "simulated_reduction": null,
-        "duration_s": 0.5680694580078125
-      },
-      {
-        "scenario_id": "S39",
-        "category": "multiple_anomalies_no_failure",
-        "difficulty": "hard",
-        "machine_id": "PUMP-060",
-        "timestamp": "2025-03-25 05:30:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0011,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "restore_suction"
-        ],
-        "simulated_reduction": 0.0006,
-        "duration_s": 0.6512415409088135
-      },
-      {
-        "scenario_id": "S40",
-        "category": "multiple_anomalies_no_failure",
-        "difficulty": "hard",
-        "machine_id": "COMPRESSOR-074",
-        "timestamp": "2025-03-28 03:00:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0005,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0534,
-        "duration_s": 0.6889791488647461
-      },
-      {
-        "scenario_id": "S41",
-        "category": "healthy_machine",
-        "difficulty": "easy",
-        "machine_id": "MOTOR-001",
-        "timestamp": "2025-03-26 19:50:00",
+        "machine_id": "PUMP-016",
+        "timestamp": "2025-03-25 11:00:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
@@ -2060,90 +1770,24 @@
         "correct_alert": true,
         "correct_type": null,
         "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.702186107635498
-      },
-      {
-        "scenario_id": "S42",
-        "category": "healthy_machine",
-        "difficulty": "easy",
-        "machine_id": "CONVEYOR-023",
-        "timestamp": "2025-03-25 06:10:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0002,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS_WITH_WARNINGS",
-        "safe_to_act": false,
-        "plan": [
-          "reduce_load_70"
-        ],
-        "simulated_reduction": 0.0002,
-        "duration_s": 0.6363182067871094
-      },
-      {
-        "scenario_id": "S43",
-        "category": "healthy_machine",
-        "difficulty": "easy",
-        "machine_id": "MOTOR-033",
-        "timestamp": "2025-03-28 14:20:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0007,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
         "verification": "PASS",
         "safe_to_act": false,
         "plan": [
           "increase_monitoring"
         ],
         "simulated_reduction": null,
-        "duration_s": 0.5162985324859619
+        "duration_s": 0.4821038246154785
       },
       {
-        "scenario_id": "S44",
-        "category": "healthy_machine",
-        "difficulty": "easy",
-        "machine_id": "COMPRESSOR-034",
-        "timestamp": "2025-03-27 12:50:00",
+        "scenario_id": "S29",
+        "category": "load_surge_no_failure",
+        "difficulty": "hard",
+        "machine_id": "MOTOR-058",
+        "timestamp": "2025-03-27 09:00:00",
         "expected_alert": false,
         "expected_type": null,
         "alert": false,
-        "probability": 0.0001,
-        "predicted_type": null,
-        "correct_alert": true,
-        "correct_type": null,
-        "early_warning_h": null,
-        "verification": "PASS",
-        "safe_to_act": false,
-        "plan": [
-          "increase_monitoring"
-        ],
-        "simulated_reduction": null,
-        "duration_s": 0.5049862861633301
-      },
-      {
-        "scenario_id": "S45",
-        "category": "healthy_machine",
-        "difficulty": "easy",
-        "machine_id": "PUMP-036",
-        "timestamp": "2025-03-28 07:10:00",
-        "expected_alert": false,
-        "expected_type": null,
-        "alert": false,
-        "probability": 0.0,
+        "probability": 0.0029,
         "predicted_type": null,
         "correct_alert": true,
         "correct_type": null,
@@ -2155,8 +1799,365 @@
           "inspect_electrical",
           "correct_supply"
         ],
-        "simulated_reduction": 0.0,
-        "duration_s": 0.7693376541137695
+        "simulated_reduction": 0.0003,
+        "duration_s": 0.7383999824523926
+      },
+      {
+        "scenario_id": "S30",
+        "category": "load_surge_no_failure",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-047",
+        "timestamp": "2025-03-29 20:40:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0035,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70"
+        ],
+        "simulated_reduction": 0.0217,
+        "duration_s": 0.5440824031829834
+      },
+      {
+        "scenario_id": "S31",
+        "category": "load_surge_no_failure",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-050",
+        "timestamp": "2025-03-25 16:30:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.2784,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.49253034591674805
+      },
+      {
+        "scenario_id": "S32",
+        "category": "missing_telemetry",
+        "difficulty": "hard",
+        "machine_id": "MOTOR-061",
+        "timestamp": "2025-03-28 10:40:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0053,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "inspect_electrical",
+          "correct_supply"
+        ],
+        "simulated_reduction": 0.0029,
+        "duration_s": 0.659409761428833
+      },
+      {
+        "scenario_id": "S33",
+        "category": "missing_telemetry",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-040",
+        "timestamp": "2025-03-24 11:10:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0036,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70"
+        ],
+        "simulated_reduction": 0.0013,
+        "duration_s": 0.5827147960662842
+      },
+      {
+        "scenario_id": "S34",
+        "category": "missing_telemetry",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-034",
+        "timestamp": "2025-03-27 01:20:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0022,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "restore_suction"
+        ],
+        "simulated_reduction": 0.1787,
+        "duration_s": 0.6178762912750244
+      },
+      {
+        "scenario_id": "S35",
+        "category": "sensor_spike_no_failure",
+        "difficulty": "hard",
+        "machine_id": "PUMP-022",
+        "timestamp": "2025-03-26 09:20:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.017,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "restore_suction"
+        ],
+        "simulated_reduction": 0.0196,
+        "duration_s": 0.6407966613769531
+      },
+      {
+        "scenario_id": "S36",
+        "category": "sensor_spike_no_failure",
+        "difficulty": "hard",
+        "machine_id": "PUMP-028",
+        "timestamp": "2025-03-30 00:20:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0099,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.4808030128479004
+      },
+      {
+        "scenario_id": "S37",
+        "category": "sensor_spike_no_failure",
+        "difficulty": "hard",
+        "machine_id": "PUMP-030",
+        "timestamp": "2025-03-27 05:40:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": true,
+        "probability": 0.9912,
+        "predicted_type": "pressure_loss",
+        "correct_alert": false,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": true,
+        "plan": [
+          "restore_suction"
+        ],
+        "simulated_reduction": 0.661,
+        "duration_s": 0.5850167274475098
+      },
+      {
+        "scenario_id": "S38",
+        "category": "multiple_anomalies_no_failure",
+        "difficulty": "hard",
+        "machine_id": "PUMP-026",
+        "timestamp": "2025-03-30 00:40:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0034,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "restore_suction"
+        ],
+        "simulated_reduction": 0.0008,
+        "duration_s": 0.6011667251586914
+      },
+      {
+        "scenario_id": "S39",
+        "category": "multiple_anomalies_no_failure",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-049",
+        "timestamp": "2025-03-28 06:50:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.2947,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70"
+        ],
+        "simulated_reduction": 0.0909,
+        "duration_s": 0.5889339447021484
+      },
+      {
+        "scenario_id": "S40",
+        "category": "multiple_anomalies_no_failure",
+        "difficulty": "hard",
+        "machine_id": "COMPRESSOR-044",
+        "timestamp": "2025-03-24 18:40:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.9674,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "controlled_shutdown"
+        ],
+        "simulated_reduction": 0.7979,
+        "duration_s": 0.686286211013794
+      },
+      {
+        "scenario_id": "S41",
+        "category": "healthy_machine",
+        "difficulty": "easy",
+        "machine_id": "MOTOR-064",
+        "timestamp": "2025-03-29 18:10:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0028,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70",
+          "inspect_electrical",
+          "correct_supply"
+        ],
+        "simulated_reduction": 0.0035,
+        "duration_s": 0.6934378147125244
+      },
+      {
+        "scenario_id": "S42",
+        "category": "healthy_machine",
+        "difficulty": "easy",
+        "machine_id": "CONVEYOR-078",
+        "timestamp": "2025-03-26 17:30:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0028,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.436276912689209
+      },
+      {
+        "scenario_id": "S43",
+        "category": "healthy_machine",
+        "difficulty": "easy",
+        "machine_id": "PUMP-001",
+        "timestamp": "2025-03-26 08:50:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0022,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.48734378814697266
+      },
+      {
+        "scenario_id": "S44",
+        "category": "healthy_machine",
+        "difficulty": "easy",
+        "machine_id": "COMPRESSOR-040",
+        "timestamp": "2025-03-30 10:00:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0047,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS_WITH_WARNINGS",
+        "safe_to_act": false,
+        "plan": [
+          "reduce_load_70"
+        ],
+        "simulated_reduction": 0.004,
+        "duration_s": 0.6465628147125244
+      },
+      {
+        "scenario_id": "S45",
+        "category": "healthy_machine",
+        "difficulty": "easy",
+        "machine_id": "PUMP-021",
+        "timestamp": "2025-03-29 09:30:00",
+        "expected_alert": false,
+        "expected_type": null,
+        "alert": false,
+        "probability": 0.0032,
+        "predicted_type": null,
+        "correct_alert": true,
+        "correct_type": null,
+        "early_warning_h": null,
+        "verification": "PASS",
+        "safe_to_act": false,
+        "plan": [
+          "increase_monitoring"
+        ],
+        "simulated_reduction": null,
+        "duration_s": 0.5181715488433838
       }
     ]
   }

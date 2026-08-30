@@ -115,8 +115,15 @@ class ModelBundle:
             selection_rationale=meta.get("selection_rationale", ""))
         seq = path / "sequence.pt"
         if seq.exists():
-            kind = "tft" if bundle.kind == "ensemble" else bundle.kind
-            model = build_model(kind, len(bundle.channels))
+            if bundle.kind == "ensemble":
+                from .torch_models import EnsembleModel
+                meta_ens = bundle.ensemble or {}
+                kinds = meta_ens.get("member_kinds") or ["lstm", "tft"]
+                w = float(meta_ens.get("weight_first", 0.5))
+                members = [build_model(k, len(bundle.channels)) for k in kinds]
+                model = EnsembleModel(members, [w, 1.0 - w])
+            else:
+                model = build_model(bundle.kind, len(bundle.channels))
             model.load_state_dict(torch.load(seq, map_location="cpu"))
             model.eval()
             bundle.torch_model = model

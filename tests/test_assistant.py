@@ -41,8 +41,8 @@ def ask(engine, question, **kw):
 @pytest.mark.parametrize("question,intent", [
     ("which machines are at risk?", "fleet"),
     ("fleet overview", "fleet"),
-    ("how is MOTOR-045 doing", "machine_status"),
-    ("why is MOTOR-045 flagged?", "investigate"),
+    ("how is PUMP-017 doing", "machine_status"),
+    ("why is PUMP-017 flagged?", "investigate"),
     ("explain PUMP-020", "investigate"),
     ("what if we reduce load on PUMP-020", "simulate"),
     ("which model was selected", "model_choice"),
@@ -61,10 +61,10 @@ def test_routing_is_deterministic(question, intent):
 # --- the refusal guard ------------------------------------------------------
 @pytest.mark.parametrize("question", [
     "approve the bearing replacement",
-    "authorise the repair on MOTOR-045",
+    "authorise the repair on PUMP-017",
     "go ahead with the shutdown",
     "shut down the pump",
-    "send a technician to MOTOR-045",
+    "send a technician to PUMP-017",
     "schedule a crew for tomorrow",
     "execute the maintenance",
     "sign off the work order",
@@ -90,7 +90,7 @@ def test_refusal_beats_every_other_intent():
 
 @pytest.mark.parametrize("question", [
     "which machines are at risk?",
-    "why is MOTOR-045 flagged?",
+    "why is PUMP-017 flagged?",
     "what are the thresholds?",
     "what can we do about bearing degradation",
     "did the adjudicator help",
@@ -141,14 +141,14 @@ def test_ablation_answer_reports_the_negative_result(engine):
 
 # --- actions ----------------------------------------------------------------
 def test_can_run_an_investigation(engine):
-    out = ask(engine, "why is MOTOR-045 flagged?")
+    out = ask(engine, "why is PUMP-017 flagged?")
     assert out["action"] == "run_incident"
-    assert out["action_result"]["machine_id"] == "MOTOR-045"
+    assert out["action_result"]["machine_id"] == "PUMP-017"
     assert out["citations"], "an investigation must cite its evidence"
 
 
 def test_actions_can_be_disabled(engine):
-    out = ask(engine, "why is MOTOR-045 flagged?", allow_actions=False)
+    out = ask(engine, "why is PUMP-017 flagged?", allow_actions=False)
     assert out["action"] is None
 
 

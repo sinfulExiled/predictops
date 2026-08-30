@@ -99,7 +99,7 @@ event.detection_rate                  0.7308
 event.false_alarms_per_machine_day    1.760
 ```
 
-**Why this F1 is 0.2581 while the comparison tables say 0.2588.** This script
+**Why this F1 is 0.2581 while the comparison tables say 0.2570.** This script
 scores every usable test row; the model comparison scores the *canonical*
 evaluation rows only — the rows that have a full clean lookback, so that a
 sequence model and a tree are graded on identical cases
@@ -111,7 +111,7 @@ measure, and the reported comparison always uses the canonical set.
 ## 4. Model research (the main run)
 
 ```bash
-python run_experiments.py            # ≈ 20 min on 4 CPU cores
+python run_experiments.py            # ≈ 12 min on 4 CPU cores
 python run_experiments.py --quick    # ≈ 6 min, fewer epochs (smoke test only)
 ```
 
@@ -132,15 +132,16 @@ Expected final table (reproduces exactly — the run is seeded end to end):
 
 ```
 STAGE        MODEL                              VAL PR-AUC  TEST F1  DECISION
-Baseline     threshold rule                         0.1517   0.2588  reference
-Iteration 1  xgboost on raw features                0.4285   0.4625  kept
-Iteration 2  xgboost on engineered features         0.6112   0.5364  kept
-Iteration 3  LSTM on raw channels                   0.4346   0.3778  removed
-Iteration 4  LSTM on engineered channels            0.5844   0.3616  removed
-Iteration 5  TFT on engineered channels             0.5756   0.4977  removed
-Iteration 6  ensemble lstm + tft                    0.6167   0.4627  kept
+Baseline     threshold rule                         0.1446   0.2570  reference
+Iteration 1  xgboost on raw features                0.3099   0.4430  kept
+Iteration 2  xgboost on engineered features         0.5072   0.5118  kept
+Iteration 3  LSTM on raw channels                   0.3640   0.4313  removed
+Iteration 4  LSTM on engineered channels            0.5542   0.4937  kept
+Iteration 5  TFT on engineered channels             0.5583   0.4659  removed
+Iteration 6  ensemble lstm_engineered + tft_engin   0.5855   0.5142  kept
 
-SELECTED: xgboost on engineered features
+SELECTED: ensemble lstm_engineered + tft_engineered
+  selected on validation PR-AUC 0.5855 (+0.0272 over TFT on engineered channels)
 ```
 
 If your PR-AUC differs in the 4th decimal, that is BLAS thread-count variation
@@ -151,8 +152,8 @@ in the torch runs; the selection and the ordering are stable.
 ## 5. Evaluation — baseline vs agent
 
 ```bash
-python evaluate.py                 # ≈ 4 min, full agent workflow on 45 cases
-python evaluate.py --model-only    # ≈ 30 s, prediction only
+python evaluate.py                 # ≈ 35 s, full agent workflow on 45 cases
+python evaluate.py --model-only    # ≈ 15 s, prediction only
 ```
 
 Builds (or loads) the 45-scenario suite, runs the threshold baseline and the
@@ -160,7 +161,24 @@ agent workflow over identical cases, and writes
 `artifacts/reports/evaluation.json`.
 
 Prints the comparison table, the per-category accuracy breakdown, and the
-capabilities the baseline does not have.
+capabilities the baseline does not have. Expected:
+
+```
+METRIC                                 SIMPLE BASELINE  AGENT SOLUTION       CHANGE
+Alert accuracy (primary)                         68.9%           71.1%      +2.2 pp
+F1                                               56.2%           62.9%      +6.6 pp
+Precision                                       100.0%           91.7%      -8.3 pp
+Recall                                           39.1%           47.8%      +8.7 pp
+Cause accuracy (all real failures)               30.4%           39.1%      +8.7 pp
+Cause accuracy (of those alerted)                77.8%           81.8%      +4.0 pp
+Hard-case accuracy                               64.3%           67.9%      +3.6 pp
+False alarms on nuisance cases                    0.0%            4.5%      +4.5 pp
+```
+
+The precision and nuisance rows are a **single** scenario (S37, a pressure
+transducer spike): 1 false positive out of 22 nuisance cases against the
+baseline's 0. That difference is below what a 45-case suite can resolve, and
+the README says so rather than reporting it as a regression.
 
 To rebuild the scenario suite from scratch:
 
@@ -258,7 +276,7 @@ Agent Activity (live WebSocket stream) · Model Lab · Experiments · Evaluation
 ## 9. Tests
 
 ```bash
-python -m pytest              # 66 tests, ~45 s
+python -m pytest              # 127 tests, ~9 min
 python -m pytest -q tests/test_generator.py   # data integrity + leakage
 python -m pytest -q tests/test_features.py    # causality + splits
 python -m pytest -q tests/test_agents.py      # agent contracts + verification
@@ -286,9 +304,9 @@ python -m venv .venv && source .venv/bin/activate   # or .venv\Scripts\activate
 pip install -r requirements.txt
 
 python generate_data.py --seed 42     # 5 s
-python train_baseline.py              # 15 s   -> F1 0.2588
-python run_experiments.py             # 20 min -> selects xgboost/engineered
-python evaluate.py                    # 4 min  -> baseline vs agent
+python train_baseline.py              # 15 s   -> F1 0.2581
+python run_experiments.py             # 12 min -> selects the LSTM+TFT ensemble
+python evaluate.py                    # 35 s   -> baseline vs agent
 python -m pytest                      # 45 s   -> 66 passed
 
 cd frontend && npm install && npm run build && cd ..
@@ -304,7 +322,7 @@ To start completely fresh, delete `artifacts/` — it is entirely regenerable.
 **`no model bundle; run run_experiments.py`** — `run_pipeline.py`, `evaluate.py`
 and the API all need `artifacts/models/bundle/`. Run `run_experiments.py` first.
 
-**Training is much slower than 20 min** — check nothing else is saturating the
+**Training is much slower than 12 min** — check nothing else is saturating the
 CPU; the TFT is the long pole at ~45 s/epoch. Use `--quick` to smoke-test the
 wiring.
 

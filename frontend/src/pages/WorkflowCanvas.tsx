@@ -50,7 +50,7 @@ export default function WorkflowCanvas() {
   const [result, setResult] = useState<any>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
-  const [machine, setMachine] = useState("MOTOR-045");
+  const [machine, setMachine] = useState("PUMP-017");
   const svgRef = useRef<SVGSVGElement>(null);
 
   const byName = useMemo(() => {

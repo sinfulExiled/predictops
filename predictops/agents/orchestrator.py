@@ -145,6 +145,10 @@ class PredictOpsEngine:
             threshold=fitted.threshold, scaler=fitted.scaler or scaler,
             lookback=runner.lookback,
             torch_model=fitted.torch_model, tree_model=fitted.tree_model,
+            ensemble=({"members": (fitted.extra or {}).get("members"),
+                       "member_kinds": (fitted.extra or {}).get("member_kinds"),
+                       "weight_first": (fitted.extra or {}).get("weight_first")}
+                      if fitted.kind == "ensemble" else None),
             metrics=fitted.metrics,
             selection_rationale=sel.get("rationale", ""))
 
@@ -325,7 +329,23 @@ class PredictOpsEngine:
                                     self.bundle.scaler, self.bundle.lookback)
             except ValueError:
                 continue
-            if int(raw["is_downtime"].iloc[-1]) == 1:
+            # Scorability must use the same rule the deployed model was
+            # trained and evaluated under, which differs by model kind:
+            # a sequence model consumes the whole lookback, so no step in it
+            # may be downtime (`preprocessing.build_windows`); a tabular model
+            # consumes one row, so only that row must be usable
+            # (`preprocessing.usable_mask`). `fleet.overview` already splits
+            # this way. Applying only the final-step check here scored a
+            # sequence model on a lookback straddling an outage -- an input
+            # distribution it never saw -- which is how a pump 40 minutes back
+            # from a stop reached the assistant as the plant's highest risk at
+            # 69.5% while the dashboard showed the same pump as `down`.
+            unusable = (int(raw["is_downtime"].max()) == 1
+                        if self.bundle.is_sequence()
+                        else int(raw["is_downtime"].iloc[-1]) == 1
+                        or int(raw.get("sensor_dropout",
+                                       pd.Series([0])).iloc[-1]) == 1)
+            if unusable:
                 rows.append({"machine_id": mid, "failure_probability": np.nan,
                              "status": "down"})
                 continue

@@ -349,7 +349,7 @@ class AssistantAgent(Agent):
                 intent=intent, grounded=True,
                 answer=("I answer from this system's own records, and I cite "
                         "every number. Try: 'which machines are at risk', "
-                        "'why is MOTOR-045 flagged', 'what can we do about "
+                        "'why is PUMP-017 flagged', 'what can we do about "
                         "bearing degradation', 'which model was selected and "
                         "why', 'did the adjudicator help', 'how good is it "
                         "against the baseline', 'what are the thresholds'. I "
@@ -418,7 +418,7 @@ class AssistantAgent(Agent):
                 ans = Answer(
                     intent=intent, grounded=False,
                     answer=("Name a machine and I'll run it — for example "
-                            "'why is MOTOR-045 flagged'."))
+                            "'why is PUMP-017 flagged'."))
                 return {"_action": "Asked which machine.", **ans.to_dict()}
 
             if intent == "machine_status" and mid:

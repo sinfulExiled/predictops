@@ -1,5 +1,10 @@
 """The controlled catalogue of maintenance actions.
 
+Written for a water / wastewater works: throttling a transfer pump, venting
+and re-priming a suction line, sealing a pressure circuit, changing a bearing
+in a planned outage. Every entry is something a two-person crew could actually
+do on a shift.
+
 The remediation agent may only propose actions from this list.  It cannot
 invent one, and it cannot alter an action's parameters -- it selects an id.
 That is the guard against an LLM proposing something physically dangerous or

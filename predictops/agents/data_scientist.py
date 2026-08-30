@@ -107,12 +107,27 @@ class DataScientistAgent(Agent):
         engineering_gain = round(eng_best - raw_best, 4)
 
         # --- temporal structure --------------------------------------------
-        sample = train[train.machine_id == train.machine_id.iloc[0]]
-        autocorr = {}
+        # Measured across a sample of machines, not one. Reading a single
+        # arbitrary machine made a fleet-wide modelling decision hostage to
+        # which machine happened to be first: on one dataset that machine's
+        # temperature autocorrelation was 0.806 against a fleet median of
+        # 0.919, so the agent skipped sequence models entirely.
+        ids = sorted(train["machine_id"].unique())
+        sample_ids = ids[:: max(len(ids) // 12, 1)][:12]
+        autocorr, autocorr_spread = {}, {}
         for c in ("vibration", "temperature", "current"):
-            s = sample[c].dropna()
-            if len(s) > 100:
-                autocorr[c] = round(float(s.autocorr(lag=6)), 4)
+            vals = []
+            for mid in sample_ids:
+                col = train.loc[train.machine_id == mid, c].dropna()
+                if len(col) > 100:
+                    v = col.autocorr(lag=6)
+                    if np.isfinite(v):
+                        vals.append(float(v))
+            if vals:
+                autocorr[c] = round(float(np.median(vals)), 4)
+                autocorr_spread[c] = {"min": round(float(np.min(vals)), 4),
+                                      "max": round(float(np.max(vals)), 4),
+                                      "n_machines": len(vals)}
 
         # --- turn measurements into instructions ----------------------------
         risks, recommendations = [], []
@@ -189,7 +204,9 @@ class DataScientistAgent(Agent):
                 "verdict": ("clean" if (not leaks_offered and chronological)
                             else "review required"),
             },
-            "temporal_structure": {"autocorr_lag_1h": autocorr},
+            "temporal_structure": {"autocorr_lag_1h": autocorr,
+                                   "autocorr_range": autocorr_spread,
+                                   "machines_sampled": len(sample_ids)},
             "feature_signal": {
                 "top_features": top,
                 "n_low_signal_features": len(dead),
