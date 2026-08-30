@@ -469,7 +469,7 @@ ANTHROPIC_API_KEY=... python llm_baseline.py --provider anthropic   # < $1
   returns each agent's deterministic findings unchanged. With an LLM
   configured the prose improves; **the measured metrics do not move**, because
   no metric passes through the LLM.
-- **134 tests**, including causality, leakage, determinism and the
+- **135 tests**, including causality, leakage, determinism and the
   fabricated-evidence catch: `python -m pytest`.
 
 Leakage controls are concentrated in `data/preprocessing.py` and enforced by
@@ -591,7 +591,7 @@ predictops/
 ├── api/            FastAPI + WebSocket agent-activity stream
 └── reporting.py    the incident report a planner actually reads
 frontend/           React + TypeScript dashboard (9 pages)
-tests/              134 tests
+tests/              135 tests
 ```
 
 **Written for this hackathon.** Pre-existing components used as libraries:

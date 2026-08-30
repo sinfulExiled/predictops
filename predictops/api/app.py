@@ -64,7 +64,25 @@ async def lifespan(app: FastAPI):
             print(f"[api] no model bundle yet ({exc}); "
                   f"run run_experiments.py first")
         STATE["engine"] = engine
+
+        # Scoring the whole test period to find the busiest moment takes ~40 s
+        # for a sequence model, and the fleet view is the first thing anyone
+        # opens. Do it in the background so the page is warm on arrival rather
+        # than hanging on a spinner. Failure here is not fatal: the request
+        # path computes the same thing on demand.
+        async def _warm():
+            try:
+                await asyncio.to_thread(engine.busiest_timestamp)
+                print("[api] fleet cache warm")
+            except Exception as exc:  # noqa: BLE001
+                print(f"[api] fleet warm-up skipped ({exc})")
+
+        STATE["warm_task"] = asyncio.create_task(_warm())
+
     yield
+    task = STATE.get("warm_task")
+    if task is not None:
+        task.cancel()
     STATE.clear()
 
 

@@ -270,3 +270,29 @@ def test_no_machine_is_scored_on_input_it_was_not_trained_for(engine):
         assert int(g["is_downtime"].tail(span).max()) == 0, (
             f"{r.machine_id} scored {r.failure_probability} on "
             f"{span} step(s) containing downtime")
+
+
+def test_busiest_timestamp_is_actually_the_busiest(engine):
+    """The fleet view opens here, so it must not be a quiet moment.
+
+    The sequence-model branch used to return the last timestamp of the split
+    regardless of risk -- the "wall of normal" the method exists to avoid. It
+    was invisible while a tree was selected and silently wrong once an
+    LSTM/TFT ensemble won the bake-off.
+    """
+    import pandas as pd
+    from predictops.fleet import overview
+
+    at = engine.busiest_timestamp("test")
+    assert at is not None
+
+    last = engine.data.df[engine.data.df["split"] == "test"]["timestamp"].max()
+    busy = overview(engine, at=at)["counts"]
+    tail = overview(engine, at=pd.Timestamp(last))["counts"]
+
+    def at_risk(c):
+        return c["high"] * 2 + c["watch"]
+
+    assert at_risk(busy) >= at_risk(tail), (
+        f"busiest moment {at} ({busy}) is no busier than the last sample "
+        f"{last} ({tail})")

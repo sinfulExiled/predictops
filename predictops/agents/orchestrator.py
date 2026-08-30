@@ -294,11 +294,20 @@ class PredictOpsEngine:
             return self._busiest
         if self.service is None:
             self.load_bundle()
-        x, y, m, t, _ = self.data.tabular(split, self.bundle.feature_set)
         if self.bundle.is_sequence():
-            self._busiest = pd.Timestamp(pd.Series(t).max())
-            return self._busiest
-        p = self.bundle.score_rows(x)
+            # Score the window set the sequence model actually consumes. This
+            # branch used to return the last timestamp of the split, which is
+            # precisely the "wall of normal" the docstring above says the
+            # method exists to avoid -- harmless while the selected model was a
+            # tree, silently wrong the moment an LSTM/TFT ensemble won.
+            from ..ml.training import predict_windows
+            wi = self.data.windows(split, self.bundle.feature_set,
+                                   self.bundle.scaler, self.bundle.lookback)
+            p = predict_windows(self.bundle.torch_model, wi)
+            t = wi.timestamps
+        else:
+            x, _, _, t, _ = self.data.tabular(split, self.bundle.feature_set)
+            p = self.bundle.score_rows(x)
         f = pd.DataFrame({"timestamp": pd.to_datetime(pd.Series(t)),
                           "hit": p >= self.service.alert_threshold,
                           "watch": p >= self.service.investigate_threshold})

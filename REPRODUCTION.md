@@ -276,7 +276,7 @@ Agent Activity (live WebSocket stream) · Model Lab · Experiments · Evaluation
 ## 9. Tests
 
 ```bash
-python -m pytest              # 134 tests, ~9 min
+python -m pytest              # 135 tests, ~9 min
 python -m pytest -q tests/test_generator.py   # data integrity + leakage
 python -m pytest -q tests/test_features.py    # causality + splits
 python -m pytest -q tests/test_agents.py      # agent contracts + verification
@@ -327,6 +327,11 @@ Agent Activity views work before that, because they read committed reports.
 
 **`no model bundle; run run_experiments.py`** — `run_pipeline.py`, `evaluate.py`
 and the API all need `artifacts/models/bundle/`. Run `run_experiments.py` first.
+
+**First fleet load is slow** — finding the busiest moment scores the whole
+test period once (~40 s for the sequence ensemble). The server warms this in
+the background at startup and caches it, so it only bites if you open the page
+within the first minute. Every later load is ~0.2 s.
 
 **Dashboard is a 404 at `/`** — the API serves `frontend/dist/`, which is a
 build product and not committed. Run `cd frontend && npm install && npm run
