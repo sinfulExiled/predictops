@@ -205,3 +205,18 @@ class ExperimentStore:
                 "SELECT DISTINCT run_id FROM trajectories ORDER BY id DESC"
             ).fetchall()
         return [r["run_id"] for r in rows]
+
+    def experiment_runs(self) -> list[dict]:
+        """Runs that actually recorded experiments, newest first.
+
+        `runs()` reads the trajectories table, so it also lists incident and
+        evaluation runs that logged agent steps but trained nothing. A run
+        picker for the Experiments page built on that would mostly offer runs
+        with nothing to show.
+        """
+        with self._conn() as c:
+            rows = c.execute(
+                "SELECT run_id, COUNT(*) AS n, MAX(id) AS last_id "
+                "FROM experiments GROUP BY run_id ORDER BY last_id DESC"
+            ).fetchall()
+        return [{"run_id": r["run_id"], "n_experiments": r["n"]} for r in rows]

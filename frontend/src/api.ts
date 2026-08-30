@@ -188,8 +188,12 @@ export const api = {
     if (!r.ok) throw new Error(await r.text());
     return r.json();
   },
-  experiments: () =>
-    get<{ run_id: string; experiments: ExperimentRow[] }>("/api/experiments"),
+  experiments: (runId?: string) =>
+    get<{
+      run_id: string;
+      runs: { run_id: string; n_experiments: number }[];
+      experiments: ExperimentRow[];
+    }>(`/api/experiments${runId ? `?run_id=${encodeURIComponent(runId)}` : ""}`),
   changelog: () => get<{ markdown: string }>("/api/changelog"),
   evaluation: () => get<any>("/api/evaluation"),
   ablation: () => get<any>("/api/ablation"),

@@ -324,6 +324,7 @@ def experiments(run_id: str | None = None):
     run_id = run_id or store.latest_run_id()
     return _clean({
         "run_id": run_id,
+        "runs": store.experiment_runs(),
         "experiments": [
             {"id": x.id, "stage": x.stage, "name": x.name, "model": x.model,
              "feature_set": x.feature_set, "hypothesis": x.hypothesis,
