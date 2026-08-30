@@ -721,3 +721,86 @@ table.cmp .num { font-variant-numeric: tabular-nums; font-size: 13.5px; }
 }
 .out-legend i { width: 8px; height: 8px; border-radius: 50%; }
 .case-foot .pager-btns { margin-left: auto; }
+
+/* --- Architecture (animated) --------------------------------------------- */
+.arch-wrap {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 14px 4px; margin-bottom: 14px; overflow-x: auto;
+}
+.arch-svg { width: 100%; min-width: 900px; height: auto; display: block; }
+
+.arch-band {
+  fill: #5b6b7d; font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.arch-label {
+  font-size: 13px; font-weight: 600; text-anchor: middle;
+  transition: fill .45s ease;
+}
+.arch-sub {
+  font-size: 10.5px; fill: #6e7b8a; text-anchor: middle;
+  transition: opacity .45s ease;
+}
+.arch-node rect { transition: stroke .45s ease, fill .45s ease, stroke-width .45s ease; }
+.arch-node { opacity: .32; transition: opacity .45s ease; }
+.arch-node.on { opacity: 1; }
+.arch-node.on rect { filter: drop-shadow(0 0 9px rgba(74,158,255,.16)); }
+
+.arch-edge path { stroke: #38434f; stroke-width: 1.4; transition: stroke .45s ease; }
+.arch-edge { opacity: .3; transition: opacity .45s ease; }
+.arch-edge.on { opacity: 1; }
+.arch-edge.on path { stroke: #7f8f9f; stroke-width: 1.8; }
+
+/* the travelling pulse that makes a lit edge read as flow */
+.arch-flow {
+  stroke: #e6edf3; stroke-width: 2.4; stroke-linecap: round;
+  stroke-dasharray: 16 190; filter: drop-shadow(0 0 5px rgba(230,237,243,.55));
+  animation: archflow 2.1s linear infinite;
+}
+@keyframes archflow { from { stroke-dashoffset: 206; } to { stroke-dashoffset: 0; } }
+
+.arch-edge-label {
+  font-size: 10.5px; fill: #9fb0c2; text-anchor: middle;
+  paint-order: stroke; stroke: #0d1117; stroke-width: 4px; stroke-linejoin: round;
+}
+
+.arch-story {
+  display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 12px;
+}
+.arch-step-n {
+  font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700;
+  color: var(--accent); background: rgba(74,158,255,.12);
+  border: 1px solid rgba(74,158,255,.3); border-radius: 20px;
+  padding: 5px 12px; white-space: nowrap;
+}
+.arch-step-title { font-size: 16px; font-weight: 600; letter-spacing: -.2px; }
+.arch-step-body {
+  margin: 6px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.62;
+  max-width: 960px;
+}
+.arch-controls { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.arch-controls button { min-width: 40px; }
+
+.arch-dots { display: flex; gap: 7px; justify-content: center; margin-bottom: 16px; }
+.arch-dots button {
+  width: 30px; height: 5px; padding: 0; border: 0; border-radius: 3px;
+  background: #2a3441; cursor: pointer;
+}
+.arch-dots button:hover { background: #3f4d5c; }
+.arch-dots button.on { background: var(--accent); }
+
+.arch-legend {
+  display: flex; gap: 18px; flex-wrap: wrap; justify-content: center;
+  font-size: 11.5px; color: var(--muted); margin-bottom: 20px;
+}
+.arch-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.arch-legend i {
+  width: 11px; height: 11px; border-radius: 3px; border: 1.5px solid;
+  opacity: .85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arch-flow { animation: none; opacity: .5; }
+}

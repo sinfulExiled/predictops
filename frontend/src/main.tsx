@@ -21,6 +21,7 @@ import ModelLab from "./pages/ModelLab";
 import Experiments from "./pages/Experiments";
 import Evaluation from "./pages/Evaluation";
 import WorkflowCanvas from "./pages/WorkflowCanvas";
+import Architecture from "./pages/Architecture";
 
 const NAV = [
   { to: "/", label: "Fleet Command Center", icon: Icon.fleet, end: true },
@@ -32,6 +33,7 @@ const NAV = [
   { to: "/lab", label: "Model Lab", icon: Icon.lab },
   { to: "/experiments", label: "Experiments", icon: Icon.beaker },
   { to: "/evaluation", label: "Evaluation", icon: Icon.check },
+  { to: "/architecture", label: "Architecture", icon: Icon.layers },
 ];
 
 function SystemStatus() {
@@ -157,6 +159,7 @@ const router = createHashRouter([
       { path: "lab", element: <ModelLab /> },
       { path: "experiments", element: <Experiments /> },
       { path: "evaluation", element: <Evaluation /> },
+      { path: "architecture", element: <Architecture /> },
     ],
   },
 ]);
