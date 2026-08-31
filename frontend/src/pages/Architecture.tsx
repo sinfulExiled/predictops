@@ -13,36 +13,38 @@ type Node = {
   x: number; y: number; w: number; h: number;
   label: string;
   sub?: string;
+  /** Shown on hover. What this piece actually does in the running system. */
+  desc: string;
   kind?: "service" | "guard" | "llm" | "human" | "eval" | "store";
 };
 
 const H = 58;
 const N: Node[] = [
   // row 1 — training time
-  { id: "gen",    x: 26,   y: 62,  w: 150, h: H, label: "generator.py", sub: "physics-lite + confounders" },
-  { id: "store",  x: 196,  y: 62,  w: 140, h: H, label: "artifacts/data", sub: "telemetry · failures", kind: "store" },
-  { id: "pre",    x: 356,  y: 62,  w: 168, h: H, label: "preprocessing.py", sub: "leakage controls" },
-  { id: "feat",   x: 544,  y: 62,  w: 142, h: H, label: "features.py", sub: "causal rolling stats" },
-  { id: "models", x: 706,  y: 62,  w: 160, h: H, label: "LSTM · TFT · trees", sub: "7 candidates" },
-  { id: "harn",   x: 886,  y: 62,  w: 152, h: H, label: "harness.py", sub: "canonical eval set" },
-  { id: "bundle", x: 1058, y: 62,  w: 150, h: H, label: "bundle.py", sub: "frozen threshold" },
+  { id: "gen",    x: 26,   y: 62,  w: 150, h: H, label: "generator.py", sub: "physics-lite + confounders", desc: "Writes the synthetic plant: 80 machines, 30 days at 10-minute resolution, from a fixed seed. Each machine gets a latent degradation curve, then load surges, heatwaves, sensor spikes and dropouts are layered on top — the confounders a naive threshold fires on." },
+  { id: "store",  x: 196,  y: 62,  w: 140, h: H, label: "artifacts/data", sub: "telemetry · failures", kind: "store", desc: "Parquet on disk: telemetry, failures, machines and maintenance, plus a manifest with a SHA-256 of every file. This is also what the verifier reads back when it re-derives evidence." },
+  { id: "pre",    x: 356,  y: 62,  w: 168, h: H, label: "preprocessing.py", sub: "leakage controls", desc: "Splits and windows the data, and enforces the leakage controls: chronological splits with a one-horizon purge gap, scaler and imputation fitted on train only, causal features exclusively, and windows that never span downtime." },
+  { id: "feat",   x: 544,  y: 62,  w: 142, h: H, label: "features.py", sub: "causal rolling stats", desc: "Builds the engineered channels — causal rolling statistics, load and ambient normalisation, per-channel z-scores and deltas. In the bake-off this was worth about ten times more than any change of architecture." },
+  { id: "models", x: 706,  y: 62,  w: 160, h: H, label: "LSTM · TFT · trees", sub: "7 candidates", desc: "The seven candidates: a threshold baseline, XGBoost on raw and on engineered features, an LSTM on both, a Temporal Fusion Transformer written from the architecture rather than wrapped, and a validation-weighted ensemble." },
+  { id: "harn",   x: 886,  y: 62,  w: 152, h: H, label: "harness.py", sub: "canonical eval set", desc: "The canonical evaluation set. Every candidate is scored on identical rows, because sequence models can only score rows with a full clean lookback while trees can score everything — different row sets would rig the comparison." },
+  { id: "bundle", x: 1058, y: 62,  w: 150, h: H, label: "bundle.py", sub: "frozen threshold", desc: "The deployable artifact: winning model, the threshold tuned on validation and then frozen, the reliability curve, the scaler and the channel list. Saved to disk and loaded by the API at startup." },
 
   // row 2 — serving a decision
-  { id: "svc",    x: 26,   y: 212, w: 196, h: 74, label: "MODEL SERVICE", sub: "probability · band · confidence", kind: "service" },
-  { id: "inv",    x: 264,  y: 216, w: 156, h: 66, label: "Investigate", sub: "predict · context · facts" },
-  { id: "con",    x: 462,  y: 216, w: 176, h: 66, label: "Contest", sub: "2 advocates → adjudicator" },
-  { id: "act",    x: 680,  y: 216, w: 156, h: 66, label: "Act", sub: "remediate · simulate · verify" },
-  { id: "human",  x: 878,  y: 216, w: 160, h: 66, label: "Human approval", sub: "nothing is actuated", kind: "human" },
-  { id: "api",    x: 1080, y: 216, w: 150, h: 66, label: "API + React UI", sub: "FastAPI · WebSocket" },
+  { id: "svc",    x: 26,   y: 212, w: 196, h: 74, label: "MODEL SERVICE", sub: "probability · band · confidence", kind: "service", desc: "The only route to a model. Answers probability, band and confidence — and nothing else. No agent decides whether to investigate; the orchestrator reads the band. This boundary is why a tree could replace the TFT without touching a single downstream agent." },
+  { id: "inv",    x: 264,  y: 216, w: 156, h: 66, label: "Investigate", sub: "predict · context · facts", desc: "Three agents. Prediction scores the machine through the service. Context assembles the dossier — machine type, hours since service, prior failures. Investigation records what actually moved in the telemetry, as recomputable evidence." },
+  { id: "con",    x: 462,  y: 216, w: 176, h: 66, label: "Contest", sub: "2 advocates → adjudicator", desc: "Two advocates argue from the same evidence base. One makes the degradation case, the other argues load, weather or unreliable instrumentation explains it. An adjudicator resolves it arithmetically, with a floor so a benign story can break a marginal case but never a strong one." },
+  { id: "act",    x: 680,  y: 216, w: 156, h: 66, label: "Act", sub: "remediate · simulate · verify", desc: "Remediation selects actions from the approved catalogue. Simulation rolls each one forward against a do-nothing control and rescores with the trained model. Verification runs ten checks, including re-deriving every evidence item from raw telemetry." },
+  { id: "human",  x: 878,  y: 216, w: 160, h: 66, label: "Human approval", sub: "nothing is actuated", kind: "human", desc: "The gate. Every consequential action requires a named human approver, and approval here is a record rather than an actuation. Nothing in this system ever touches a machine." },
+  { id: "api",    x: 1080, y: 216, w: 150, h: 66, label: "API + React UI", sub: "FastAPI · WebSocket", desc: "FastAPI serves the JSON API plus a WebSocket that streams agent steps as they execute. The React dashboard — ten pages — is served from the same process." },
 
   // row 3 — supporting
-  { id: "llm",    x: 26,   y: 400, w: 174, h: H, label: "llm/provider.py", sub: "narration only", kind: "llm" },
-  { id: "res",    x: 224,  y: 400, w: 160, h: H, label: "Research agents", sub: "selects on validation" },
-  { id: "asst",   x: 408,  y: 400, w: 150, h: H, label: "Assistant", sub: "retrieval + citations" },
-  { id: "evid",   x: 582,  y: 400, w: 150, h: H, label: "Evidence", sub: "recompute recipe", kind: "guard" },
-  { id: "cat",    x: 756,  y: 400, w: 150, h: H, label: "13 actions", sub: "closed catalogue", kind: "guard" },
-  { id: "reg",    x: 930,  y: 400, w: 150, h: H, label: "SQLite registry", sub: "every agent step", kind: "store" },
-  { id: "eval",   x: 1104, y: 400, w: 158, h: H, label: "evaluate · ablate", sub: "45 scenarios", kind: "eval" },
+  { id: "llm",    x: 26,   y: 400, w: 174, h: H, label: "llm/provider.py", sub: "narration only", kind: "llm", desc: "Anthropic, OpenAI, or a deterministic Mock. It phrases findings and nothing else: no metric, threshold or decision passes through it, and narration is discarded if it introduces a number that is not in the retrieved evidence. Everything here runs on Mock." },
+  { id: "res",    x: 224,  y: 400, w: 160, h: H, label: "Research agents", sub: "selects on validation", desc: "Two agents that run before anything is served. The Data Scientist profiles the data and writes the experiment plan; the Model Researcher executes the bake-off and selects a winner on validation PR-AUC alone — test scores never choose." },
+  { id: "asst",   x: 408,  y: 400, w: 150, h: H, label: "Assistant", sub: "retrieval + citations", desc: "Grounded question-answering over the system's own records. It routes deterministically, retrieves with citations, and refuses anything it cannot ground. It can trigger an investigation, but it cannot approve or carry out work." },
+  { id: "evid",   x: 582,  y: 400, w: 150, h: H, label: "Evidence", sub: "recompute recipe", kind: "guard", desc: "Every fact carries the recipe that produced it — the function, the channel and the exact time range. That is what makes verification a recomputation rather than a language model reviewing prose." },
+  { id: "cat",    x: 756,  y: 400, w: 150, h: H, label: "13 actions", sub: "closed catalogue", kind: "guard", desc: "The closed intervention catalogue: throttle the duty, re-prime a suction line, re-lubricate, replace a bearing, controlled shutdown and so on. The remediation agent selects an id — it cannot invent an action or alter one's parameters." },
+  { id: "reg",    x: 930,  y: 400, w: 150, h: H, label: "SQLite registry", sub: "every agent step", kind: "store", desc: "Every experiment and every agent step, with inputs, outputs, tools called, duration and retries. The Experiments, Agent Activity and changelog views all read back from here, which is why no figure in this app is hand-entered." },
+  { id: "eval",   x: 1104, y: 400, w: 158, h: H, label: "evaluate · ablate", sub: "45 scenarios", kind: "eval", desc: "evaluate.py replays 45 frozen scenarios through both the threshold baseline and the full agent workflow on identical telemetry. ablate_adjudication.py sweeps the alert threshold and compares model-only against adjudicated — the run that found the hypothesis contest changes zero verdicts." },
 ];
 
 const byId = Object.fromEntries(N.map((n) => [n.id, n]));
@@ -184,6 +186,9 @@ const KIND_COLOR: Record<string, string> = {
 
 export default function Architecture() {
   const [step, setStep] = useState(0);
+  // Hover tooltip: position is tracked in wrapper pixels rather than viewBox
+  // units, so the card lands under the cursor whatever the SVG is scaled to.
+  const [tip, setTip] = useState<{ n: Node; x: number; y: number; flip: boolean } | null>(null);
   const [playing, setPlaying] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
@@ -236,7 +241,7 @@ export default function Architecture() {
         </div>
       </div>
 
-      <div className="arch-wrap">
+      <div className="arch-wrap" onMouseLeave={() => setTip(null)}>
         <svg viewBox={`0 0 ${VB.w} ${VB.h}`} className="arch-svg" role="img"
              aria-label="PredictOps system architecture">
           <defs>
@@ -278,7 +283,19 @@ export default function Architecture() {
             const on = activeNodes.has(n.id);
             const tone = n.kind ? KIND_COLOR[n.kind] : "#3a4653";
             return (
-              <g key={n.id} className={`arch-node${on ? " on" : ""}`}>
+              <g
+                key={n.id}
+                className={`arch-node${on ? " on" : ""}`}
+                onMouseMove={(ev) => {
+                  const host = (ev.currentTarget.ownerSVGElement
+                    ?.parentElement) as HTMLElement | null;
+                  if (!host) return;
+                  const r = host.getBoundingClientRect();
+                  const x = ev.clientX - r.left;
+                  setTip({ n, x, y: ev.clientY - r.top, flip: x > r.width * 0.58 });
+                }}
+                onMouseLeave={() => setTip(null)}
+              >
                 <rect
                   x={n.x} y={n.y} width={n.w} height={n.h}
                   rx={n.kind === "human" ? n.h / 2 : 9}
@@ -311,6 +328,23 @@ export default function Architecture() {
               );
             })}
         </svg>
+
+        {tip && (
+          <div
+            className={`arch-tip${tip.flip ? " flip" : ""}`}
+            style={{ left: tip.x, top: tip.y }}
+          >
+            <div className="arch-tip-head">
+              <span
+                className="arch-tip-dot"
+                style={{ background: tip.n.kind ? KIND_COLOR[tip.n.kind] : "#7d8794" }}
+              />
+              {tip.n.label}
+            </div>
+            {tip.n.sub && <div className="arch-tip-sub">{tip.n.sub}</div>}
+            <p>{tip.n.desc}</p>
+          </div>
+        )}
       </div>
 
       {/* ── narration ── */}
